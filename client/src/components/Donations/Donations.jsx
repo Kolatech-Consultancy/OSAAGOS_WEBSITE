@@ -9,9 +9,9 @@ const Donations = () => {
 
   return (
     <>
-        <Header/>
+        {/* <Header/> */}
         <Main/>
-        <Footer/>
+        {/* <Footer/> */}
     </>
   );
 };

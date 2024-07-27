@@ -30,7 +30,7 @@ function AddEventForm() {
 
     return (
         <>
-        <Header/>
+        {/* <Header/> */}
         <form onSubmit={handleSubmit} className="max-w-lg mx-auto p-8 bg-white shadow-md rounded-lg">
             <h2 className="text-2xl font-semibold mb-6">Add Event</h2>
             <div className="mb-4">
@@ -101,7 +101,7 @@ function AddEventForm() {
                 Add Event
             </button>
         </form>
-        <Footer/>
+        {/* <Footer/> */}
         </>
         
     );

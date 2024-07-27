@@ -80,7 +80,7 @@ function DisplayEvents() {
 
     return (
         <>
-        <Header/>
+        {/* <Header/> */}
         <div className="p-10">
             <h1 className="text-3xl font-semibold mb-6">Upcoming Events</h1>
             <div className="space-y-6">
@@ -96,7 +96,7 @@ function DisplayEvents() {
                 ))}
             </div>
         </div>
-        <Footer/>
+        {/* <Footer/> */}
         </>
             );
 }

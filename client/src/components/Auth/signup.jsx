@@ -6,10 +6,10 @@ import SignUpSection from "./signupSection";
 function SignUp() {
     return (
         <>
-            <Header/>
+            {/* <Header/> */}
             <FirstSection/>
             <SignUpSection/>
-            <Footer/>
+            {/* <Footer/> */}
         </>
     );
 }

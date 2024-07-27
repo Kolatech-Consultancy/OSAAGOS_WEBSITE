@@ -6,8 +6,8 @@ body {
   overflow-x: hidden;
 }
 .slider {
-    height: 100vh;
-    .slide {
+  height: 100vh;
+  .slide {
     left: 0px;
     overflow: hidden;
 
@@ -34,17 +34,16 @@ body {
         font-weight: bold;
       }
     }
-   
+
     &:nth-child(1) {
       background-image: url("../src/assets/saint-anselm-colleges-982688.jpg");
       animation-delay: 0s;
     }
-  
-    
-      &:nth-child(2) {
-        background-image: url("../src/assets/front-view-stacked-books-graduation-cap-diploma-education-day.jpg");
-        animation-delay: -2.5s;
-      }
+
+    &:nth-child(2) {
+      background-image: url("../src/assets/front-view-stacked-books-graduation-cap-diploma-education-day.jpg");
+      animation-delay: -2.5s;
+    }
     &:nth-child(3) {
       background-image: url("../src/assets/library-488678.jpg");
       animation-delay: -5s;
@@ -55,55 +54,65 @@ body {
     }
     &:nth-child(5) {
       background-image: url("../src/assets/medium-shot-people-graduating.jpg");
-    animation-delay: -10s;
-  }
-  }
-  }
-  
-  @keyframes slider {
-    0%, 16%, 100% {
-      transform: translateX(0);
-      animation-timing-function: ease;
-    }
-    20% {
-      transform: translateX(-100%);
-      animation-timing-function: step-end;
-    }
-    96% {
-      transform: translateX(100%);
-      animation-timing-function: ease;
+      animation-delay: -10s;
     }
   }
-  .margin-top {
-     margin-top: 90vh;
-  }
-  // .footer {
-  //   margin-top: 220vh;
-  // }
+}
 
-  .pageTitle{
-    background-image: url('./assets/page-title.jpg');
-    height: 70vh;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    background-blend-mode: overlay;
-    background-color: rgba(0, 0, 0, 0.8);
+@keyframes slider {
+  0%,
+  16%,
+  100% {
+    transform: translateX(0);
+    animation-timing-function: ease;
   }
- .formControl{
-   input{
-     text-align: center;
-     &::placeholder{
-       font-size: large;
-     }
-   }
- }
+  20% {
+    transform: translateX(-100%);
+    animation-timing-function: step-end;
+  }
+  96% {
+    transform: translateX(100%);
+    animation-timing-function: ease;
+  }
+}
+.margin-top {
+  margin-top: 90vh;
+}
+// .footer {
+//   margin-top: 220vh;
+// }
+
+.pageTitle {
+  background-image: url("./assets/page-title.jpg");
+  height: 70vh;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-blend-mode: overlay;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+.formControl {
+  input {
+    text-align: center;
+    &::placeholder {
+      font-size: large;
+    }
+  }
+}
 .news {
-  background-image: url('./assets/8282936.jpg');
+  background-image: url("./assets/8282936.jpg");
   height: 80vh;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
   background-blend-mode: overlay;
   background-color: rgba(0, 0, 0, 0.4);
+}
+
+.bg-img {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("./assets/page-title.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }

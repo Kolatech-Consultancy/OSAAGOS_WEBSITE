@@ -42,7 +42,7 @@ const FourthSection = () => {
             </div>
         </div>
     </section>
-    <Footer/>
+    {/* <Footer/> */}
 </>
 );
 };

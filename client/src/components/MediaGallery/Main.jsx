@@ -1,42 +1,110 @@
-import React from 'react';
-
+import React, { useState } from "react";
+import Heading from "./Heading";
+import MediaFilter from "./MediaFilter";
 const mediaItems = [
-  { id: 1, type: 'image', url: 'https://via.placeholder.com/300' },
-  { id: 2, type: 'video', url: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
-  { id: 3, type: 'image', url: 'https://via.placeholder.com/300' },
-  { id: 4, type: 'video', url: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
-  { id: 5, type: 'image', url: 'https://via.placeholder.com/300' },
-  { id: 6, type: 'video', url: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
-  { id: 7, type: 'image', url: 'https://via.placeholder.com/300' },
-  { id: 8, type: 'video', url: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
+  { id: 1, type: "image", url: "https://via.placeholder.com/300" },
+  { id: 2, type: "video", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
+  { id: 3, type: "image", url: "https://via.placeholder.com/300" },
+  { id: 4, type: "video", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
+  { id: 5, type: "image", url: "https://via.placeholder.com/300" },
+  { id: 6, type: "video", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
+  { id: 7, type: "image", url: "https://via.placeholder.com/300" },
+  { id: 8, type: "video", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
+  { id: 9, type: "image", url: "https://via.placeholder.com/300" },
+  { id: 10, type: "video", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
+  { id: 11, type: "image", url: "https://via.placeholder.com/300" },
+  { id: 12, type: "video", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
+  { id: 13, type: "image", url: "https://via.placeholder.com/300" },
+  { id: 14, type: "video", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
+  { id: 15, type: "image", url: "https://via.placeholder.com/300" },
+  { id: 16, type: "video", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
   // Add more media items as needed
 ];
 
+function filterItems(type) {
+  if (type === "all") {
+    return mediaItems;
+  }
+  return mediaItems.filter((item) => item.type === type);
+}
+
 const Main = () => {
+  const [filterVal, setFilterVal] = useState("all");
+  const filteredMediaItems = filterItems(filterVal.toLowerCase());
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
+  const totalPages = Math.ceil(filteredMediaItems.length / itemsPerPage);
+
+  const handleClick = (page) => {
+    setCurrentPage(page);
+  };
+
+  const paginatedItems = filteredMediaItems.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
   return (
-    <div className="p-6 bg-gray-50">
-      <header className="mb-6">
-        <h1 className="text-3xl font-bold mb-2">Media Gallery</h1>
-        <p className="text-gray-600">Browse through our collection of photos and videos.</p>
-      </header>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {mediaItems.map(item => (
-          <div key={item.id} className="bg-white rounded-lg shadow-md overflow-hidden">
-            {item.type === 'image' ? (
-              <img src={item.url} alt="Media" className="w-full h-48 object-cover" />
-            ) : item.type === 'video' ? (
-              <iframe
-                src={item.url}
-                title="Video"
-                className="w-full h-48"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            ) : null}
-          </div>
-        ))}
+    <div className="py-6 ">
+      <div className="w-full h-[50vh] bg-green-500 mb-8 flex justify-center items-center text-center bg-img text-white">
+        <div>
+          <h2 className="text-5xl my-4 font-semibold">Gallery</h2>
+          <p className="text-lg font-semibold">
+            Explore our beautiful gallery, showcasing a stunning collection of
+            images and videos. Discover the beauty and creativity in every piece
+          </p>
+        </div>
       </div>
+      <header className="mb-6">
+        <MediaFilter filterVal={filterVal} setFilterVal={setFilterVal} />
+      </header>
+      <main className="max-w-[85%] w-full mx-auto my-4">
+        <Heading />
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 ">
+          {paginatedItems.map((item) => (
+            <div
+              key={item.id}
+              className="bg-white rounded-lg shadow-md overflow-hidden"
+            >
+              {item.type === "image" ? (
+                <img
+                  src={item.url}
+                  alt="Media"
+                  className="w-full h-48 object-cover"
+                />
+              ) : item.type === "video" ? (
+                <iframe
+                  src={item.url}
+                  title="Video"
+                  className="w-full h-48"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              ) : null}
+            </div>
+          ))}
+        </div>
+
+        <div className=" w-[70%] mx-auto">
+          <div className="flex justify-center mt-8 text-center">
+            {Array.from({ length: totalPages }, (_, index) => (
+              <button
+                key={index}
+                onClick={() => handleClick(index + 1)}
+                className={`px-2 py-1 mx-1 border-2 border-blue-700 rounded-lg ${
+                  currentPage === index + 1
+                    ? "bg-blue-700 text-white"
+                    : "bg-white text-blue-700"
+                }`}
+              >
+                {index + 1}
+              </button>
+            ))}
+          </div>
+        </div>
+      </main>
     </div>
   );
 };

@@ -6,9 +6,9 @@ import Section from './Section';
 const ContactUs = () => {
     return (
         <>
-            <Header/>
+            {/* <Header/> */}
             <Section/>
-            <Footer/>
+            {/* <Footer/> */}
         </>
         
     );
