@@ -6,9 +6,9 @@ import Main from './Main';
 const AboutUs = () => {
   return (
     <>
-    <Header/>
+    {/* <Header/> */}
     <Main/>
-    <Footer/>
+    {/* <Footer/> */}
     </>
   );
 };

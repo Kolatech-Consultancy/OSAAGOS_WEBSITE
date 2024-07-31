@@ -7,7 +7,7 @@ import Main from "./Main";
 const HomePage = () => {
     return (
     <>
-        <Header/>
+        {/* <Header/> */}
         <Main/>
       </>
     );

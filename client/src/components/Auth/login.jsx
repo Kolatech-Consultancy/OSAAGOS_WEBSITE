@@ -6,10 +6,10 @@ import FirstSection from "./firstSection"
 function Login() {
     return (
         <>
-            <Header/>
+            {/* <Header/> */}
             <FirstSection/>
             <LoginSection/>
-            <Footer/>
+            {/* <Footer/> */}
         </>
     );
 }

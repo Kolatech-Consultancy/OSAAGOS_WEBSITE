@@ -7,10 +7,10 @@ import Main from './Main';
 const DashboardOverview = () => {
   return (
     <>
-    <Header/>
+    {/* <Header/> */}
     <Aside/>
     <Main/>
-    <Footer/>
+    {/* <Footer/> */}
     </>
     
   );

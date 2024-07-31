@@ -18,30 +18,51 @@ import ProfilePage from './components/ProfileDisplay';
 import AddEventForm from './components/Events/EventForm';
 import EventsPage from './components/Events/EventsPage';
 import AddNewsForm from './components/NewsAndAnnouncements/NewsForm';
+import Layout from './Layout';
 
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<HomePage />} />
-        <Route path='/dashboard' element={<DashboardOverview />} />
-        <Route path='/aboutus' element={<AboutUs />} />
-        <Route path='/search' element={<SingleProfile />} />
-        <Route path='/contactus' element={<ContactUs />} />
-        <Route path='/news' element={<NewsAndAnnouncements />} />
-        <Route path='/profile' element={<AlumniProfile />} />
-        <Route path='/jobs' element={<JobBoard />} />
-        <Route path='/donations' element={<Donations />} />
-        <Route path='/media' element={<MediaGallery />} />
-        <Route path='/chat' element={<Chat sender="CurrentUser" />} />
-        <Route path='/register' element={<RegisterForm />} />
-        <Route path='/myprofile' element={<ProfilePage />} />
-        <Route path='/login' element={<Login/>}/>
-        <Route path='/sign-up' element={<SignUp/>}/>
-        <Route path='/eventform' element={<AddEventForm/>}/>
-        <Route path='/events' element={<EventsPage/>}/>
-        <Route path='/newsform' element={<AddNewsForm/>}/>
+        <Route element={<Layout />}>
+          <Route index element={<HomePage />} />
+          <Route path="/dashboard" element={<DashboardOverview />} />
+          <Route path="/aboutus" element={<AboutUs />} />
+          <Route path="/search" element={<SingleProfile />} />
+          <Route path="/contactus" element={<ContactUs />} />
+          <Route path="/news" element={<NewsAndAnnouncements />} />
+          <Route path="/profile" element={<AlumniProfile />} />
+          <Route path="/jobs" element={<JobBoard />} />
+          <Route path="/donations" element={<Donations />} />
+          <Route path="/media" element={<MediaGallery />} />
+          <Route path="/chat" element={<Chat sender="CurrentUser" />} />
+          <Route path="/register" element={<RegisterForm />} />
+          <Route path="/myprofile" element={<ProfilePage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/eventform" element={<AddEventForm />} />
+          <Route path="/events" element={<EventsPage />} />
+          <Route path="/newsform" element={<AddNewsForm />} />
+        </Route>
+        {/* <Route path="/" element={<HomePage />} />
+        <Route path="/dashboard" element={<DashboardOverview />} />
+        <Route path="/aboutus" element={<AboutUs />} />
+        <Route path="/search" element={<SingleProfile />} />
+        <Route path="/contactus" element={<ContactUs />} />
+        <Route path="/news" element={<NewsAndAnnouncements />} />
+        <Route path="/profile" element={<AlumniProfile />} />
+        <Route path="/jobs" element={<JobBoard />} />
+        <Route path="/donations" element={<Donations />} />
+        <Route path="/media" element={<MediaGallery />} />
+        <Route path="/chat" element={<Chat sender="CurrentUser" />} />
+        <Route path="/register" element={<RegisterForm />} />
+        <Route path="/myprofile" element={<ProfilePage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/sign-up" element={<SignUp />} />
+        <Route path="/eventform" element={<AddEventForm />} />
+        <Route path="/events" element={<EventsPage />} />
+        <Route path="/newsform" element={<AddNewsForm />} /> */}
       </Routes>
     </BrowserRouter>
   );

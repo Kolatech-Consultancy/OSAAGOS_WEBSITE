@@ -6,9 +6,9 @@ const JobBoard = () => {
 
   return (
     <>
-        <Header/>
+        {/* <Header/> */}
         <Main/>
-        <Footer/>
+        {/* <Footer/> */}
     </>
 );
 };

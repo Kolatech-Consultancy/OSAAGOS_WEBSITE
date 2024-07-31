@@ -5,9 +5,9 @@ import Main from "./Main";
 const MediaGallery = () => {
   return (
     <>
-        <Header/>
-        <Main/>
-        <Footer/>
+      {/* <Header /> */}
+      <Main />
+      {/* <Footer /> */}
     </>
   );
 };
