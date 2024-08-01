@@ -8,7 +8,7 @@ const NewsAndAnnouncements = () => {
         <>
             <Header/>
             <Section/>
-            <Footer/>
+            {/* <Footer/> */}
         </>
     );
 }

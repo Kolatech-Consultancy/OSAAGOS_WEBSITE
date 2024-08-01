@@ -60,7 +60,7 @@ function AddNewsForm() {
                 Add News
             </button>
         </form>
-    <Footer/>
+    {/* <Footer/> */}
         </>
             );
 }
