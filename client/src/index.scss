@@ -6,7 +6,7 @@ body {
   overflow-x: hidden;
 }
 .slider {
-  height: 100vh;
+  height: 100%;
   .slide {
     left: 0px;
     overflow: hidden;
@@ -115,4 +115,11 @@ body {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+}
+
+.item:hover {
+  & h2 {
+    color: rgb(0, 0, 156);
+    transition: all 1ms ease-in-out;
+  }
 }

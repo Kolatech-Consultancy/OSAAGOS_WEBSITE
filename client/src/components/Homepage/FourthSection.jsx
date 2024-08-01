@@ -25,26 +25,36 @@ const FourthSection = () => {
     ];
         
     return (
-    <>
-    <section className="bg-gray-100 py-10 px-5 sm:px-10 lg:px-20">
-    <div className="p-10">
-            <h1 className="text-3xl font-semibold mb-6">Latest News</h1>
-            <div className="space-y-6">
-                {dummyNews.map((news, index) => (
-                    <div key={index} className="bg-white shadow-md rounded-lg overflow-hidden p-6">
-                        <h2 className="text-2xl font-semibold mb-2">{news.title}</h2>
-                        <p className="text-gray-700 mb-2">{news.content.substring(0, 100)}...</p>
-                        <Link to={`/news/${index}`} className="text-orange-400 hover:underline">Read More</Link>
-                        <p className="text-gray-500 mt-2">Author: {news.author}</p>
-                        <p className="text-gray-500">Date: {news.timestamp}</p>
-                    </div>
-                ))}
+      <>
+        <section className="bg-gray-100 py-10 px-5 sm:px-10 lg:px-20">
+          <div className="p-10">
+            <h1 className="text-4xl font-semibold mb-10 text-center">Latest News</h1>
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 md:grid-cols-2">
+              {dummyNews.map((news, index) => (
+                <div
+                  key={index}
+                  className="bg-white shadow-md rounded-lg overflow-hidden p-6"
+                >
+                  <h2 className="text-2xl font-semibold mb-2">{news.title}</h2>
+                  <p className="text-gray-700 mb-2">
+                    {news.content.substring(0, 100)}...
+                  </p>
+                  <Link
+                    to={`/news/${index}`}
+                    className="text-orange-400 hover:underline"
+                  >
+                    Read More
+                  </Link>
+                  <p className="text-gray-500 mt-2">Author: {news.author}</p>
+                  <p className="text-gray-500">Date: {news.timestamp}</p>
+                </div>
+              ))}
             </div>
-        </div>
-    </section>
-    {/* <Footer/> */}
-</>
-);
+          </div>
+        </section>
+        {/* <Footer/> */}
+      </>
+    );
 };
 
 export default FourthSection;
