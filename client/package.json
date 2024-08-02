@@ -16,7 +16,8 @@
     "socket.io-client": "^4.7.5",
     "styled-components": "^6.1.12",
     "sweetalert2": "^11.12.3",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "swiper": "^11.0.6"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -100,8 +100,9 @@ body {
   }
 }
 .news {
-  background-image: url("./assets/8282936.jpg");
-  height: 80vh;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("./assets/8282936.jpg");
+  height: 50vh;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -121,5 +122,17 @@ body {
   & h2 {
     color: rgb(0, 0, 156);
     transition: all 1ms ease-in-out;
+  }
+}
+
+.test {
+  position: fixed;
+  z-index: 999;
+}
+
+@media (min-width: 1024px) {
+  .test {
+    position: unset;
+    // transform: translateY(0);
   }
 }
