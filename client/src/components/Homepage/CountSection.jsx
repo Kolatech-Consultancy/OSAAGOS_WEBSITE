@@ -67,7 +67,7 @@ function CountSection() {
     });
 
     return () => {
-      counterRefs.current.forEach((ref) => {
+      counterRefs.current?.forEach((ref) => {
         if (ref) {
           observer.unobserve(ref);
         }

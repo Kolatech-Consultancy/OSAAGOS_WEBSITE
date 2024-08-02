@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Footer from "../Footer";
 
 const FourthSection = () => {
     const dummyNews = [
@@ -52,7 +51,6 @@ const FourthSection = () => {
             </div>
           </div>
         </section>
-        {/* <Footer/> */}
       </>
     );
 };

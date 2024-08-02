@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
-import Header from './Header';
-import Footer from './Footer';
+
 
 const socket = io('http://localhost:5000');
 
@@ -46,7 +45,6 @@ const ChatApp = ({ userId, otherUserId, userProfile, otherUserProfile }) => {
 
   return (
     <>
-    {/* <Header/> */}
     <div className="flex flex-col h-screen bg-gray-200">
       <div className="flex-1 p-4 overflow-y-scroll">
         {messages.map((msg, index) => (
@@ -82,7 +80,6 @@ const ChatApp = ({ userId, otherUserId, userProfile, otherUserProfile }) => {
         </button>
       </div>
     </div>
-    {/* <Footer/> */}
     </>
   );
 };

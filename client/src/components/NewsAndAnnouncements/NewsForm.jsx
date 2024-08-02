@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import Header from '../Header';
-import Footer from '../Footer';
+
 
 function AddNewsForm() {
     const [newsDetails, setNewsDetails] = useState({
@@ -24,7 +23,6 @@ function AddNewsForm() {
 
     return (
         <>
-            <Header/>
             <form onSubmit={handleSubmit} className="max-w-lg mx-auto p-8 bg-white shadow-md rounded-lg">
             <h2 className="text-2xl font-semibold mb-6">Add News and Announcements</h2>
             <div className="mb-4">
@@ -60,7 +58,6 @@ function AddNewsForm() {
                 Add News
             </button>
         </form>
-    {/* <Footer/> */}
         </>
             );
 }

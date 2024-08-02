@@ -4,9 +4,9 @@ import React from 'react';
 const AboutFourthSection = () => {
   return (
     <>
-      <section>
-        <h2 className="text-3xl font-semibold text-blue-800 mb-4">Our Team</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <section className='flex flex-col gap-10 mt-8'>
+        <h2 className="text-4xl font-semibold text-blue-800 mb-4 text-center">Our Team</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
           <div className="text-center bg-white p-4 rounded-lg shadow-md">
             <img src="https://statehouse.gov.ng/wp-content/uploads/2023/05/WhatsApp-Image-2023-05-29-at-11.58.06-AM-1.jpeg" alt="Team Member" className="w-32 h-32 rounded-full mx-auto mb-4" />
             <h3 className="text-xl font-bold text-gray-800">Bola Ahmed Tinubu</h3>
