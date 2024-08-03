@@ -4,19 +4,18 @@ import eventImg from "../../assets/laptop.jpg"
 const SecondSection = () => {
     return (
       <>
-        <section className="margin-top relative flex space-x-10 bg-blue-500 text-white w-5/6 mx-auto py-5 px-10">
+        <section className=" relative sm:-mt-[8rem] mt-6 z-50 flex flex-wrap-reverse gap-4 md:flex-nowrap space-x-10 bg-blue-500 text-white md:w-5/6 w-[95%] mx-auto py-5 px-10">
           <div>
-            <img src={eventImg} alt="event-img" />
+            <img src={eventImg} className="w-full object-cover h-full" alt="event-img" />
           </div>
           <div>
             <div className="absolute -top-5 right-10">
-              <h1 className="text-2xl bg-white text-blue-800 font-extrabold w-60 py-3 px-5">
+              <h1 className="text-2xl bg-white shadow-lg text-blue-800 font-extrabold w-60 py-3 px-5">
                 Upcoming Event
               </h1>
             </div>
             <div></div>
             <div className="mt-10">
-              {/* <h1></h1> */}
               <p className="">
                 We are thrilled to invite you to our Annual Alumni Networking
                 Gala, a night dedicated to celebrating the achievements of our

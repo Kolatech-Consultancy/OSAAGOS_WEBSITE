@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 function DisplayEvents() {
   const dummyEvents = [
@@ -78,6 +79,31 @@ function DisplayEvents() {
       attendees: ["David Clark", "Alice Johnson"],
     },
   ];
+
+  const [eventData, setEventData] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const endPoint = `https://osaagosbackend-production.up.railway.app/api/v1/events`;
+
+  async function fetchData() {
+    setLoading(true);
+    try {
+      const response = await axios.get(endPoint);
+
+      const { data } = response.data;
+      if (data) {
+        setEventData(data);
+      }
+      setLoading(false);
+    } catch (e) {
+      console.log(e);
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <section>
