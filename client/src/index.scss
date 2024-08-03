@@ -176,3 +176,18 @@ body {
   }
 }
 
+
+
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 35% 1fr 1fr 1fr; 
+  gap: 2rem;
+  @media (max-width: 1028px) { 
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto; 
+  }
+  @media (max-width: 767px) { 
+    grid-template-columns: 1fr;
+  }
+}
