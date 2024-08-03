@@ -60,7 +60,7 @@ const Header = () => {
               <input
                 type="text"
                 className="bg-transparent border-0 outline-0 px-1 lg:px-2 py-1 inline-flex"
-                placeholder="Search for cakes"
+                placeholder="Search Alumni ..."
               />
             </article>
             <Link to="/login" className="hidden lg:inline-block">
