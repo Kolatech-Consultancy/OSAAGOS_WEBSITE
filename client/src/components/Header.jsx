@@ -4,6 +4,7 @@ import logo2 from "../assets/os.svg";
 import React, { useRef, useState } from "react";
 import { HiMenuAlt3 } from "react-icons/hi";
 import { IoIosCloseCircleOutline } from "react-icons/io";
+import { CiSearch } from "react-icons/ci";
 
 const Header = () => {
   const location = useLocation();
@@ -35,36 +36,33 @@ const Header = () => {
 
   return (
     <>
-      <header className="sticky top-0 z-30">
+      <header className="sticky top-0 z-[100]">
         <div
           className={`bg-blue-800 flex justify-between ${
             dashboard ? "mb-3" : ""
-          } text-white py-3`}
+          } text-white py-3 px-4`}
         >
           <Link to="/">
             <div
               className={`${
                 !dashboard && "hidden"
-              } mx-10 flex flex-col items-start`}
+              } mx-10 flex flex-col justify-center items-center`}
             >
               <img className="" src={logo2} alt="OSAAGOS Logo" />
-              <h1 className="text-2xl font-bold ml-2">OSAAGOS</h1>
+              <h1 className="sm:text-2xl text-lg font-bold ml-2">OSAAGOS</h1>
             </div>
           </Link>
-          <div className="flex items-center space-x-5 mx-10 px-2">
-            <input
-              type="text"
-              placeholder="Search alumni..."
-              className="px-4 py-2 rounded-lg text-black"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <button
-              onClick={handleSearch}
-              className="bg-orange-400 px-5 py-2 rounded-lg ml-20"
-            >
-              Search
-            </button>
+          <div className="flex gap-2 px-2">
+            <article className="flex items-center bg-[rgba(204,204,204,.3)]  rounded-md overflow-hidden">
+              <span className="sm:px-2 px-1 h-full bg-orange-400 font-bold sm:text-xl text-lg flex items-center cursor-pointer">
+                <CiSearch />
+              </span>
+              <input
+                type="text"
+                className="bg-transparent border-0 outline-0 px-1 lg:px-2 py-1 inline-flex"
+                placeholder="Search for cakes"
+              />
+            </article>
             <Link to="/login" className="hidden lg:inline-block">
               <li className="bg-orange-400 px-5 py-2 rounded-lg list-none">
                 Login
@@ -91,7 +89,7 @@ const Header = () => {
           </Link>
 
           <div
-            className={`px-8 lg:px-0 justify-end lg:basis-[70%]  lg:-translate-x-0  pt-14 lg:py-0 test top-0 left-0 bg-blue-800 lg:bg-transparent w-[20rem] lg:w-full h-full ${
+            className={`px-8 lg:px-0 justify-end lg:basis-[70%]  lg:-translate-x-0  pt-14 lg:py-0 test top-0 left-0 bg-blue-800 lg:bg-transparent sm:w-[20rem] w-full lg:w-full h-full transition-all duration-200 ${
               menuOpen ? "" : "-translate-x-[100%]"
             }`}
             ref={ref}
@@ -109,8 +107,6 @@ const Header = () => {
               <Link to="/aboutus">
                 <li>About Us</li>
               </Link>
-              {/* <ul>Alumni Profiles</ul> */}
-              {/* <ul>Networking</ul> */}
               <Link to="/events">
                 <li>Events</li>
               </Link>
