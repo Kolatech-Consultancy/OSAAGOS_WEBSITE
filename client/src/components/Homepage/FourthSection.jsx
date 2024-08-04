@@ -25,8 +25,8 @@ const FourthSection = () => {
         
     return (
       <>
-        <section className="bg-gray-100 py-10 px-5 sm:px-10 lg:px-20">
-          <div className="p-10">
+        <section className="bg-gray-100 py-10 px-2 sm:px-10 lg:px-20">
+          <div className="sm:p-10 px-2 py-10">
             <h1 className="text-4xl font-semibold mb-10 text-center">Latest News</h1>
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 md:grid-cols-2">
               {dummyNews.map((news, index) => (

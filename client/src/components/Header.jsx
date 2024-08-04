@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import logo from "../assets/osaagoslogo.png";
-import logo2 from "../assets/os.svg";
+import logo2 from "../assets/logo.jpg";
 import React, { useRef, useState } from "react";
 import { HiMenuAlt3 } from "react-icons/hi";
 import { IoIosCloseCircleOutline } from "react-icons/io";
@@ -48,8 +48,11 @@ const Header = () => {
                 !dashboard && "hidden"
               } mx-10 flex flex-col justify-center items-center`}
             >
-              <img className="" src={logo2} alt="OSAAGOS Logo" />
-              <h1 className="sm:text-2xl text-lg font-bold ml-2">OSAAGOS</h1>
+              <img
+                className="w-[2rem] h-[2rem] object-cover"
+                src={logo2}
+                alt="OSAAGOS Logo"
+              />
             </div>
           </Link>
           <div className="flex gap-2 px-2">
@@ -64,13 +67,13 @@ const Header = () => {
               />
             </article>
             <Link to="/login" className="hidden lg:inline-block">
-              <li className="bg-orange-400 px-5 py-2 rounded-lg list-none">
+              <li className="bg-orange-400 hover:bg-orange-600 transition-all duration-200 px-5 py-2 rounded-lg list-none">
                 Login
               </li>
             </Link>
             <Link
               to="/sign-up"
-              className="px-5 py-2 hover:bg-orange-400 rounded-lg list-none hidden lg:inline-block"
+              className="px-5 py-2 bg-orange-400 hover:bg-orange-600 transition-all duration-200 rounded-lg list-none hidden lg:inline-block"
             >
               <li>Register</li>
             </Link>
@@ -83,8 +86,11 @@ const Header = () => {
         >
           <Link to="/">
             <div className="flex flex-col justify-start items-start">
-              <img src={logo} alt="logo" />
-              <h1 className="text-2xl">OSAAGOS</h1>
+              <img
+                src={logo2}
+                alt="logo"
+                className="w-[2rem] h-[2rem] object-cover"
+              />
             </div>
           </Link>
 
@@ -93,6 +99,7 @@ const Header = () => {
               menuOpen ? "" : "-translate-x-[100%]"
             }`}
             ref={ref}
+            onClick={() => setMenuOpen(false)}
           >
             <div
               onClick={closeMenu}
@@ -131,12 +138,12 @@ const Header = () => {
 
               <div className="lg:hidden mt-6 flex flex-col gap-5">
                 <Link to="/login">
-                  <li className="bg-orange-400 px-5 py-2 rounded-lg list-none">
+                  <li className="bg-orange-400 hover:bg-orange-600 transition-all duration-200  px-5 py-2 rounded-lg list-none">
                     Login
                   </li>
                 </Link>
                 <Link to="/sign-up">
-                  <li className="px-5 py-2 hover:bg-orange-400 rounded-lg list-none border">
+                  <li className="px-5 py-2 hover:bg-orange-600 bg-orange-400 transition-all duration-200  rounded-lg list-none border">
                     Register
                   </li>
                 </Link>

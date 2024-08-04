@@ -1,10 +1,22 @@
 import React from "react";
+import { FaLongArrowAltLeft, FaLongArrowAltRight } from "react-icons/fa";
+
 import { Link } from "react-router-dom";
 
-const Aside = () => {
+const Aside = ({ isOpen, setIsOpen }) => {
   return (
     <>
-      <aside className="bg-gray-800 text-white w-64 min-h-screen absolute">
+      <aside
+        className={`bg-gray-800 text-white w-64 h-full fixed top-0 left-0 transition-all duration-200 ${
+          isOpen ? "" : "translate-x-[-16rem]"
+        }`}
+      >
+        <div
+          className="absolute bg-blue-600 p-1 -right-[9%] cursor-pointer transition-all duration-200"
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          {isOpen ? <FaLongArrowAltLeft /> : <FaLongArrowAltRight />}
+        </div>
         <ul className="">
           <Link>
             <li className="p-4 hover:bg-gray-600">User Management</li>
@@ -34,6 +46,14 @@ const Aside = () => {
             <li className="p-4 hover:bg-gray-600">Settings</li>
           </Link>
         </ul>
+        <div>
+          <div
+            className="bg-blue-600 inline-block p-1 bottom-0 cursor-pointer "
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            <FaLongArrowAltLeft />
+          </div>
+        </div>
       </aside>
     </>
   );
