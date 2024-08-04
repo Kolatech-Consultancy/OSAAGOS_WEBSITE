@@ -80,7 +80,7 @@ function CountSection() {
       {targets.map((ele, index) => {
         return (
           <article
-            className="flex gap-8 items-center"
+            className="flex gap-8 items-center justify-center"
             ref={(el) => (counterRefs.current[index] = el)}
             key={ele.label}
             data-index={index}

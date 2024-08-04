@@ -2,46 +2,46 @@ import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
 
 
-const socket = io('http://localhost:5000');
+// const socket = io('http://localhost:5000');
 
 const ChatApp = ({ userId, otherUserId, userProfile, otherUserProfile }) => {
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState('');
 
-  useEffect(() => {
-    // Join the room
-    socket.emit('joinRoom', { userId, otherUserId });
+  // useEffect(() => {
+  //   // Join the room
+  //   socket.emit('joinRoom', { userId, otherUserId });
 
-    // Load previous messages
-    socket.emit('loadMessages', { sender: userId, receiver: otherUserId });
+  //   // Load previous messages
+  //   socket.emit('loadMessages', { sender: userId, receiver: otherUserId });
 
-    // Receive previous messages
-    socket.on('previousMessages', (msgs) => {
-      setMessages(msgs);
-    });
+  //   // Receive previous messages
+  //   socket.on('previousMessages', (msgs) => {
+  //     setMessages(msgs);
+  //   });
 
-    // Receive new messages
-    socket.on('receiveMessage', (msg) => {
-      setMessages((prevMessages) => [...prevMessages, msg]);
-    });
+  //   // Receive new messages
+  //   socket.on('receiveMessage', (msg) => {
+  //     setMessages((prevMessages) => [...prevMessages, msg]);
+  //   });
 
-    // Cleanup on component unmount
-    return () => {
-      socket.off('previousMessages');
-      socket.off('receiveMessage');
-    };
-  }, [userId, otherUserId]);
+  //   // Cleanup on component unmount
+  //   return () => {
+  //     socket.off('previousMessages');
+  //     socket.off('receiveMessage');
+  //   };
+  // }, [userId, otherUserId]);
 
-  const handleSendMessage = () => {
-    const msg = {
-      sender: userId,
-      receiver: otherUserId,
-      content: message,
-      timestamp: new Date()
-    };
-    socket.emit('sendMessage', msg);
-    setMessage('');
-  };
+  // const handleSendMessage = () => {
+  //   const msg = {
+  //     sender: userId,
+  //     receiver: otherUserId,
+  //     content: message,
+  //     timestamp: new Date()
+  //   };
+  //   socket.emit('sendMessage', msg);
+  //   setMessage('');
+  // };
 
   return (
     <>
@@ -74,7 +74,7 @@ const ChatApp = ({ userId, otherUserId, userProfile, otherUserProfile }) => {
         />
         <button
           className="ml-2 px-4 py-2 bg-blue-500 text-white rounded-md"
-          onClick={handleSendMessage}
+          // onClick={handleSendMessage}
         >
           Send
         </button>

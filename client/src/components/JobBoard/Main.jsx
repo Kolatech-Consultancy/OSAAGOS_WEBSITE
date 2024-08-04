@@ -76,6 +76,7 @@ const jobListings = [
 ];
 
 const Main = () => {
+
   const [search, setSearch] = useState("");
   const [filteredJobs, setFilteredJobs] = useState(jobListings);
 
@@ -131,9 +132,11 @@ const Main = () => {
               </p>
               <p className="text-sm text-gray-500">{job.type}</p>
               <p className="mt-2">{job.description}</p>
-              <button className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md">
-                Apply Now
-              </button>
+              <div className="flex justify-center">
+                <button className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md">
+                  Apply Now
+                </button>
+              </div>
             </li>
           ))}
         </ul>

@@ -83,7 +83,7 @@ function DisplayEvents() {
   const [eventData, setEventData] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const endPoint = `https://osaagosbackend-production.up.railway.app/api/v1/events`;
+  const endPoint = ` https://osaagos-api-alumni-website.onrender.com/api/events`;
 
   async function fetchData() {
     setLoading(true);
