@@ -8,11 +8,12 @@ import Button from "../../ui/Button";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 function SignUp() {
   const { register, formState, getValues, handleSubmit, reset } = useForm();
-  const { errors, isLoading: isLoad } = formState;
-  const isLoading = false;
+  const { errors, isLoading } = formState;
+//   const isLoading = false;
   const navigate = useNavigate();
 
   const registerUser = async (userData) => {
@@ -21,17 +22,12 @@ function SignUp() {
         " https://osaagos-api-alumni-website.onrender.com/api/users/register",
         userData
       );
-      console.log(isLoad);
-
       console.log("User registered successfully:", response.data);
-
-      console.log(isLoad);
+      toast.success("User created successfully");
+        
       navigate("/login");
     } catch (error) {
-      console.error(
-        "Error registering user:",
-        error.response ? error.response.data : error.message
-      );
+         toast.error(error.response ? error.response.data : error.message);
     }
   };
 
