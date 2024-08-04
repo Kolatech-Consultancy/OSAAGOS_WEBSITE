@@ -109,11 +109,11 @@ const GlobalStyles = createGlobalStyle`
   transition: background-color 0.3s, border 0.3s;
 }
 
-html {
+/* html {
   font-size: 62.5%;
-}
+} */
 
-body {
+/* body {
   font-family: "Poppins", sans-serif;
   color: var(--color-grey-700);
 
@@ -121,10 +121,10 @@ body {
   min-height: 100vh;
   line-height: 1.5;
   font-size: 1.6rem;
-}
+} */
 
 input,
-button,
+/* button, */
 textarea,
 select {
   font: inherit;
@@ -158,16 +158,16 @@ button:has(svg) {
   line-height: 0;
 }
 
-a {
+/* a {
   color: inherit;
   text-decoration: none;
-}
+} */
 
 ul {
   list-style: none;
 }
 
-p,
+/* p,
 h1,
 h2,
 h3,
@@ -176,13 +176,13 @@ h5,
 h6 {
   overflow-wrap: break-word;
   hyphens: auto;
-}
+} */
 
 img {
-  max-width: 100%;
+  /* max-width: 100%; */
 
   /* For dark mode */
-  filter: grayscale(var(--image-grayscale)) opacity(var(--image-opacity));
+  /* filter: grayscale(var(--image-grayscale)) opacity(var(--image-opacity)); */
 }
 
 `;
