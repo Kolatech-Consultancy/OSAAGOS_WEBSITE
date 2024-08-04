@@ -49,8 +49,8 @@ const Header = () => {
               } mx-10 flex flex-col justify-center items-center`}
             >
               <img
-                className="w-[2rem] h-[2rem] object-cover"
-                src={logo2}
+                className="w-[6rem] h-[6rem] object-cover"
+                src="/Logo.png"
                 alt="OSAAGOS Logo"
               />
             </div>
@@ -80,16 +80,16 @@ const Header = () => {
           </div>
         </div>
         <div
-          className={`flex justify-between items-center px-10 py-4 relative ${
+          className={`flex justify-between items-center px-10 relative ${
             dashboard && "hidden"
           } bg-white items-center shadow-lg`}
         >
           <Link to="/">
             <div className="flex flex-col justify-start items-start">
               <img
-                src={logo2}
+                src="/Logo.png"
                 alt="logo"
-                className="w-[2rem] h-[2rem] object-cover"
+                className="w-[6rem] h-[6rem] object-cover"
               />
             </div>
           </Link>

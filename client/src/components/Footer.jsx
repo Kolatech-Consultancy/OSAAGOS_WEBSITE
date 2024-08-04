@@ -36,10 +36,15 @@ const Footer = () => {
       <footer className={`bg-blue-950 py-5 text-white`}>
         <div className="mx-8 grid-container">
           <div className="flex flex-col gap-2">
-            <div className="">
-              <img src={logo2} alt="" />
-              <h3 className="sm:text-lg font-bold xs:text-xs">OSAAGOS</h3>
-            </div>
+            <article className="flex justify-start">
+              <div className="bg-white rounded-full">
+                <img
+                  className="w-[4rem] h-[4rem] object-cover"
+                  src="/Logo.png"
+                  alt=""
+                />
+              </div>
+            </article>
             <p className="text-gray-500 font-semibold text-wrap">
               We are legend Lorem ipsum dolor sitmet, nsecte ipisicing eit, sed
               do eiusmod tempor incidunt ut et do maga aliqua enim ad minim.

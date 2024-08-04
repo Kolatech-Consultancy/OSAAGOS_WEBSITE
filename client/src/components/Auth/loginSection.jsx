@@ -65,7 +65,7 @@ function LoginSection() {
             />
           </div>
           <div className="sm:col-span-1 mt-2 flex justify-center">
-            <Button size="large" disabled={isLoading}>
+            <Button size="small" disabled={isLoading}>
               {!isLoading ? "Log in" : <SpinnerMini />}
             </Button>
           </div>
