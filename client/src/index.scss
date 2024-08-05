@@ -191,3 +191,13 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+.profileTable th, .profileTable td{
+  min-width: fit-content !important;
+  padding:5px;
+}
+.profileTable th{
+  height: 50px;
+  font-weight: 500;
+  font-size:16px;
+}

@@ -1,14 +1,10 @@
 import React from "react";
 
-const Main = ({ isOpen }) => {
-  console.log(isOpen);
+const Overview = () => {
 
   return (
     <>
-      <main
-        className={` ${
-          isOpen ? "ml-64" : ""
-        } p-6 bg-white min-h-screen h-full transition-all duration-200`}
+      <main className="bg-white"
       >
         <h1 className="text-2xl font-bold mb-6">Dashboard Overview</h1>
         <div className="grid sm:grid-cols-2 grid-cols-1 lg:grid-cols-4 gap-6">
@@ -38,4 +34,4 @@ const Main = ({ isOpen }) => {
   );
 };
 
-export default Main;
+export default Overview;

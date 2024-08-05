@@ -20,8 +20,11 @@ import AddEventForm from "./components/Events/EventForm";
 import EventsPage from "./components/Events/EventsPage";
 import AddNewsForm from "./components/NewsAndAnnouncements/NewsForm";
 import Layout from "./Layout";
+import Overview from "./components/AdminDashboard/Overview";
 
 import GlobalStyles from "./GlobalStyles";
+import UsersProfile from "./components/AdminDashboard/Alumni/usersProfile";
+import AlumniProfiles from "./components/AdminDashboard/Alumni/AlumniProfiles";
 
 function App() {
   return (
@@ -48,7 +51,10 @@ function App() {
             <Route path="/events" element={<EventsPage />} />
             <Route path="/newsform" element={<AddNewsForm />} />
           </Route>
-          <Route path="/dashboard" element={<DashboardOverview />} />
+          <Route path="/dashboard" element={<DashboardOverview />} >
+            <Route index element={<Overview/>}/>
+            <Route path="alumni" element={<AlumniProfiles/>}/>
+          </Route>
         </Routes>
       </BrowserRouter>
       <Toaster
