@@ -21,42 +21,51 @@ import EventsPage from "./components/Events/EventsPage";
 import AddNewsForm from "./components/NewsAndAnnouncements/NewsForm";
 import Layout from "./Layout";
 import Overview from "./components/AdminDashboard/Overview";
-
-import GlobalStyles from "./GlobalStyles";
 import UsersProfile from "./components/AdminDashboard/Alumni/usersProfile";
 import AlumniProfiles from "./components/AdminDashboard/Alumni/AlumniProfiles";
+import PageNotFound from "./components/PageNotFound"
+import GlobalStyles from "./GlobalStyles";
+import { ErrorBoundary } from "react-error-boundary";
+import ErrorFallback from "./ui/ErrorFallback";
 
 function App() {
   return (
     <>
       <GlobalStyles />
-      <BrowserRouter>
-        <Routes>
-          <Route element={<Layout />}>
-            <Route index element={<HomePage />} />
-            <Route path="/aboutus" element={<AboutUs />} />
-            <Route path="/search" element={<SingleProfile />} />
-            <Route path="/contactus" element={<ContactUs />} />
-            <Route path="/news" element={<NewsAndAnnouncements />} />
-            <Route path="/profile" element={<AlumniProfile />} />
-            <Route path="/jobs" element={<JobBoard />} />
-            <Route path="/donations" element={<Donations />} />
-            <Route path="/media" element={<MediaGallery />} />
-            <Route path="/chat" element={<Chat sender="CurrentUser" />} />
-            <Route path="/register" element={<RegisterForm />} />
-            <Route path="/myprofile" element={<ProfilePage />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/sign-up" element={<SignUp />} />
-            <Route path="/eventform" element={<AddEventForm />} />
-            <Route path="/events" element={<EventsPage />} />
-            <Route path="/newsform" element={<AddNewsForm />} />
-          </Route>
-          <Route path="/dashboard" element={<DashboardOverview />} >
+
+      <ErrorBoundary
+        FallbackComponent={ErrorFallback}
+        onReset={() => window.location.replace("/")}
+      >
+        <BrowserRouter>
+          <Routes>
+            <Route element={<Layout />}>
+              <Route index element={<HomePage />} />
+              <Route path="/aboutus" element={<AboutUs />} />
+              <Route path="/search" element={<SingleProfile />} />
+              <Route path="/contactus" element={<ContactUs />} />
+              <Route path="/news" element={<NewsAndAnnouncements />} />
+              <Route path="/profile" element={<AlumniProfile />} />
+              <Route path="/jobs" element={<JobBoard />} />
+              <Route path="/donations" element={<Donations />} />
+              <Route path="/media" element={<MediaGallery />} />
+              <Route path="/chat" element={<Chat sender="CurrentUser" />} />
+              <Route path="/register" element={<RegisterForm />} />
+              <Route path="/myprofile" element={<ProfilePage />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/sign-up" element={<SignUp />} />
+              <Route path="/eventform" element={<AddEventForm />} />
+              <Route path="/events" element={<EventsPage />} />
+              <Route path="/newsform" element={<AddNewsForm />} />
+            </Route>
+            <Route path="/dashboard" element={<DashboardOverview />} >
             <Route index element={<Overview/>}/>
             <Route path="alumni" element={<AlumniProfiles/>}/>
           </Route>
-        </Routes>
-      </BrowserRouter>
+            <Route path="*" element={<PageNotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </ErrorBoundary>
       <Toaster
         position="top-center"
         gutter={12}
