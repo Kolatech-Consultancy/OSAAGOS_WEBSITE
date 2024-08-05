@@ -21,7 +21,7 @@ const Aside = ({ isOpen, setIsOpen }) => {
           <Link>
             <li className="p-4 hover:bg-gray-600">User Management</li>
           </Link>
-          <Link>
+          <Link to={"alumni"}>
             <li className="p-4 hover:bg-gray-600">Alumni Profiles</li>
           </Link>
           <Link to="/eventform">
