@@ -4,12 +4,11 @@ import { Link, useNavigate } from "react-router-dom";
 import Button from "../../ui/Button";
 import SpinnerMini from "../SpinnerMini";
 import toast from "react-hot-toast";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 function LoginSection() {
-  const { register, formState, getValues, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, reset } = useForm();
   const navigate = useNavigate();
-  // const { isLoading } = formState;
   const [isLoading, setIsLoading] = useState(false);
 
   const loginUser = async (userData) => {
@@ -23,7 +22,7 @@ function LoginSection() {
       localStorage.setItem("token", token);
       reset();
       toast.success("User login successfully");
-      navigate("/");
+      navigate("/user/profile");
     } catch (error) {
       toast.error("Wrong details");
     } finally {
