@@ -72,7 +72,7 @@ function LoginSection() {
             </Button>
           </div>
         </div>
-        <div className="flex justify-between h-20 p-4">
+        <div className="flex justify-between h-20 px-4 pt-4">
           <hr className=" w-40" style={{ alignSelf: "center" }} />
           <span
             className="text-sm text-gray-400"
@@ -84,6 +84,11 @@ function LoginSection() {
             </Link>
           </span>
           <hr className=" w-40" style={{ alignSelf: "center" }} />
+        </div>
+        <div className="flex justify-center items-center">
+          <Link to={"/reset-password"} className="text-center text-blue-500 hover:text-blue-700 text-sm font-semibold">
+            Forgot password
+          </Link>
         </div>
       </form>
     </>
