@@ -6,3 +6,6 @@ export const GetAlumni = ()=>{
 export const UpdateAlumniProfile = (param)=>{
     return axios.put("/api/alumni/profile", param)
 }
+export const CreateAlumni = (data)=>{
+    return axios.post("/api/admin/alumni", data)
+}
