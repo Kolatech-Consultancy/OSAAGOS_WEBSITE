@@ -1,10 +1,9 @@
-import { Link, useLocation } from "react-router-dom";
-import logo from "../assets/osaagoslogo.png";
-import logo2 from "../assets/logo.jpg";
-import React, { useRef, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
 import { HiMenuAlt3 } from "react-icons/hi";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { CiSearch } from "react-icons/ci";
+import toast from "react-hot-toast";
 
 const Header = () => {
   const location = useLocation();
@@ -12,6 +11,8 @@ const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [menuOpen, setMenuOpen] = useState(false);
+   const token = localStorage.getItem("token");
+   const navigate = useNavigate();
 
   const ref = useRef(null);
 
@@ -33,6 +34,19 @@ const Header = () => {
     );
     setSearchResults(results);
   };
+
+
+  useEffect(() => {
+      
+    }, []);
+
+  function handleLogout() {
+    // eslint-disable-next-line no-restricted-globals
+    const check = confirm(`"Are you sure you want to logout`);
+    if (check) {
+      localStorage.removeItem("token");
+    }
+  }
 
   return (
     <>
@@ -66,17 +80,39 @@ const Header = () => {
                 placeholder="Search Alumni ..."
               />
             </article>
-            <Link to="/login" className="hidden lg:inline-block">
-              <li className="bg-orange-400 hover:bg-orange-600 transition-all duration-200 px-5 py-2 rounded-lg list-none">
-                Login
-              </li>
-            </Link>
-            <Link
-              to="/sign-up"
-              className="px-5 py-2 bg-orange-400 hover:bg-orange-600 transition-all duration-200 rounded-lg list-none hidden lg:inline-block"
-            >
-              <li>Register</li>
-            </Link>
+            {token ? (
+              <>
+                <Link to="/userprofile" className="hidden lg:inline-block">
+                  <li className="bg-orange-400 hover:bg-orange-600 transition-all duration-200 px-5 py-2 rounded-lg list-none">
+                    Profile
+                  </li>
+                </Link>
+                <button
+                  className="bg-orange-400 hidden lg:inline-block hover:bg-orange-600 transition-all duration-200 px-5 py-2 rounded-lg list-none"
+                  onClick={() => {
+                    localStorage.setItem("token", "");
+                    toast.success("Logout Successfully");
+                    navigate("/login");
+                  }}
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <Link to="/login" className="hidden lg:inline-block">
+                  <li className="bg-orange-400 hover:bg-orange-600 transition-all duration-200 px-5 py-2 rounded-lg list-none">
+                    Login
+                  </li>
+                </Link>
+                <Link
+                  to="/sign-up"
+                  className="px-5 py-2 bg-orange-400 hover:bg-orange-600 transition-all duration-200 rounded-lg list-none hidden lg:inline-block"
+                >
+                  <li>Register</li>
+                </Link>
+              </>
+            )}
           </div>
         </div>
         <div
@@ -107,28 +143,28 @@ const Header = () => {
             >
               <IoIosCloseCircleOutline />
             </div>
-            <ul className="flex lg:flex-row justify-between flex-col gap-2 text-white lg:text-black lg:text-sm whitespace-nowrap">
+            <ul className="flex lg:flex-row  justify-end flex-col gap-4 text-white lg:text-black lg:text-sm whitespace-nowrap">
               <Link to="/">
                 <li>Home</li>
               </Link>
               <Link to="/aboutus">
                 <li>About Us</li>
               </Link>
-              <Link to="/events">
+              {/* <Link to="/events">
                 <li>Events</li>
-              </Link>
+              </Link> */}
               <Link to="/news">
-                <li>News & Announcements</li>
+                <li>News</li>
               </Link>
-              <Link to="/jobs">
+              {/* <Link to="/jobs">
                 <li>Job Board</li>
-              </Link>
+              </Link> */}
               <Link to="/donations">
                 <li>Donations</li>
               </Link>
-              <Link to="/media">
+              {/* <Link to="/media">
                 <li>Media Gallery</li>
-              </Link>
+              </Link> */}
               <Link to="/contactus">
                 <li>Contact Us</li>
               </Link>
@@ -136,18 +172,42 @@ const Header = () => {
                 <li>Admin Dashboard</li>
               </Link>
 
-              <div className="lg:hidden mt-6 flex flex-col gap-5">
-                <Link to="/login">
-                  <li className="bg-orange-400 hover:bg-orange-600 transition-all duration-200  px-5 py-2 rounded-lg list-none">
-                    Login
-                  </li>
-                </Link>
-                <Link to="/sign-up">
-                  <li className="px-5 py-2 hover:bg-orange-600 bg-orange-400 transition-all duration-200  rounded-lg list-none border">
-                    Register
-                  </li>
-                </Link>
-              </div>
+              {token ? (
+                <div className="lg:hidden mt-6 flex flex-col gap-5">
+                  {" "}
+                  <Link to="/userprofile" className="">
+                    <li className="bg-orange-400 hover:bg-orange-600 text-center transition-all duration-200 px-5 py-2 rounded-lg list-none">
+                      Profile
+                    </li>
+                  </Link>
+                  <button
+                    className="bg-orange-400 hover:bg-orange-600 transition-all duration-200 px-5 py-2 rounded-lg list-none"
+                    onClick={() => {
+                      localStorage.setItem("token", "");
+                      toast.success("Logout Successfully");
+                      navigate("/login");
+                    }}
+                  >
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                <div className="lg:hidden mt-6 flex flex-col gap-5">
+                  <>
+                    <Link to="/login" className="">
+                      <li className="bg-orange-400 hover:bg-orange-600 transition-all duration-200 px-5 py-2 rounded-lg list-none">
+                        Login
+                      </li>
+                    </Link>
+                    <Link
+                      to="/sign-up"
+                      className="px-5 py-2 bg-orange-400 hover:bg-orange-600 transition-all duration-200 rounded-lg list-none hidden lg:inline-block"
+                    >
+                      <li>Register</li>
+                    </Link>
+                  </>
+                </div>
+              )}
             </ul>
           </div>
 

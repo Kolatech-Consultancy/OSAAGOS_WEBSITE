@@ -4,13 +4,16 @@ import { Link, useNavigate } from "react-router-dom";
 import Button from "../../ui/Button";
 import SpinnerMini from "../SpinnerMini";
 import toast from "react-hot-toast";
+import { useEffect, useState } from "react";
 
 function LoginSection() {
   const { register, formState, getValues, handleSubmit, reset } = useForm();
   const navigate = useNavigate();
-  const { isLoading } = formState;
+  // const { isLoading } = formState;
+  const [isLoading, setIsLoading] = useState(false);
 
   const loginUser = async (userData) => {
+    setIsLoading(true);
     try {
       const response = await axios.post(
         "https://osaagos-api-alumni-website.onrender.com/api/users/login",
@@ -22,12 +25,12 @@ function LoginSection() {
       toast.success("User login successfully");
       navigate("/");
     } catch (error) {
-      toast.error(error.response ? error.response.data : error.message);
+      toast.error("Wrong details");
+    } finally {
+      setIsLoading(false);
     }
   };
   function onSubmit({ email, password }) {
-    console.log("Submit button clicked");
-
     const loginData = { email, password };
     loginUser(loginData);
   }
@@ -78,7 +81,6 @@ function LoginSection() {
           >
             Don’t have an account?
             <Link to="/sign-up" className="text-orange-400">
-              {" "}
               Sign Up
             </Link>
           </span>
