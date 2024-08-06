@@ -9,3 +9,11 @@ export const UpdateAlumniProfile = (param)=>{
 export const CreateAlumni = (data)=>{
     return axios.post("/api/admin/alumni", data)
 }
+
+
+export const GetOneUser = () => {
+    return axios.get("/api/users/profile")
+}
+export const UpdateOneUser = (param) => {
+    return axios.put("/api/users/profile",param);
+}
