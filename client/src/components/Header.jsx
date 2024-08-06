@@ -126,7 +126,7 @@ const Header = () => {
           >
             <div
               onClick={closeMenu}
-              className="lg:hidden text-3xl cursor-pointer text-white absolute top-2 left-4"
+              className="lg:hidden text-3xl cursor-pointer text-white absolute top-2 z-[1000] left-4"
             >
               <IoIosCloseCircleOutline />
             </div>
@@ -137,21 +137,15 @@ const Header = () => {
               <Link to="/aboutus">
                 <li>About Us</li>
               </Link>
-              {/* <Link to="/events">
-                <li>Events</li>
-              </Link> */}
+
               <Link to="/news">
                 <li>News</li>
               </Link>
-              {/* <Link to="/jobs">
-                <li>Job Board</li>
-              </Link> */}
+
               <Link to="/donations">
                 <li>Donations</li>
               </Link>
-              {/* <Link to="/media">
-                <li>Media Gallery</li>
-              </Link> */}
+
               <Link to="/contactus">
                 <li>Contact Us</li>
               </Link>
@@ -188,7 +182,7 @@ const Header = () => {
                     </Link>
                     <Link
                       to="/sign-up"
-                      className="px-5 py-2 bg-orange-400 hover:bg-orange-600 transition-all duration-200 rounded-lg list-none hidden lg:inline-block"
+                      className="px-5 py-2 bg-orange-400 hover:bg-orange-600 transition-all duration-200 rounded-lg list-none"
                     >
                       <li>Register</li>
                     </Link>

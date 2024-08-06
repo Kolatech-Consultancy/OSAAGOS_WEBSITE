@@ -80,8 +80,8 @@ function UserProfilePage() {
         />
       </div>
       <div className="text-center px-6 py-4">
-        <h2 className="text-xl font-semibold text-gray-800">{userData.name}</h2>
-        <p className="text-gray-600">{userData.email}</p>
+        <h2 className="text-xl font-semibold text-gray-800">{name}</h2>
+        <p className="text-gray-600">{email}</p>
         <p className="text-gray-700 mt-2">{userData.role}</p>
       </div>
       <div className="flex justify-between">
