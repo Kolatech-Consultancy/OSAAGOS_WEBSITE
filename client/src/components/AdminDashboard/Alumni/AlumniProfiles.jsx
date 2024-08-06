@@ -1,11 +1,11 @@
-import axios from "axios";
 import { useEffect } from "react";
 import { useState } from "react";
-import { FaSearch } from "react-icons/fa";
-import { FaArrowLeft, FaChevronDown, FaPlus } from "react-icons/fa6";
-// import "../../index.scss"
+import { FaChevronDown, FaEllipsisV, FaList, FaSearch } from "react-icons/fa";
+import { FaArrowLeft } from "react-icons/fa6";
+import "../../../index.scss"
 import { GetAlumni } from "../../../services/api";
-import AddUser from "./AddUser";
+import Breadcum from "../breadcum";
+import AddUserModal from "./AddUserModal";
 
 function AlumniProfiles() {
     const [Alumni, setAlumni] = useState([])
@@ -34,6 +34,43 @@ function AlumniProfiles() {
         }
     }, [])
 
+    const demo = [
+        {
+            "name": "Ope",
+            "email": "ope_@gmail.com",
+            "role": "Alumni",
+            "graduationYear": "2019",
+            "fieldOfStudy": "P and C",
+        },
+        {
+            "name": "Ope",
+            "email": "ope_@gmail.com",
+            "role": "Alumni",
+            "graduationYear": "2019",
+            "fieldOfStudy": "P and C",
+        },
+        {
+            "name": "Ope",
+            "email": "ope_@gmail.com",
+            "role": "Alumni",
+            "graduationYear": "2019",
+            "fieldOfStudy": "P and C",
+        },
+        {
+            "name": "Ope",
+            "email": "ope_@gmail.com",
+            "role": "Alumni",
+            "graduationYear": "2019",
+            "fieldOfStudy": "P and C",
+        },
+        {
+            "name": "Ope",
+            "email": "ope_@gmail.com",
+            "role": "Alumni",
+            "graduationYear": "2019",
+            "fieldOfStudy": "P and C",
+        }
+    ]
 
 
 
@@ -41,19 +78,67 @@ function AlumniProfiles() {
 
     return (
         <>
-            <header className="py-5">
-                <div className="flex gap-3 items-center">
-                    <FaArrowLeft />
-                    <span>Go Back</span>
-                </div>
-            </header>
-            <main className="bg-white px-8 flex flex-col gap-10 rounded-lg py-5">
+            <Breadcum />
+            <main className="bg-white  flex flex-col gap-10 rounded-t-lg py-5 ">
 
                 <div className="flex justify-between gap-3 items-center">
-                    <h3>Users List</h3>
-                    <AddUser />
+                    <h3 className="font-medium px-5">Users List</h3>
+                    <AddUserModal />
                 </div>
+                <section className="flex px-5 py-4 gap-5 items-center border-s-0 border-e-0 border-dashed border-gray-200 " style={{ borderWidth: "1px" }}>
+                    <div className="border ring-gray-100 flex gap-2 items-center py-2 px-3 rounded-lg w-56 " style={{ borderWidth: "1px" }}>
+                        <FaSearch className="text-gray-500" />
+                        <input type="search" name="" placeholder="Search for name" className="w-full border-0 focus-visible:outline-none" id="" />
+                    </div>
+                    <div className="relative w-56 bg-white ring-gray-100 px-1 py-2 rounded-lg" style={{ borderWidth: "1px" }}>
+                        <select className="block appearance-none w-full px-2 border-0 py-0.5 leading-tight focus:outline-none ">
+                            <option>Select Role</option>
+                            <option>Alumni</option>
+                            <option>Guest</option>
+                        </select>
+                        <FaChevronDown className="pointer-events-none absolute inset-y-0 right-2 top-1/2 transform -translate-y-1/2" />
+                    </div>
+                </section>
 
+
+            </main>
+            <main className="tableContainer overflow-x-scroll">
+                <table className="w-full profileTable overflow-x-scroll">
+                    <thead>
+                        <tr>
+                            <th>
+                                <input type="checkbox" name="" className="w-4 h-4 mt-2" id="" />
+                            </th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Graduation Year</th>
+                            <th>Field of Study</th>
+                            <th>Role</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody className="bg-white">
+                        {
+                            demo.map((alumni, index) =>
+                                <tr key={index}>
+                                    <td>
+                                        <input type="checkbox" name="" className="w-4 h-4 mt-2" id="" />
+                                    </td>
+                                    <td>{alumni.name}</td>
+                                    <td>{alumni.email}</td>
+                                    <td>{alumni.graduationYear}</td>
+                                    <td>{alumni.fieldOfStudy}</td>
+                                    <td>{alumni.role}</td>
+                                    <td role={"button"} className="flex justify-center items-center font-thin">
+                                        <FaEllipsisV />
+                                    </td>
+
+                                </tr>
+                            )
+
+                        }
+                    </tbody>
+                </table>
 
             </main>
         </>
