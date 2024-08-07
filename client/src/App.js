@@ -27,6 +27,7 @@ import PageNotFound from "./components/PageNotFound"
 import GlobalStyles from "./GlobalStyles";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorFallback from "./ui/ErrorFallback";
+import EventList from "./components/AdminDashboard/Events/EventsList";
 
 function App() {
   return (
@@ -62,6 +63,7 @@ function App() {
             <Route index element={<Overview/>}/>
             <Route path="alumni" element={<AlumniProfiles/>}/>
             <Route path="alumni/:id" element={<EditAlumniProfile/>}/>
+            <Route path="events" element={<EventList/>}/>
           </Route>
             <Route path="*" element={<PageNotFound />} />
           </Routes>

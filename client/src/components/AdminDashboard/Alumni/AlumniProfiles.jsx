@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { FaChevronDown, FaEdit, FaEllipsisH, FaEllipsisV, FaList, FaSearch } from "react-icons/fa";
-import { FaArrowLeft, FaDeleteLeft } from "react-icons/fa6";
+import { FaArrowLeft, FaTrash } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import "../../../index.scss"
 import { deleteAlumniProfile, GetAlumni } from "../../../services/api";
@@ -19,7 +19,7 @@ function AlumniProfiles() {
     const [isOpen, setIsOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [alumniToDelete, setAlumniToDelete] = useState(null);
-
+    const [IsDeleting, setIsDeleting] = useState(false)
 
     const toggleDropdown = (index, event) => {
         event.stopPropagation();
@@ -38,16 +38,18 @@ function AlumniProfiles() {
     };
 
     const handleDelete = async () => {
+        
         try {
+           setIsDeleting(true)
             const response = await deleteAlumniProfile(alumniToDelete._id)
-            console.log(response.data);
-            console.log('Deleted:', alumniToDelete);
             toast.success("User deleted successfully")
             closeDeleteModal();
             window.location.reload()
         } catch (error) {
             console.log(error);
             toast.error("Network Error!")
+        }finally{
+            setIsDeleting(false)
         }
     };
 
@@ -74,13 +76,11 @@ function AlumniProfiles() {
                 setLoader(true)
                 const response = await GetAlumni()
                 setAlumni(response.data)
-                console.log(response.data);
             } catch (error) {
                 setError(true)
                 console.log(error);
             } finally {
                 setLoader(false)
-                // setError(false)
             }
         }
         if (isMounted) fetchAlumni()
@@ -102,12 +102,12 @@ function AlumniProfiles() {
                     <h3 className="font-medium px-5">Users List</h3>
                     <AddUserModal />
                 </div>
-                <section className="flex px-5 py-4 gap-5 items-center border-s-0 border-e-0 border-dashed border-gray-200 " style={{ borderWidth: "1px" }}>
-                    <div className="border ring-gray-100 flex gap-2 items-center py-2 px-3 rounded-lg w-56 " style={{ borderWidth: "1px" }}>
+                <section className="flex flex-wrap md:flex-nowrap px-5 py-4 gap-5 items-center border-s-0 border-e-0 border-dashed border-gray-200 " style={{ borderWidth: "1px" }}>
+                    <div className="border ring-gray-100 flex gap-2 items-center py-2 px-3 rounded-lg w-full md:w-56 " style={{ borderWidth: "1px" }}>
                         <FaSearch className="text-gray-500" />
                         <input type="search" name="" placeholder="Search for name" className="w-full border-0 focus-visible:outline-none" id="" />
                     </div>
-                    <div className="relative w-56 bg-white ring-gray-100 px-1 py-2 rounded-lg" style={{ borderWidth: "1px" }}>
+                    <div className="relative w-full md:w-56 bg-white ring-gray-100 px-1 py-2 rounded-lg" style={{ borderWidth: "1px" }}>
                         <select className="block appearance-none w-full px-2 border-0 py-0.5 leading-tight focus:outline-none ">
                             <option>Select Role</option>
                             <option>Alumni</option>
@@ -119,7 +119,7 @@ function AlumniProfiles() {
 
 
             </main>
-            <main className="tableContainer overflow-x-scroll">
+            <main className="tableContainer overflow-x-scroll pb-3">
                 {loader ?
                     <div className="bg-white w-full h-40 flex items-center justify-center mt-2">
                         {Alumni.length === 0 &&
@@ -175,7 +175,7 @@ function AlumniProfiles() {
                                                             <span>Edit</span>
                                                         </Link>
                                                         <button type="button" onClick={() => openDeleteModal(alumni)} className="flex items-center justify-start gap-2 px-4 py-2 text-gray-700 text-sm hover:bg-gray-200 focus:outline-none w-full">
-                                                            <FaDeleteLeft />
+                                                            <FaTrash />
                                                             <span>Delete</span>
                                                         </button>
 
@@ -200,6 +200,7 @@ function AlumniProfiles() {
 
             <DeleteProfile
                 isOpen={isDeleteModalOpen}
+                loader = {IsDeleting}
                 onClose={closeDeleteModal}
                 onDelete={handleDelete}
             />

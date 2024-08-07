@@ -70,7 +70,7 @@ function AddEventForm() {
                     className="w-full px-3 py-2 border border-gray-300 rounded-md"
                 />
             </div>
-            <div className="mb-4">
+            {/* <div className="mb-4">
                 <label className="block text-gray-700">Organizer</label>
                 <input
                     type="text"
@@ -94,7 +94,7 @@ function AddEventForm() {
                     }
                     className="w-full px-3 py-2 border border-gray-300 rounded-md"
                 />
-            </div>
+            </div> */}
             <button type="submit" className="w-full py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600">
                 Add Event
             </button>

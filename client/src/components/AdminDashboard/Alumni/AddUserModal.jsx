@@ -1,4 +1,5 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { FaPlus } from "react-icons/fa";
 import { CreateAlumni } from "../../../services/api";
 import SpinnerMini from "../../SpinnerMini";
@@ -32,9 +33,11 @@ function AddUserModal() {
                 profession: userData.profession
             }
             const response = await CreateAlumni(data)
-            console.log(response.data);
+            toast.success("User Added successfully")
+            window.location.reload()
         } catch (error) {
             console.log(error);
+            toast.error("Error creating user.")
         }finally{
             setLoading(false)
             setUserData({

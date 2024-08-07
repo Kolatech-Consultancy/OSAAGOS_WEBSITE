@@ -12,7 +12,7 @@ const DashboardOverview = () => {
   return (
     <main >
       <Aside isOpen={isOpen} setIsOpen={setIsOpen} />
-      <section className={` ${isOpen ? "ml-64" : ""} p-6 bg-slate-200 min-h-screen h-full transition-all duration-200`}>
+      <section className={` ${isOpen ? "md:ml-64" : ""} p-6 bg-slate-200 min-h-screen h-full transition-all duration-200`}>
         <Outlet />
       </section>
 
