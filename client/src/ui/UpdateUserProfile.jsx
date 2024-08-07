@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { UpdateAlumniProfile } from "../services/api";
+import { UpdateUsersProfile } from "../services/api";
 import SpinnerMini from "../components/SpinnerMini";
 import toast from "react-hot-toast";
 
@@ -7,31 +7,21 @@ function UpdateUserProfile() {
   const [isSbmit, setIsSubmit] = useState(false);
   const [formData, setFormData] = useState({
     profilePicture: null,
-    personalDetails: {
-      address: "",
-      phone: "",
-    },
-    educationalDetails: {
-      degree: "",
-      graduationYear: "",
-    },
-    professionalDetails: {
-      jobTitle: "",
-      company: "",
-    },
+    address: "",
+    phone: "",
+    fieldOfStudy: "",
+    graduationYear: "",
+    profession: "",
+    company: "",
   });
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    const [section, key] = name.split(".");
+    const { name, value, type, files } = e.target;
 
-    setFormData((prevData) => ({
-      ...prevData,
-      [section]: {
-        ...prevData[section],
-        [key]: value,
-      },
-    }));
+  setFormData((prevFormData) => ({
+    ...prevFormData,
+    [name]: type === 'file' ? files[0] : value,
+  }));
   };
 
   const handleFileChange = (e) => {
@@ -45,22 +35,9 @@ function UpdateUserProfile() {
     e.preventDefault();
     setIsSubmit(true);
     try {
-      const {
-        personalDetails,
-        educationalDetails,
-        professionalDetails,
-        profilePicture,
-      } = formData;
-      let profile;
-      if (profilePicture) profile = profilePicture;
-
-      const fData = {
-        personalDetails,
-        educationalDetails,
-        professionalDetails,
-      };
-      const submitData = { data: fData, profilePicture: profile };
-      const response = await UpdateAlumniProfile(submitData);
+      const submitData = { ...formData };
+      console.log(submitData);
+      const response = await UpdateUsersProfile(submitData);
       console.log(response.data);
     } catch (error) {
       toast.error(error.message);
@@ -89,8 +66,8 @@ function UpdateUserProfile() {
           <label className="block text-gray-700">Address</label>
           <input
             type="text"
-            name="personalDetails.address"
-            value={formData.personalDetails.address}
+            name="address"
+            value={formData.address}
             onChange={handleInputChange}
             className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
           />
@@ -99,8 +76,8 @@ function UpdateUserProfile() {
           <label className="block text-gray-700">Phone</label>
           <input
             type="tel"
-            name="personalDetails.phone"
-            value={formData.personalDetails.phone}
+            name="phone"
+            value={formData.phone}
             onChange={handleInputChange}
             className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
           />
@@ -109,8 +86,8 @@ function UpdateUserProfile() {
           <label className="block text-gray-700">Degree</label>
           <input
             type="text"
-            name="educationalDetails.degree"
-            value={formData.educationalDetails.degree}
+            name="fieldOfStudy"
+            value={formData.fieldOfStudy}
             onChange={handleInputChange}
             className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
           />
@@ -119,8 +96,8 @@ function UpdateUserProfile() {
           <label className="block text-gray-700">Graduation Year</label>
           <input
             type="text"
-            name="educationalDetails.graduationYear"
-            value={formData.educationalDetails.graduationYear}
+            name="graduationYear"
+            value={formData.graduationYear}
             onChange={handleInputChange}
             className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
           />
@@ -129,8 +106,8 @@ function UpdateUserProfile() {
           <label className="block text-gray-700">Job Title</label>
           <input
             type="text"
-            name="professionalDetails.jobTitle"
-            value={formData.professionalDetails.jobTitle}
+            name="profession"
+            value={formData.profession}
             onChange={handleInputChange}
             className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
           />
@@ -139,8 +116,8 @@ function UpdateUserProfile() {
           <label className="block text-gray-700">Company</label>
           <input
             type="text"
-            name="professionalDetails.company"
-            value={formData.professionalDetails.company}
+            name="company"
+            value={formData.company}
             onChange={handleInputChange}
             className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
           />

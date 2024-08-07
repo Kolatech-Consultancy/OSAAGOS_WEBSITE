@@ -6,6 +6,7 @@ import { MdOutlinePermMedia, MdWorkOutline } from "react-icons/md";
 import { AiOutlineHome } from "react-icons/ai";
 import { PiChatsLight } from "react-icons/pi";
 import { Link, Outlet, useLocation } from "react-router-dom";
+import { BsArrowBarLeft } from "react-icons/bs";
 
 function UserDashboardLayout() {
   const [isAsideOpen, setIsAsideOpen] = useState(true);
@@ -19,14 +20,14 @@ function UserDashboardLayout() {
       <div className="relative z-[999]">
         <aside
           className={`h-screen  bg-white shadow-lg fixed left-0 top-0 transition-all transform duration-300 ${
-            isAsideOpen ? "w-[20rem]" : "-translate-x-full w-0"
+            isAsideOpen ? "lg:w-[20rem] w-[15rem]" : "-translate-x-full w-0"
           }`}
         >
           <button
             onClick={toggleAside}
-            className="absolute top-1/2 right-0 -mr-5 w-10 h-10 bg-blue-500 text-white rounded-full transform -translate-y-1/2"
+            className="absolute flex justify-center items-center font-bold top-8 right-0 -mr-5 w-10 h-10 bg-gray-900 text-white rounded-full transform -translate-y-1/2"
           >
-            &lt;
+            <BsArrowBarLeft />
           </button>
           <div className="flex items-center">
             {isAsideOpen && (
