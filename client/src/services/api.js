@@ -28,3 +28,10 @@ export const editEvent = async (id, updatedEvent) => {
 export const deleteEvent = async (id) => {
     return axios.delete(`/api/admin/events/${id}`)
 };
+
+export const GetOneUser = () => {
+    return axios.get("/api/users/profile")
+}
+export const UpdateOneUser = (param) => {
+    return axios.put("/api/users/profile",param);
+}

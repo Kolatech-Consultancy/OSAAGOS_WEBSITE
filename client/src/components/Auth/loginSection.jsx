@@ -4,12 +4,11 @@ import { Link, useNavigate } from "react-router-dom";
 import Button from "../../ui/Button";
 import SpinnerMini from "../SpinnerMini";
 import toast from "react-hot-toast";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 function LoginSection() {
-  const { register, formState, getValues, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, reset } = useForm();
   const navigate = useNavigate();
-  // const { isLoading } = formState;
   const [isLoading, setIsLoading] = useState(false);
 
   const loginUser = async (userData) => {
@@ -23,7 +22,7 @@ function LoginSection() {
       localStorage.setItem("token", token);
       reset();
       toast.success("User login successfully");
-      navigate("/");
+      navigate("/user/profile");
     } catch (error) {
       toast.error("Wrong details");
     } finally {
@@ -73,7 +72,7 @@ function LoginSection() {
             </Button>
           </div>
         </div>
-        <div className="flex justify-between h-20 p-4">
+        <div className="flex justify-between h-20 px-4 pt-4">
           <hr className=" w-40" style={{ alignSelf: "center" }} />
           <span
             className="text-sm text-gray-400"
@@ -85,6 +84,11 @@ function LoginSection() {
             </Link>
           </span>
           <hr className=" w-40" style={{ alignSelf: "center" }} />
+        </div>
+        <div className="flex justify-center items-center">
+          <Link to={"/reset-password"} className="text-center text-blue-500 hover:text-blue-700 text-sm font-semibold">
+            Forgot password
+          </Link>
         </div>
       </form>
     </>
