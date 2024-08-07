@@ -23,10 +23,16 @@ import Layout from "./Layout";
 import Overview from "./components/AdminDashboard/Overview";
 import EditAlumniProfile from "./components/AdminDashboard/Alumni/EditAlumniProfile";
 import AlumniProfiles from "./components/AdminDashboard/Alumni/AlumniProfiles";
-import PageNotFound from "./components/PageNotFound"
+import PageNotFound from "./components/PageNotFound";
 import GlobalStyles from "./GlobalStyles";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorFallback from "./ui/ErrorFallback";
+import ProtectedRoute from "./components/ProtectedRoutes";
+import UserProfilePage from "./ui/UserProfilePage";
+import UserDashboardLayout from "./ui/UserDashboardLayout";
+import UserChat from "./ui/UserChat";
+import UpdateUserProfile from "./ui/UpdateUserProfile";
+import UserGroups from "./ui/UserGroups";
 
 function App() {
   return (
@@ -46,23 +52,39 @@ function App() {
               <Route path="/contactus" element={<ContactUs />} />
               <Route path="/news" element={<NewsAndAnnouncements />} />
               <Route path="/profile" element={<AlumniProfile />} />
-              <Route path="/jobs" element={<JobBoard />} />
               <Route path="/donations" element={<Donations />} />
-              <Route path="/media" element={<MediaGallery />} />
               <Route path="/chat" element={<Chat sender="CurrentUser" />} />
               <Route path="/register" element={<RegisterForm />} />
               <Route path="/myprofile" element={<ProfilePage />} />
               <Route path="/login" element={<Login />} />
               <Route path="/sign-up" element={<SignUp />} />
               <Route path="/eventform" element={<AddEventForm />} />
-              <Route path="/events" element={<EventsPage />} />
               <Route path="/newsform" element={<AddNewsForm />} />
+              <Route
+                path="/user"
+                element={
+                  <ProtectedRoute>
+                    <UserDashboardLayout />
+                  </ProtectedRoute>
+                }
+              >
+                <Route path="profile" element={<UserProfilePage />} />
+                <Route path="chat" element={<UserChat />} />
+                <Route path="groups" element={<UserGroups />} />
+                <Route path="update-profile" element={<UpdateUserProfile />} />
+                <Route path="events" element={<EventsPage />} />
+                <Route path="jobs" element={<JobBoard />} />
+                <Route path="media" element={<MediaGallery />} />
+              </Route>
             </Route>
+
             <Route path="/dashboard" element={<DashboardOverview />} >
             <Route index element={<Overview/>}/>
             <Route path="alumni" element={<AlumniProfiles/>}/>
             <Route path="alumni/:id" element={<EditAlumniProfile/>}/>
           </Route>
+
+            
             <Route path="*" element={<PageNotFound />} />
           </Routes>
         </BrowserRouter>

@@ -11,8 +11,8 @@ const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [menuOpen, setMenuOpen] = useState(false);
-   const token = localStorage.getItem("token");
-   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+  const navigate = useNavigate();
 
   const ref = useRef(null);
 
@@ -34,19 +34,6 @@ const Header = () => {
     );
     setSearchResults(results);
   };
-
-
-  useEffect(() => {
-      
-    }, []);
-
-  function handleLogout() {
-    // eslint-disable-next-line no-restricted-globals
-    const check = confirm(`"Are you sure you want to logout`);
-    if (check) {
-      localStorage.removeItem("token");
-    }
-  }
 
   return (
     <>
@@ -82,7 +69,7 @@ const Header = () => {
             </article>
             {token ? (
               <>
-                <Link to="/userprofile" className="hidden lg:inline-block">
+                <Link to="/user/profile" className="hidden lg:inline-block">
                   <li className="bg-orange-400 hover:bg-orange-600 transition-all duration-200 px-5 py-2 rounded-lg list-none">
                     Profile
                   </li>
@@ -139,7 +126,7 @@ const Header = () => {
           >
             <div
               onClick={closeMenu}
-              className="lg:hidden text-3xl cursor-pointer text-white absolute top-2 left-4"
+              className="lg:hidden text-3xl cursor-pointer text-white absolute top-2 z-[1000] left-4"
             >
               <IoIosCloseCircleOutline />
             </div>
@@ -150,21 +137,15 @@ const Header = () => {
               <Link to="/aboutus">
                 <li>About Us</li>
               </Link>
-              {/* <Link to="/events">
-                <li>Events</li>
-              </Link> */}
+
               <Link to="/news">
                 <li>News</li>
               </Link>
-              {/* <Link to="/jobs">
-                <li>Job Board</li>
-              </Link> */}
+
               <Link to="/donations">
                 <li>Donations</li>
               </Link>
-              {/* <Link to="/media">
-                <li>Media Gallery</li>
-              </Link> */}
+
               <Link to="/contactus">
                 <li>Contact Us</li>
               </Link>
@@ -175,7 +156,7 @@ const Header = () => {
               {token ? (
                 <div className="lg:hidden mt-6 flex flex-col gap-5">
                   {" "}
-                  <Link to="/userprofile" className="">
+                  <Link to="/user/profile" className="">
                     <li className="bg-orange-400 hover:bg-orange-600 text-center transition-all duration-200 px-5 py-2 rounded-lg list-none">
                       Profile
                     </li>
@@ -201,7 +182,7 @@ const Header = () => {
                     </Link>
                     <Link
                       to="/sign-up"
-                      className="px-5 py-2 bg-orange-400 hover:bg-orange-600 transition-all duration-200 rounded-lg list-none hidden lg:inline-block"
+                      className="px-5 py-2 bg-orange-400 hover:bg-orange-600 transition-all duration-200 rounded-lg list-none"
                     >
                       <li>Register</li>
                     </Link>
