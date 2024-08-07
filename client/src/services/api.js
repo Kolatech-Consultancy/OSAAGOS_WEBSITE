@@ -30,8 +30,18 @@ export const deleteEvent = async (id) => {
 };
 
 export const GetOneUser = () => {
-    return axios.get("/api/users/profile")
-}
+  return axios.get("/api/users/profile");
+};
 export const UpdateOneUser = (param) => {
-    return axios.put("/api/users/profile",param);
-}
+  return axios.put("/api/users/profile", param);
+};
+export const UpdateUsersProfile = (param) => {
+  return axios.put("/api/users/profile", param);
+};
+
+export const getAllEvents = () => {
+  return axios.get("/api/events");
+};
+export const getAllGroups = () => {
+  return axios.get("/api/groups");
+};
