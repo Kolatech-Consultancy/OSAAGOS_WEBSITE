@@ -32,9 +32,9 @@ function UserDashboardLayout() {
           <div className="flex items-center">
             {isAsideOpen && (
               <nav className="p-4 w-full">
-                <div className="flex justify-center items-center mb-4">
+                <div className="flex justify-center items-center mb-2">
                   <img
-                    src="/logo.png"
+                    src="/Logo.png"
                     className="h-[6rem] w-[6rem] object-cover "
                     alt="logo.png"
                   />
