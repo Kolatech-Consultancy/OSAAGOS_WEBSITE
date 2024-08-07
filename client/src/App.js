@@ -27,6 +27,7 @@ import PageNotFound from "./components/PageNotFound";
 import GlobalStyles from "./GlobalStyles";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorFallback from "./ui/ErrorFallback";
+import EventList from "./components/AdminDashboard/Events/EventsList";
 import ProtectedRoute from "./components/ProtectedRoutes";
 import UserProfilePage from "./ui/UserProfilePage";
 import UserDashboardLayout from "./ui/UserDashboardLayout";
@@ -82,6 +83,7 @@ function App() {
             <Route index element={<Overview/>}/>
             <Route path="alumni" element={<AlumniProfiles/>}/>
             <Route path="alumni/:id" element={<EditAlumniProfile/>}/>
+            <Route path="events" element={<EventList/>}/>
           </Route>
 
             

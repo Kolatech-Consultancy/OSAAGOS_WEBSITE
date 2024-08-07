@@ -1,16 +1,32 @@
-import axios from "../utils/axios";
+import axios from "../utils/axios"
 
 export const GetAlumni = () => {
-  return axios.get("/api/admin/alumni");
-};
+    return axios.get("/api/admin/alumni")
+}
 export const updateAlumniProfile = (param, data) => {
-  return axios.put(`/api/admin/alumni/${param}`, data);
-};
+    return axios.put(`/api/admin/alumni/${param}`, data)
+}
 export const deleteAlumniProfile = (param) => {
-  return axios.delete(`/api/admin/alumni/${param}`);
-};
+    return axios.delete(`/api/admin/alumni/${param}`)
+}
 export const CreateAlumni = (data) => {
-  return axios.post("/api/admin/alumni", data);
+    return axios.post("/api/admin/alumni", data)
+}
+
+export const getEvents = async () => {
+    return axios.get("/api/admin/events")
+};
+
+export const addEvent = async (event) => {
+    return axios.post("/api/admin/events", event)
+};
+
+export const editEvent = async (id, updatedEvent) => {
+    return axios.put(`/api/admin/events/${id}`, updatedEvent)
+};
+
+export const deleteEvent = async (id) => {
+    return axios.delete(`/api/admin/events/${id}`)
 };
 
 export const GetOneUser = () => {
