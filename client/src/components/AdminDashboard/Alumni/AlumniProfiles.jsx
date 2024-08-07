@@ -1,31 +1,86 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import { FaChevronDown, FaEllipsisV, FaList, FaSearch } from "react-icons/fa";
-import { FaArrowLeft } from "react-icons/fa6";
+import toast from "react-hot-toast";
+import { FaChevronDown, FaEdit, FaEllipsisH, FaEllipsisV, FaList, FaSearch } from "react-icons/fa";
+import { FaArrowLeft, FaDeleteLeft } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 import "../../../index.scss"
-import { GetAlumni } from "../../../services/api";
+import { deleteAlumniProfile, GetAlumni } from "../../../services/api";
+import SpinnerMini from "../../SpinnerMini";
 import Breadcum from "../breadcum";
 import AddUserModal from "./AddUserModal";
+import DeleteProfile from "./DeleteProfile";
 
 function AlumniProfiles() {
     const [Alumni, setAlumni] = useState([])
     let isMounted = true
     const [loader, setLoader] = useState(false)
     const [error, setError] = useState(false)
+    const [isOpen, setIsOpen] = useState(false);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [alumniToDelete, setAlumniToDelete] = useState(null);
+
+
+    const toggleDropdown = (index, event) => {
+        event.stopPropagation();
+        setIsOpen((prev) => (prev === index ? null : index));
+    };
+
+
+    const openDeleteModal = (alumni) => {
+        setAlumniToDelete(alumni);
+        setIsDeleteModalOpen(true);
+    };
+
+    const closeDeleteModal = () => {
+        setAlumniToDelete(null);
+        setIsDeleteModalOpen(false);
+    };
+
+    const handleDelete = async () => {
+        try {
+            const response = await deleteAlumniProfile(alumniToDelete._id)
+            console.log(response.data);
+            console.log('Deleted:', alumniToDelete);
+            toast.success("User deleted successfully")
+            closeDeleteModal();
+            window.location.reload()
+        } catch (error) {
+            console.log(error);
+            toast.error("Network Error!")
+        }
+    };
+
+
+
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (!event.target.closest('.dropdown')) {
+                setIsOpen(null);
+            }
+        };
+
+        window.addEventListener('click', handleClickOutside);
+
+        return () => {
+            window.removeEventListener('click', handleClickOutside);
+        };
+    }, []);
 
     useEffect(() => {
         const fetchAlumni = async () => {
             try {
                 setLoader(true)
                 const response = await GetAlumni()
-                setAlumni(() => response.data)
+                setAlumni(response.data)
                 console.log(response.data);
             } catch (error) {
                 setError(true)
                 console.log(error);
             } finally {
                 setLoader(false)
-                setError(false)
+                // setError(false)
             }
         }
         if (isMounted) fetchAlumni()
@@ -33,44 +88,6 @@ function AlumniProfiles() {
             isMounted = false
         }
     }, [])
-
-    const demo = [
-        {
-            "name": "Ope",
-            "email": "ope_@gmail.com",
-            "role": "Alumni",
-            "graduationYear": "2019",
-            "fieldOfStudy": "P and C",
-        },
-        {
-            "name": "Ope",
-            "email": "ope_@gmail.com",
-            "role": "Alumni",
-            "graduationYear": "2019",
-            "fieldOfStudy": "P and C",
-        },
-        {
-            "name": "Ope",
-            "email": "ope_@gmail.com",
-            "role": "Alumni",
-            "graduationYear": "2019",
-            "fieldOfStudy": "P and C",
-        },
-        {
-            "name": "Ope",
-            "email": "ope_@gmail.com",
-            "role": "Alumni",
-            "graduationYear": "2019",
-            "fieldOfStudy": "P and C",
-        },
-        {
-            "name": "Ope",
-            "email": "ope_@gmail.com",
-            "role": "Alumni",
-            "graduationYear": "2019",
-            "fieldOfStudy": "P and C",
-        }
-    ]
 
 
 
@@ -103,44 +120,89 @@ function AlumniProfiles() {
 
             </main>
             <main className="tableContainer overflow-x-scroll">
-                <table className="w-full profileTable overflow-x-scroll">
-                    <thead>
-                        <tr>
-                            <th>
-                                <input type="checkbox" name="" className="w-4 h-4 mt-2" id="" />
-                            </th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Graduation Year</th>
-                            <th>Field of Study</th>
-                            <th>Role</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody className="bg-white">
-                        {
-                            demo.map((alumni, index) =>
-                                <tr key={index}>
-                                    <td>
-                                        <input type="checkbox" name="" className="w-4 h-4 mt-2" id="" />
-                                    </td>
-                                    <td>{alumni.name}</td>
-                                    <td>{alumni.email}</td>
-                                    <td>{alumni.graduationYear}</td>
-                                    <td>{alumni.fieldOfStudy}</td>
-                                    <td>{alumni.role}</td>
-                                    <td role={"button"} className="flex justify-center items-center font-thin">
-                                        <FaEllipsisV />
-                                    </td>
-
-                                </tr>
-                            )
-
+                {loader ?
+                    <div className="bg-white w-full h-40 flex items-center justify-center mt-2">
+                        {Alumni.length === 0 &&
+                            <SpinnerMini />
                         }
-                    </tbody>
-                </table>
+                    </div>
+                    : <>{Alumni.length > 0 ?
+                        <table className="w-full profileTable overflow-x-scroll">
+                            <thead className="text-gray-700">
+                                <tr>
+                                    <th>
+                                        <input type="checkbox" name="" className="w-4 h-4 mt-2" id="" />
+                                    </th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    {/* <th>Location</th>
+                            <th>Phone Number</th> */}
+                                    <th>Graduation Year</th>
+                                    <th>Field of Study</th>
+                                    <th>Profession</th>
+                                    {/* <th>Company</th> */}
+                                    <th>Role</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody className="bg-white text-gray-700">
+                                {
+                                    Alumni.map((alumni, index) =>
+                                        <tr key={index}>
+                                            <td>
+                                                <input type="checkbox" name="" className="w-4 h-4 mt-2" id="" />
+                                            </td>
+                                            <td>{alumni?.name || "Nil"}</td>
+                                            <td>{alumni?.email || "Nil"}</td>
+                                            {/* <td>{alumni?.location || "Nil"}</td>
+                                    <td>{alumni?.phone || "Nil"}</td> */}
+                                            <td>{alumni?.graduationYear || "Nil"}</td>
+                                            <td>{alumni?.fieldOfStudy || "Nil"}</td>
+                                            <td>{alumni.profession || "Nil"}</td>
+                                            {/* <td>{alumni.company || "Nil"}</td> */}
+                                            <td>{alumni?.role || "Nil"}</td>
+                                            <td role="button" className="flex justify-start items-center relative">
+                                                <button
+                                                    onClick={(event) => toggleDropdown(index, event)}
+                                                    className="font-thin focus:outline-none text-sm dropdown-button bg-slate-200 p-1.5 text-gray-500 rounded"
+                                                >
+                                                    <FaEllipsisH />
+                                                </button>
+                                                {isOpen === index && (
+                                                    <div className="absolute right-0 top-8 mt-2 w-32 bg-white border border-gray-200 rounded-md shadow-lg z-10 dropdown-menu">
+                                                        <Link to={alumni._id} className="px-4 py-2  hover:bg-gray-200 flex items-center justify-start gap-2 text-sm text-gray-700">
+                                                            <FaEdit />
+                                                            <span>Edit</span>
+                                                        </Link>
+                                                        <button type="button" onClick={() => openDeleteModal(alumni)} className="flex items-center justify-start gap-2 px-4 py-2 text-gray-700 text-sm hover:bg-gray-200 focus:outline-none w-full">
+                                                            <FaDeleteLeft />
+                                                            <span>Delete</span>
+                                                        </button>
 
+                                                    </div>
+                                                )}
+                                            </td>
+
+                                        </tr>
+                                    )
+
+                                }
+                            </tbody>
+                        </table>
+                        :
+                        <div className="bg-white w-full h-40 flex items-center justify-center mt-2">
+                            {error ? "Network Error. Try again later" : "No User Registered"}
+                        </div>
+                    }
+                    </>
+                }
             </main>
+
+            <DeleteProfile
+                isOpen={isDeleteModalOpen}
+                onClose={closeDeleteModal}
+                onDelete={handleDelete}
+            />
         </>
     );
 }

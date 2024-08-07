@@ -21,7 +21,7 @@ import EventsPage from "./components/Events/EventsPage";
 import AddNewsForm from "./components/NewsAndAnnouncements/NewsForm";
 import Layout from "./Layout";
 import Overview from "./components/AdminDashboard/Overview";
-import UsersProfile from "./components/AdminDashboard/Alumni/usersProfile";
+import EditAlumniProfile from "./components/AdminDashboard/Alumni/EditAlumniProfile";
 import AlumniProfiles from "./components/AdminDashboard/Alumni/AlumniProfiles";
 import PageNotFound from "./components/PageNotFound";
 import GlobalStyles from "./GlobalStyles";
@@ -77,11 +77,14 @@ function App() {
                 <Route path="media" element={<MediaGallery />} />
               </Route>
             </Route>
-            <Route path="/dashboard" element={<DashboardOverview />}>
-              <Route index element={<Overview />} />
-              <Route path="alumni" element={<AlumniProfiles />} />
-            </Route>
 
+            <Route path="/dashboard" element={<DashboardOverview />} >
+            <Route index element={<Overview/>}/>
+            <Route path="alumni" element={<AlumniProfiles/>}/>
+            <Route path="alumni/:id" element={<EditAlumniProfile/>}/>
+          </Route>
+
+            
             <Route path="*" element={<PageNotFound />} />
           </Routes>
         </BrowserRouter>

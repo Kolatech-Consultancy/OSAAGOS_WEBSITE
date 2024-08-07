@@ -11,7 +11,7 @@ function AddUserModal() {
         password: "", 
         graduationYear: "", 
         fieldOfStudy: "", 
-        professionalDetails: ""
+        profession: ""
     })
     const [loading, setLoading] = useState(false)
 
@@ -29,7 +29,7 @@ function AddUserModal() {
                 password: userData.password, 
                 graduationYear: userData.graduationYear, 
                 fieldOfStudy: userData.fieldOfStudy, 
-                professionalDetails: userData.professionalDetails
+                profession: userData.profession
             }
             const response = await CreateAlumni(data)
             console.log(response.data);
@@ -51,7 +51,7 @@ function AddUserModal() {
 
     return (
         <>
-            <button onClick={toggleModal} className=" ms-auto me-2 bg-blue-400 hover:bg-blue-500 w-36 text-slate-50 p-4 flex items-center justify-center gap-3 rounded-lg">
+            <button onClick={toggleModal} className=" ms-auto me-2 bg-blue-400 hover:bg-blue-500 w-36 text-slate-50 p-4 flex items-center justify-center gap-3 rounded-lg focus:outline-none">
                 <FaPlus />
                 <span>Add User</span>
             </button>
@@ -99,22 +99,22 @@ function AddUserModal() {
                                     <input className="appearance-none block w-full bg-white text-gray-700 border border-slate-200  rounded-lg px-4 py-3 mb-3 leading-tight focus:outline-none focus:bg-white" id="fieldOfStudy" type="text" value={userData.fieldOfStudy} onChange={(ev)=>setUserData({...userData, fieldOfStudy:ev.target.value})} required />
                                 </div>
                                 <div className="w-full px-3 mt-5">
-                                    <label className="block uppercase  text-gray-700 text-sm font-medium mb-2" htmlFor="professionalDetail">
-                                        Professional Detail
+                                    <label className="block uppercase  text-gray-700 text-sm font-medium mb-2" htmlFor="profession">
+                                        Profession
                                     </label>
-                                    <input className="appearance-none block w-full bg-white text-gray-700 border border-slate-200  rounded-lg px-4 py-3 mb-3 leading-tight focus:outline-none focus:bg-white" id="professionalDetail" type="text" value={userData.professionalDetails} onChange={(ev)=>setUserData({...userData, professionalDetails:ev.target.value})} required />
+                                    <input className="appearance-none block w-full bg-white text-gray-700 border border-slate-200  rounded-lg px-4 py-3 mb-3 leading-tight focus:outline-none focus:bg-white" id="profession" type="text" value={userData.profession} onChange={(ev)=>setUserData({...userData, profession:ev.target.value})} required />
                                 </div>
                                 <div className="flex items-center justify-between gap-3">
                                     <button
                                         onClick={toggleModal}
                                         type="button"
-                                        className="bg-blue-500 text-white px-4 py-2 rounded mt-4 mx-3"
+                                        className="bg-blue-500 text-white px-4 py-2 rounded mt-4 mx-3 focus:outline-none"
                                     >
                                         Cancel
                                     </button>
                                     <button
                                     type="submit"
-                                        className="bg-blue-500 text-white px-4 py-2 rounded mt-4 mx-3"
+                                        className="bg-blue-500 text-white px-4 py-2 rounded mt-4 mx-3 focus:outline-none"
                                     >
                                     {loading ? <SpinnerMini/> : "Add User"}
                                     </button>
