@@ -3,26 +3,27 @@ import Spinner from "../components/Spinner";
 import Button from "./Button";
 import { GetOneUser, UpdateOneUser } from "../services/api";
 import toast from "react-hot-toast";
-
+import {
+  HiOutlineMail,
+  HiOutlinePhone,
+  HiOutlineStatusOnline,
+  HiOutlineUser,
+} from "react-icons/hi";
+import { LiaAddressCard } from "react-icons/lia";
+import { PiBagSimple, PiCalendarCheck, PiCertificate } from "react-icons/pi";
+import { MdOutlinePlace } from "react-icons/md";
 function UserProfilePage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [role, setRole] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [userData, setUserData] = useState({
-    name: "John Doe",
-    email: "john@example.com",
-    personalDetails: {
-      address: "123 Main St",
-      phone: "555-555-5555",
-    },
-    educationalDetails: {
-      degree: "B.Sc. in Computer Science",
-      graduationYear: "2020",
-    },
-    professionalDetails: {
-      jobTitle: "Software Engineer",
-      company: "Tech Corp",
-    },
+    address: "123 Main St",
+    phone: "555-555-5555",
+    fieldOfStudy: "B.Sc. in Computer Science",
+    graduationYear: "2020",
+    profession: "Software Engineer",
+    company: "Tech Corp",
     profilePicture: "",
   });
 
@@ -30,12 +31,13 @@ function UserProfilePage() {
     setIsLoading(true);
     try {
       const response = await GetOneUser();
-      const { name, email } = await response.data;
+      const { name, email, role } = await response.data;
       setName(name);
       setEmail(email);
+      setRole(role);
     } catch (error) {
-        toast.error(error.message)
-      throw new Error("User not found");
+      toast.error(error.message);
+      // throw new Error("User not found");
     } finally {
       setIsLoading(false);
     }
@@ -79,43 +81,65 @@ function UserProfilePage() {
           alt="Profile"
         />
       </div>
-      <div className="text-center px-6 py-4">
-        <h2 className="text-xl font-semibold text-gray-800">{name}</h2>
-        <p className="text-gray-600">{email}</p>
-        <p className="text-gray-700 mt-2">{userData.role}</p>
-      </div>
-      <div className="flex justify-between">
-        <div className="px-6 py-4">
-          <h3 className="text-gray-800 font-medium">Personal Details</h3>
-          <p className="text-gray-600">
-            Address: {userData.personalDetails.address}
+      <div className="flex justify-between md:flex-nowrap flex-wrap text-gray-800">
+        <div className="text-center px-6 py-4 text-xl font-semibold w-full">
+          <div className="flex justify-between items-center sm:flex-nowrap flex-wrap">
+            <article>
+              <h2 className="font-semibold  flex items-center gap-4">
+                <HiOutlineUser />
+                {name}
+              </h2>
+            </article>
+            <article>
+              <p className="flex items-center gap-4 ">
+                <HiOutlineMail />
+                {email}
+              </p>
+            </article>
+          </div>
+          <div className="flex justify-between items-center sm:flex-nowrap flex-wrap">
+            <article>
+              <p className="flex items-center gap-4">
+                <LiaAddressCard />
+                {userData.address}
+              </p>
+            </article>
+            
+            <article>
+              <p className="flex items-center gap-4 ">
+                <HiOutlinePhone />
+                {userData.phone}
+              </p>
+            </article>
+          </div>
+          <p className="flex items-center gap-4">
+            <HiOutlineStatusOnline />
+            {role}
           </p>
-          <p className="text-gray-600">
-            Phone: {userData.personalDetails.phone}
+        </div>
+      </div>
+      <div className="flex justify-between md:flex-nowrap flex-wrap">
+        <div className="px-6 py-4">
+          <h3 className="text-gray-800 font-medium">Educational Details</h3>
+          <p className="text-gray-600 flex items-center gap-4">
+            <PiCertificate /> {userData.fieldOfStudy}
+          </p>
+          <p className="text-gray-600 flex items-center gap-4">
+            <PiCalendarCheck /> {userData.graduationYear}
           </p>
         </div>
         <div className="px-6 py-4">
-          <h3 className="text-gray-800 font-medium">Educational Details</h3>
-          <p className="text-gray-600">
-            Degree: {userData.educationalDetails.degree}
+          <h3 className="text-gray-800 font-medium">Professional Details</h3>
+          <p className="text-gray-600 flex items-center gap-4">
+            <PiBagSimple /> {userData.profession}
           </p>
-          <p className="text-gray-600">
-            Graduation Year: {userData.educationalDetails.graduationYear}
+          <p className="text-gray-600 flex items-center gap-4">
+            <MdOutlinePlace /> {userData.company}
           </p>
         </div>
       </div>
 
-      <div className="flex justify-center">
-        <div className="px-6 py-4">
-          <h3 className="text-gray-800 font-medium">Professional Details</h3>
-          <p className="text-gray-600">
-            Job Title: {userData.professionalDetails.jobTitle}
-          </p>
-          <p className="text-gray-600">
-            Company: {userData.professionalDetails.company}
-          </p>
-        </div>
-      </div>
+      <div className="flex justify-center"></div>
 
       {/* Update userName and email here  */}
       <article className="px-6">
