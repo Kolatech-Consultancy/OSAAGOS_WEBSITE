@@ -31,11 +31,14 @@ function UserProfilePage() {
     setIsLoading(true);
     try {
       const response = await GetOneUser();
-      const { name, email, role } = await response.data;
+      const { name, email, role,profession } = await response.data;
+      console.log(response);
+
       setName(name);
       setEmail(email);
       setRole(role);
     } catch (error) {
+      console.log(error);
       toast.error(error.message);
       // throw new Error("User not found");
     } finally {
@@ -104,7 +107,7 @@ function UserProfilePage() {
                 {userData.address}
               </p>
             </article>
-            
+
             <article>
               <p className="flex items-center gap-4 ">
                 <HiOutlinePhone />
@@ -141,7 +144,6 @@ function UserProfilePage() {
 
       <div className="flex justify-center"></div>
 
-      {/* Update userName and email here  */}
       <article className="px-6">
         <h2 className="text-center py-4 text-2xl">
           Update your email and password
