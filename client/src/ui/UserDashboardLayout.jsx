@@ -9,7 +9,7 @@ import { Link, Outlet, useLocation } from "react-router-dom";
 import { BsArrowBarLeft } from "react-icons/bs";
 
 function UserDashboardLayout() {
-  const [isAsideOpen, setIsAsideOpen] = useState(true);
+  const [isAsideOpen, setIsAsideOpen] = useState(false);
   const location = useLocation().pathname;
 
   const toggleAside = () => {
