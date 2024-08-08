@@ -1,5 +1,8 @@
 import axios from "../utils/axios"
 
+export const AdminDashboard = () => {
+    return axios.get("/api/users/admin/dashboard")
+}
 export const GetAlumni = () => {
     return axios.get("/api/admin/alumni")
 }

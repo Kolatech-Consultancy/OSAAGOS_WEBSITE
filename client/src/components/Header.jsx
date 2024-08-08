@@ -4,6 +4,7 @@ import { HiMenuAlt3 } from "react-icons/hi";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { CiSearch } from "react-icons/ci";
 import toast from "react-hot-toast";
+import { AdminDashboard } from "../services/api";
 
 const Header = () => {
   const location = useLocation();
@@ -35,19 +36,29 @@ const Header = () => {
     setSearchResults(results);
   };
 
+
+  const handleDashboard = async()=>{
+    try {
+      await AdminDashboard()
+      toast.success("Access granted!")
+      navigate("/dashboard")
+    } catch (error) {
+      console.log(error);
+      toast.error('Access to the admin dashboard denied!')
+    }
+  }
+
   return (
     <>
       <header className="sticky top-0 z-[100]">
         <div
-          className={`bg-blue-800 flex justify-between ${
-            dashboard ? "mb-3" : ""
-          } text-white py-3 px-4`}
+          className={`bg-blue-800 flex justify-between ${dashboard ? "mb-3" : ""
+            } text-white py-3 px-4`}
         >
           <Link to="/">
             <div
-              className={`${
-                !dashboard && "hidden"
-              } mx-10 flex flex-col justify-center items-center`}
+              className={`${!dashboard && "hidden"
+                } mx-10 flex flex-col justify-center items-center`}
             >
               <img
                 className="w-[6rem] h-[6rem] object-cover"
@@ -103,9 +114,8 @@ const Header = () => {
           </div>
         </div>
         <div
-          className={`flex justify-between items-center px-10 relative ${
-            dashboard && "hidden"
-          } bg-white items-center shadow-lg`}
+          className={`flex justify-between items-center px-10 relative ${dashboard && "hidden"
+            } bg-white items-center shadow-lg`}
         >
           <Link to="/">
             <div className="flex flex-col justify-start items-start">
@@ -118,9 +128,8 @@ const Header = () => {
           </Link>
 
           <div
-            className={`px-8 lg:px-0 justify-end lg:basis-[70%]  lg:-translate-x-0  pt-14 lg:py-0 test top-0 left-0 bg-blue-800 lg:bg-transparent sm:w-[20rem] w-full lg:w-full h-full transition-all duration-200 ${
-              menuOpen ? "" : "-translate-x-[100%]"
-            }`}
+            className={`px-8 lg:px-0 justify-end lg:basis-[70%]  lg:-translate-x-0  pt-14 lg:py-0 test top-0 left-0 bg-blue-800 lg:bg-transparent sm:w-[20rem] w-full lg:w-full h-full transition-all duration-200 ${menuOpen ? "" : "-translate-x-[100%]"
+              }`}
             ref={ref}
             onClick={() => setMenuOpen(false)}
           >
@@ -149,9 +158,7 @@ const Header = () => {
               <Link to="/contactus">
                 <li>Contact Us</li>
               </Link>
-              <Link to="/dashboard">
-                <li>Admin Dashboard</li>
-              </Link>
+              <li role={"button"} onClick={handleDashboard}>Admin Dashboard</li>
 
               {token ? (
                 <div className="lg:hidden mt-6 flex flex-col gap-5">

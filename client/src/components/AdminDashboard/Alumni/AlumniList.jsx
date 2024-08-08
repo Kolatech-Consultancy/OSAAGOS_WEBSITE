@@ -61,7 +61,7 @@ const AlumniList = () => {
         return () => {
             isMounted = false
         }
-    }, [setAlumni]);
+    }, []);
     const handleAddEditAlumni = async (alumniData) => {
         if (currentAlumni) {
             try {
@@ -82,9 +82,9 @@ const AlumniList = () => {
         } else {
             try {
                 setIsLoading(true);
-                await CreateAlumni(alumniData);
+                const newAlumnus = await CreateAlumni(alumniData);
+                setAlumni([...alumni, newAlumnus.data])
                 toast.success("Alumni added successfully");
-                window.location.reload()
             } catch (error) {
                 console.error(error);
                 toast.error("Error adding alumni.");
@@ -224,7 +224,7 @@ const AlumniList = () => {
                             </table>
                             :
                             <div className="bg-white w-full h-40 flex items-center justify-center mt-2">
-                                {error ? "Network Error. Try again later" : "No Alumni Registered"}
+                                {error ? "An error occured. Try again later" : "No Alumni Registered"}
                             </div>
                         }
                     </>
