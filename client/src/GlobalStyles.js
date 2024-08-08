@@ -131,13 +131,13 @@ input:disabled {
   color: var(--color-grey-500);
 }
 
-input:focus,
+/* input:focus,
 button:focus,
 textarea:focus,
 select:focus {
   outline: 2px solid var(--color-brand-600);
   outline-offset: -1px;
-}
+} */
 
 /* Parent selector, finally 😃 */
 button:has(svg) {

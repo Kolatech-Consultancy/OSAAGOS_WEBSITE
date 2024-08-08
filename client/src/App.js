@@ -33,6 +33,8 @@ import UserDashboardLayout from "./ui/UserDashboardLayout";
 import UserChat from "./ui/UserChat";
 import UpdateUserProfile from "./ui/UpdateUserProfile";
 import UserGroups from "./ui/UserGroups";
+import ResetPass from "./ui/ResetPass";
+import Reset from "./ui/Reset";
 
 function App() {
   return (
@@ -57,6 +59,7 @@ function App() {
               <Route path="/register" element={<RegisterForm />} />
               <Route path="/myprofile" element={<ProfilePage />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/reset-password" element={<ResetPass />} />
               <Route path="/sign-up" element={<SignUp />} />
               <Route path="/eventform" element={<AddEventForm />} />
               <Route path="/newsform" element={<AddNewsForm />} />
@@ -83,7 +86,6 @@ function App() {
               <Route path="alumni" element={<AlumniList />} />
               <Route path="events" element={<EventList />} />
             </Route>
-
 
             <Route path="*" element={<PageNotFound />} />
           </Routes>
