@@ -206,7 +206,7 @@ const EventList = () => {
               </table>
             ) : (
               <div className="bg-white w-full h-40 flex items-center justify-center mt-2">
-                {error ? "Network Error. Try again later" : "No Events Registered"}
+                {error ? "An error occured. Try again later" : "No Events Registered"}
               </div>
             )}
           </>
