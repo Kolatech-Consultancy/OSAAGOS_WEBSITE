@@ -1,10 +1,12 @@
-import { useState } from "react";
-import { UpdateUsersProfile } from "../services/api";
+import { useEffect, useState } from "react";
+import { GetOneUser, UpdateUsersProfile } from "../services/api";
 import SpinnerMini from "../components/SpinnerMini";
 import toast from "react-hot-toast";
+import Spinner from "../components/Spinner";
 
 function UpdateUserProfile() {
   const [isSbmit, setIsSubmit] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     profilePicture: null,
     address: "",
@@ -15,13 +17,29 @@ function UpdateUserProfile() {
     company: "",
   });
 
+  async function fetchUser() {
+    setIsLoading(true);
+    try {
+      const response = await GetOneUser();
+      setFormData(response.data);
+    } catch (error) {
+      throw new Error(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
   const handleInputChange = (e) => {
     const { name, value, type, files } = e.target;
 
-  setFormData((prevFormData) => ({
-    ...prevFormData,
-    [name]: type === 'file' ? files[0] : value,
-  }));
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: type === "file" ? files[0] : value,
+    }));
   };
 
   const handleFileChange = (e) => {
@@ -46,6 +64,15 @@ function UpdateUserProfile() {
       setIsSubmit(false);
     }
   };
+
+
+    if (isLoading) {
+      return (
+        <div className="h-screen">
+          <Spinner />
+        </div>
+      );
+    }
 
   return (
     <div className="max-w-lg mx-auto bg-white shadow-lg rounded-lg overflow-hidden p-6">

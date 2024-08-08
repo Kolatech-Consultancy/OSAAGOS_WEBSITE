@@ -15,15 +15,17 @@ import { MdOutlinePlace } from "react-icons/md";
 function UserProfilePage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [role, setRole] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [userData, setUserData] = useState({
-    address: "123 Main St",
-    phone: "555-555-5555",
-    fieldOfStudy: "B.Sc. in Computer Science",
-    graduationYear: "2020",
-    profession: "Software Engineer",
-    company: "Tech Corp",
+    name: "",
+    email: "",
+    role: "",
+    address: "",
+    phone: "",
+    fieldOfStudy: "",
+    graduationYear: "",
+    profession: "",
+    company: "",
     profilePicture: "",
   });
 
@@ -31,16 +33,12 @@ function UserProfilePage() {
     setIsLoading(true);
     try {
       const response = await GetOneUser();
-      const { name, email, role,profession } = await response.data;
-      console.log(response);
-
+      const { name, email } = await response.data;
       setName(name);
       setEmail(email);
-      setRole(role);
+      setUserData(response.data)
     } catch (error) {
-      console.log(error);
-      toast.error(error.message);
-      // throw new Error("User not found");
+      throw new Error(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -90,13 +88,13 @@ function UserProfilePage() {
             <article>
               <h2 className="font-semibold  flex items-center gap-4">
                 <HiOutlineUser />
-                {name}
+                {userData.name}
               </h2>
             </article>
             <article>
               <p className="flex items-center gap-4 ">
                 <HiOutlineMail />
-                {email}
+                {userData.email}
               </p>
             </article>
           </div>
@@ -117,7 +115,7 @@ function UserProfilePage() {
           </div>
           <p className="flex items-center gap-4">
             <HiOutlineStatusOnline />
-            {role}
+            {userData.role}
           </p>
         </div>
       </div>
