@@ -1,4 +1,5 @@
 import Axios from "axios";
+import toast from "react-hot-toast";
 import Is_authorized from "./authorization";
 // import router from "@/routes";
 
@@ -24,11 +25,9 @@ const axiosConfiguration = (config) => {
 axios.interceptors.request.use(axiosConfiguration);
 
 axios.interceptors.response.use(res => res,err =>{
-    //   console.log(err)
-        if(err.response.status === 401){
-            
+        if(err.response.status === 401 || err.response.status === 403 ){
+            toast.error("Access denied!")
           window.location.href = "/login"
-        console.log("error occured");
         }
 
   
