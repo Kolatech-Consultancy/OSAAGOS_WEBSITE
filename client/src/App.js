@@ -21,8 +21,7 @@ import EventsPage from "./components/Events/EventsPage";
 import AddNewsForm from "./components/NewsAndAnnouncements/NewsForm";
 import Layout from "./Layout";
 import Overview from "./components/AdminDashboard/Overview";
-import EditAlumniProfile from "./components/AdminDashboard/Alumni/EditAlumniProfile";
-import AlumniProfiles from "./components/AdminDashboard/Alumni/AlumniProfiles";
+import AlumniList from "./components/AdminDashboard/Alumni/AlumniList";
 import PageNotFound from "./components/PageNotFound";
 import GlobalStyles from "./GlobalStyles";
 import { ErrorBoundary } from "react-error-boundary";
@@ -80,13 +79,12 @@ function App() {
             </Route>
 
             <Route path="/dashboard" element={<DashboardOverview />} >
-            <Route index element={<Overview/>}/>
-            <Route path="alumni" element={<AlumniProfiles/>}/>
-            <Route path="alumni/:id" element={<EditAlumniProfile/>}/>
-            <Route path="events" element={<EventList/>}/>
-          </Route>
+              <Route index element={<Overview />} />
+              <Route path="alumni" element={<AlumniList />} />
+              <Route path="events" element={<EventList />} />
+            </Route>
 
-            
+
             <Route path="*" element={<PageNotFound />} />
           </Routes>
         </BrowserRouter>
