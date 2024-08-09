@@ -4,7 +4,6 @@ import Spinner from "../Spinner";
 import { formatDate } from "../../services/formatDate";
 
 function DisplayEvents() {
-
   const [eventData, setEventData] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -14,8 +13,10 @@ function DisplayEvents() {
       const response = await getAllEvents();
       const data = response.data;
       setEventData(data);
-    } catch (e) {
-      throw new Error(e.message);
+    } catch (error) {
+      throw new Error(
+        error.response ? error.response.data.message : error.message
+      );
     } finally {
       setLoading(false);
     }
