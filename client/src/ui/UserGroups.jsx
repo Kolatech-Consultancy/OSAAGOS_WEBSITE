@@ -34,8 +34,10 @@ function UserGroups() {
       console.log(data);
 
       setGroupData(data);
-    } catch (e) {
-      throw new Error(e.message);
+    } catch (error) {
+      throw new Error(
+        error.response ? error.response.data.message : error.message
+      );
     } finally {
       setLoading(false);
     }

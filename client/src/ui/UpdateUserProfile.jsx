@@ -3,6 +3,7 @@ import { GetOneUser, UpdateUsersProfile } from "../services/api";
 import SpinnerMini from "../components/SpinnerMini";
 import toast from "react-hot-toast";
 import Spinner from "../components/Spinner";
+import { useNavigate } from "react-router-dom";
 
 function UpdateUserProfile() {
   const [isSbmit, setIsSubmit] = useState(false);
@@ -16,7 +17,7 @@ function UpdateUserProfile() {
     profession: "",
     company: "",
   });
-
+  const navigate = useNavigate();
   async function fetchUser() {
     setIsLoading(true);
     try {
@@ -54,25 +55,23 @@ function UpdateUserProfile() {
     setIsSubmit(true);
     try {
       const submitData = { ...formData };
-      console.log(submitData);
-      const response = await UpdateUsersProfile(submitData);
-      console.log(response.data);
+      await UpdateUsersProfile(submitData);
+      toast.success("Your details are updated successfully");
+      navigate("/user/profile");
     } catch (error) {
-      toast.error(error.message);
-      console.error("Error updating profile:", error);
+      toast.error(error.response ? error.response.data.message : error.message);
     } finally {
       setIsSubmit(false);
     }
   };
 
-
-    if (isLoading) {
-      return (
-        <div className="h-screen">
-          <Spinner />
-        </div>
-      );
-    }
+  if (isLoading) {
+    return (
+      <div className="h-screen">
+        <Spinner />
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-lg mx-auto bg-white shadow-lg rounded-lg overflow-hidden p-6">
