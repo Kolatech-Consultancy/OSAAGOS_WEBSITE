@@ -5,7 +5,6 @@ import SpinnerMini from '../../SpinnerMini';
 import { addNews, deleteNews, editNews, getNews } from '../../../services/api';
 import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom';
-import BackwardNavigator from '../backwardNavigator';
 import DeleteNewsModal from './DeleteNewsModal';
 
 const NewsPage = () => {
@@ -128,7 +127,6 @@ const NewsPage = () => {
 
     return (
         <>
-            <BackwardNavigator />
             <main className="bg-white flex flex-col gap-10 rounded-t-lg py-5 text-gray-700">
                 <div className="flex justify-between gap-3 items-center">
                     <h1 className="font-medium text-xl px-5">News</h1>

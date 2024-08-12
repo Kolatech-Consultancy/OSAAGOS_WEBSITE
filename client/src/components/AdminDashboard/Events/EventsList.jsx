@@ -3,7 +3,6 @@ import { FaChevronDown, FaEdit, FaPlus, FaSearch, FaTrash } from 'react-icons/fa
 import AddEditEventModal from './AddEditEventModal';
 import DeleteModal from './DeleteModal';
 import { getEvents, addEvent, editEvent, deleteEvent } from '../../../services/api'; // Placeholder for actual API functions
-import BackwardNavigator from '../backwardNavigator';
 import "../../../index.scss"
 import SpinnerMini from '../../SpinnerMini';
 import toast from 'react-hot-toast';
@@ -17,10 +16,10 @@ const EventList = () => {
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [eventDate, setEventDate] = useState([]);
-  
+
   let isMounted = true;
   const date = new Date();
-  const today = [date.getDate(), date.getMonth() + 1,date.getFullYear()]; // Adjusted month
+  const today = [date.getDate(), date.getMonth() + 1, date.getFullYear()]; // Adjusted month
   const arrOfMonth = ["Jan", 'Feb', 'Mar', 'April', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
   useEffect(() => {
@@ -45,34 +44,26 @@ const EventList = () => {
   }, []);
 
   const handleAddEditEvent = async (event) => {
-    if (currentEvent) {
-      try {
-        setIsLoading(true);
+    try {
+      setIsLoading(true);
+      if (currentEvent) {
         await editEvent(currentEvent._id, event);
-        setEvents(events.map(ev => 
+        setEvents(events.map(ev =>
           ev._id === currentEvent._id ? { ...ev, ...event } : ev
         ));
         toast.success("Event updated successfully");
-      } catch (error) {
-        console.log(error);
-        toast.error("Error updating event.");
-      } finally {
-        setIsLoading(false);
-        closeAddEditModal();
-      }
-    } else {
-      try {
-        setIsLoading(true);
+      } else {
         const newEvent = await addEvent(event);
         setEvents([...events, newEvent.data]);
         toast.success("Event created successfully");
-      } catch (error) {
-        console.log(error);
-        toast.error("Error creating event.");
-      } finally {
-        setIsLoading(false);
-        closeAddEditModal();
+        window.location.reload()
       }
+    } catch (error) {
+      console.error(error);
+      toast.error("Error saving event.");
+    } finally {
+      setIsLoading(false);
+      closeAddEditModal();
     }
   };
 
@@ -126,7 +117,6 @@ const EventList = () => {
 
   return (
     <>
-      <BackwardNavigator />
       <main className="bg-white flex flex-col gap-10 rounded-t-lg py-5 text-gray-700">
         <div className="flex justify-between gap-3 items-center">
           <h1 className="font-medium text-xl px-5">All Events</h1>

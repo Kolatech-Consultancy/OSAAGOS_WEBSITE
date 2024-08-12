@@ -1,14 +1,14 @@
 import React from 'react';
 import SpinnerMini from '../../SpinnerMini';
 
-const DeleteAlumniModal = ({ isOpen, onClose, onDelete,loader }) => {
+const DeleteGroupModal = ({ isOpen, onClose, onDelete,loader }) => {
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 overflow-auto bg-gray-500 bg-opacity-75 flex">
       <div className="relative p-8 bg-white w-full max-w-md m-auto flex-col flex rounded-lg shadow-lg">
-        <h2 className="text-xl font-semibold mb-4">Delete Profile</h2>
-        <p>Are you sure you want to delete this profile? this action can't be undone!</p>
+        <h2 className="text-xl font-semibold mb-4">Delete group</h2>
+        <p>Are you sure you want to delete this group? this action can't be undone!</p>
         <div className="flex justify-end mt-4">
           <button
             type="button"
@@ -30,4 +30,4 @@ const DeleteAlumniModal = ({ isOpen, onClose, onDelete,loader }) => {
   );
 };
 
-export default DeleteAlumniModal;
+export default DeleteGroupModal;
