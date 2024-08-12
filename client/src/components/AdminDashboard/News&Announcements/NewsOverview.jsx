@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import SpinnerMini from '../../SpinnerMini'; // Ensure the path is correct
 import { getNewsById } from '../../../services/api'; // Import your API service
-import BackwardNavigator from '../backwardNavigator';
-
 const NewsOverview = () => {
     const { id } = useParams();
     const [newsArticle, setNewsArticle] = useState(null);
@@ -33,7 +31,6 @@ const NewsOverview = () => {
 
     return (
         <>  
-            <BackwardNavigator/>
             <div className="bg-white p-6 rounded-lg shadow-lg">
                 {loading ? (
                     <div className="flex justify-center items-center h-40">

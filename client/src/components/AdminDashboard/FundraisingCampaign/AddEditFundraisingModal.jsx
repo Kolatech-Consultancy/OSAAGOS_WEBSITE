@@ -31,7 +31,7 @@ const AddEditFundraisingModal = ({ isOpen, onClose, onSave, campaign, loader }) 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50 flex">
+    <div className="fixed inset-0 z-50 overflow-autobg-gray-500 bg-opacity-75 flex">
       <div className="relative p-8 bg-white w-full max-w-md m-auto flex-col flex rounded-lg shadow-lg">
         <h2 className="text-xl font-semibold mb-4">{campaign ? 'Edit Campaign' : 'Add Campaign'}</h2>
         <form onSubmit={handleSubmit}>

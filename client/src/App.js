@@ -20,8 +20,9 @@ import AddEventForm from "./components/Events/EventForm";
 import EventsPage from "./components/Events/EventsPage";
 import AddNewsForm from "./components/NewsAndAnnouncements/NewsForm";
 import Layout from "./Layout";
-import Overview from "./components/AdminDashboard/Overview";
 import AlumniList from "./components/AdminDashboard/Alumni/AlumniList";
+import GroupsList from "./components/AdminDashboard/Groups/GroupsList";
+import ForumsList from "./components/AdminDashboard/Forum/ForumsList";
 import PageNotFound from "./components/PageNotFound";
 import GlobalStyles from "./GlobalStyles";
 import { ErrorBoundary } from "react-error-boundary";
@@ -40,6 +41,8 @@ import CampaignOverview from "./components/AdminDashboard/FundraisingCampaign/Ca
 import NewsPage from "./components/AdminDashboard/News&Announcements/NewsPage";
 import NewsOverview from "./components/AdminDashboard/News&Announcements/NewsOverview";
 import AnalyticsPage from "./components/AdminDashboard/AnalyticsPage";
+import PostsList from "./components/AdminDashboard/Posts/PostsList";
+import AdminProfile from "./components/AdminDashboard/settings/Account";
 
 function App() {
   return (
@@ -94,7 +97,10 @@ function App() {
               <Route path="campaign/:campaignId" element={<CampaignOverview />} />
               <Route path="news" element={<NewsPage />} />
               <Route path="news/:id" element={<NewsOverview />} />
-              {/* <Route path="analytics" element={<AnalyticsPage/>} /> */}
+              <Route path="groups" element={<GroupsList/>} />
+              <Route path="forums" element={<ForumsList/>} />
+              <Route path="forums/:forumId" element={<PostsList/>} />
+              <Route path="admin/profile" element={<AdminProfile/>} />
             </Route>
 
             <Route path="*" element={<PageNotFound />} />

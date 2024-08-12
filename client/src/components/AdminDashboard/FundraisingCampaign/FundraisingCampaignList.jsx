@@ -7,8 +7,6 @@ import SpinnerMini from '../../SpinnerMini';
 import { addCampaign, editCampaign, getCampaigns } from '../../../services/api';
 import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom';
-import BackwardNavigator from '../backwardNavigator';
-
 const FundraisingCampaignList = () => {
     const [isOpen, setIsOpen] = useState(null);
     const [campaigns, setCampaigns] = useState([]);
@@ -64,32 +62,24 @@ const FundraisingCampaignList = () => {
     }, []);
 
     const handleAddEditCampaign = async (campaign) => {
-        if (currentCampaign) {
-            try {
-                setIsLoading(true);
+        try {
+            setIsLoading(true);
+            if (currentCampaign) {
                 await editCampaign(currentCampaign._id, campaign);
                 setCampaigns(campaigns.map((c) => (c._id === currentCampaign._id ? campaign : c)));
                 toast.success("Campaign updated successfully.")
-            } catch (error) {
-                console.error(error);
-                toast.error("Error updating campaign.")
-            } finally {
-                setIsLoading(false);
-                closeAddEditModal();
-            }
-        } else {
-            try {
-                setIsLoading(true);
+            } else {
                 const newCampaign = await addCampaign(campaign);
                 setCampaigns([...campaigns, newCampaign.data]);
                 toast.success("Campaign added successfully.")
-            } catch (error) {
-                console.error(error);
-                toast.error("Error adding campaign.")
-            } finally {
-                setIsLoading(false);
-                closeAddEditModal();
+                window.location.reload()
             }
+        } catch (error) {
+            console.error(error);
+            toast.error("Error saving campaign.");
+        } finally {
+            setIsLoading(false);
+            closeAddEditModal();
         }
     };
 
@@ -129,7 +119,6 @@ const FundraisingCampaignList = () => {
 
     return (
         <>
-            <BackwardNavigator/>
             <main className="bg-white flex flex-col gap-10 rounded-t-lg py-5 text-gray-700">
                 <div className="flex justify-between gap-3 items-center">
                     <h1 className="font-medium text-xl px-5">Fundraising Campaigns</h1>

@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import SpinnerMini from '../SpinnerMini'; // Ensure the path is correct
 import { getAnalytics } from '../../services/api'; // Import your API service
-import BackwardNavigator from './backwardNavigator';
-
 const AnalyticsPage = () => {
     const [analytics, setAnalytics] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -31,7 +29,6 @@ const AnalyticsPage = () => {
 
     return (
         <>
-            <BackwardNavigator />
             <div className="bg-white p-6 rounded-lg shadow-lg">
                 <h1 className="text-2xl font-bold mb-4">Analytics Overview</h1>
                 {loading ? (
