@@ -37,8 +37,8 @@ const Aside = ({ isOpen, setIsOpen }) => {
           {isOpen ? <FaLongArrowAltLeft /> : <FaLongArrowAltRight />}
         </div>
         <ul className="">
-          <Link>
-            <li className="p-4 hover:bg-gray-600">User Management</li>
+        <Link to="">
+            <li className="p-4 hover:bg-gray-600">Analytics</li>
           </Link>
           <Link to={"alumni"}>
             <li className="p-4 hover:bg-gray-600">Alumni Profiles</li>
@@ -46,20 +46,17 @@ const Aside = ({ isOpen, setIsOpen }) => {
           <Link to="events">
             <li className="p-4 hover:bg-gray-600">Events Management</li>
           </Link>
-          <Link to="/newsform">
+          <Link to="news">
             <li className="p-4 hover:bg-gray-600">News and Announcements</li>
           </Link>
           <Link>
             <li className="p-4 hover:bg-gray-600">Job Board</li>
           </Link>
-          <Link>
-            <li className="p-4 hover:bg-gray-600">Donations</li>
+          <Link to="fundraising-campaign">
+            <li className="p-4 hover:bg-gray-600">Fundraising Campaigns</li>
           </Link>
           <Link>
             <li className="p-4 hover:bg-gray-600">Media Gallery</li>
-          </Link>
-          <Link>
-            <li className="p-4 hover:bg-gray-600">Analytics</li>
           </Link>
           <Link>
             <li className="p-4 hover:bg-gray-600">Settings</li>

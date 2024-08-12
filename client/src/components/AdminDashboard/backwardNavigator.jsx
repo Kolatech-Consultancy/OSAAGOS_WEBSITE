@@ -1,7 +1,7 @@
 import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
-function Breadcum() {
+function BackwardNavigator() {
     const navigate = useNavigate(null)
 
    const handlePreviousRoute = ()=>{
@@ -10,7 +10,7 @@ function Breadcum() {
 
     return (
         <>
-            <header role={"button"} onClick={handlePreviousRoute} className="py-5">
+            <header role={"button"} onClick={handlePreviousRoute} className="py-5 w-fit">
                 <div className="flex gap-3 items-center">
                     <FaArrowLeft />
                     <span>Go Back</span>
@@ -20,4 +20,4 @@ function Breadcum() {
     );
 }
 
-export default Breadcum;
+export default BackwardNavigator;

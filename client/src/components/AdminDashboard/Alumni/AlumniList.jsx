@@ -3,7 +3,7 @@ import { FaChevronDown, FaEdit, FaEllipsisH, FaPlus, FaSearch, FaTrash, FaUser }
 import AddEditAlumniModal from './AddEditAlumnusModal';
 import DeleteAlumniModal from './DeleteAlumniModal';
 import { GetAlumni, deleteAlumniProfile, updateAlumniProfile, CreateAlumni } from '../../../services/api';
-import Breadcum from '../breadcum';
+import BackwardNavigator from '../backwardNavigator';
 import "../../../index.scss";
 import SpinnerMini from '../../SpinnerMini';
 import toast from 'react-hot-toast';
@@ -131,11 +131,11 @@ const AlumniList = () => {
     };
     return (
         <>
-            <Breadcum />
+            <BackwardNavigator />
             <main className="bg-white flex flex-col gap-10 rounded-t-lg py-5 text-gray-700">
                 <div className="flex justify-between gap-3 items-center">
                     <h1 className="font-medium text-xl px-5">All Alumni</h1>
-                    <button onClick={() => openAddEditModal()} className="ms-auto me-2 bg-blue-400 hover:bg-blue-500 w-fit sm:w-36 text-slate-50 p-4 flex items-center justify-center gap-3 rounded-full sm:rounded-lg focus:outline-none">
+                    <button onClick={() => openAddEditModal()} className="ms-auto me-2 bg-blue-400 hover:bg-blue-500 w-fit text-slate-50 p-4 flex items-center justify-center gap-3 rounded-full sm:rounded-lg focus:outline-none">
                         <FaPlus />
                         <span className='hidden sm:flex'>Add Alumni</span>
                     </button>
@@ -158,7 +158,7 @@ const AlumniList = () => {
                     </div>
                     : <>
                         {alumni.length > 0 ?
-                            <table className="min-w-full profileTable overflow-x-scroll">
+                            <table className="min-w-full profileTable">
                                 <thead>
                                     <tr>
                                         <th className="py-2 px-4">Name</th>
@@ -192,7 +192,7 @@ const AlumniList = () => {
                                                         <FaEllipsisH />
                                                     </button>
                                                     {isOpen === index && (
-                                                        <div className="dropdown-menu absolute right-0 w-44 bg-white border border-gray-200 rounded-md shadow-lg z-10">
+                                                        <div className="dropdown-menu absolute mb-4 right-0 w-44 bg-white border border-gray-200 rounded-md shadow-lg z-10">
                                                             <Link
                                                                 className="block px-4 py-2 text-green-500 hover:bg-gray-200 w-full text-left"
                                                                 
@@ -224,7 +224,7 @@ const AlumniList = () => {
                             </table>
                             :
                             <div className="bg-white w-full h-40 flex items-center justify-center mt-2">
-                                {error ? "An error occured. Try again later" : "No Alumni Registered"}
+                                {error ? "An error occurred. Try again later" : "No Alumni Registered"}
                             </div>
                         }
                     </>

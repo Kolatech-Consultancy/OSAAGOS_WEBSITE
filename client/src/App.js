@@ -27,6 +27,7 @@ import GlobalStyles from "./GlobalStyles";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorFallback from "./ui/ErrorFallback";
 import EventList from "./components/AdminDashboard/Events/EventsList";
+import FundraisingCampaignList from "./components/AdminDashboard/FundraisingCampaign/FundraisingCampaignList";
 import ProtectedRoute from "./components/ProtectedRoutes";
 import UserProfilePage from "./ui/UserProfilePage";
 import UserDashboardLayout from "./ui/UserDashboardLayout";
@@ -35,6 +36,10 @@ import UpdateUserProfile from "./ui/UpdateUserProfile";
 import UserGroups from "./ui/UserGroups";
 import ResetPass from "./ui/ResetPass";
 import Reset from "./ui/Reset";
+import CampaignOverview from "./components/AdminDashboard/FundraisingCampaign/CampaignOverview";
+import NewsPage from "./components/AdminDashboard/News&Announcements/NewsPage";
+import NewsOverview from "./components/AdminDashboard/News&Announcements/NewsOverview";
+import AnalyticsPage from "./components/AdminDashboard/AnalyticsPage";
 
 function App() {
   return (
@@ -82,9 +87,14 @@ function App() {
             </Route>
 
             <Route path="/dashboard" element={<DashboardOverview />} >
-              <Route index element={<Overview />} />
+              <Route index element={<AnalyticsPage/>} />
               <Route path="alumni" element={<AlumniList />} />
               <Route path="events" element={<EventList />} />
+              <Route path="fundraising-campaign" element={<FundraisingCampaignList />} />
+              <Route path="campaign/:campaignId" element={<CampaignOverview />} />
+              <Route path="news" element={<NewsPage />} />
+              <Route path="news/:id" element={<NewsOverview />} />
+              {/* <Route path="analytics" element={<AnalyticsPage/>} /> */}
             </Route>
 
             <Route path="*" element={<PageNotFound />} />

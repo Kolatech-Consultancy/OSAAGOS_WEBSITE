@@ -32,6 +32,55 @@ export const deleteEvent = async (id) => {
     return axios.delete(`/api/admin/events/${id}`)
 };
 
+export const getAnalytics = async () => {
+    return axios.get(`/api/admin/analytics`)
+};
+
+
+
+export const getCampaigns = async () => {
+    return axios.get("/api/campaigns")
+};
+
+export const addCampaign = async (campaign) => {
+    return axios.post("/api/campaigns", campaign)
+};
+
+export const editCampaign = async (id, updatedcampaign) => {
+    return axios.put(`/api/campaigns/${id}`, updatedcampaign)
+};
+
+// export const deleteEvent = async (id) => {
+//     return axios.delete(`/api/campaigns/events/${id}`)
+// };
+
+export const getSingleCampaign = async (campaignId) => {
+    return axios.get(`/api/campaigns/${campaignId}`)
+};
+export const getCampaignDonations = async (campaignId) => {
+    return axios.get(`/api/donations/campaign/${campaignId}`)
+};
+export const getNews = async () => {
+    return axios.get(`/api/admin/news`)
+};
+export const getNewsById = async (id) => {
+    return axios.get(`/api/news/${id}`)
+};
+export const editNews = async (id) => {
+    return axios.put(`/api/admin/news/${id}`)
+};
+export const addNews = async (news) => {
+    return axios.post("/api/admin/news", news)
+};
+// export const editNews = async (id, updatednews) => {
+//     return axios.put(`/api/news/${id}`, updatednews)
+// };
+export const deleteNews = async (id) => {
+    return axios.delete(`/api/admin/news/${id}`)
+};
+
+
+
 export const GetOneUser = () => {
   return axios.get("/api/users/profile");
 };

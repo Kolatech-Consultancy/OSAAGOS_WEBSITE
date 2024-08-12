@@ -3,7 +3,7 @@ import { FaChevronDown, FaEdit, FaPlus, FaSearch, FaTrash } from 'react-icons/fa
 import AddEditEventModal from './AddEditEventModal';
 import DeleteModal from './DeleteModal';
 import { getEvents, addEvent, editEvent, deleteEvent } from '../../../services/api'; // Placeholder for actual API functions
-import Breadcum from '../breadcum';
+import BackwardNavigator from '../backwardNavigator';
 import "../../../index.scss"
 import SpinnerMini from '../../SpinnerMini';
 import toast from 'react-hot-toast';
@@ -20,7 +20,7 @@ const EventList = () => {
   
   let isMounted = true;
   const date = new Date();
-  const today = [date.getFullYear(), date.getMonth() + 1, date.getDate()]; // Adjusted month
+  const today = [date.getDate(), date.getMonth() + 1,date.getFullYear()]; // Adjusted month
   const arrOfMonth = ["Jan", 'Feb', 'Mar', 'April', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
   useEffect(() => {
@@ -29,7 +29,8 @@ const EventList = () => {
         setLoader(true);
         const response = await getEvents();
         setEvents(response.data);
-        setEventDate(() => response.data.map(evt => String(evt?.date).split("T")[0].split("-")));
+        setEventDate(() => response.data.map(evt => new Date(evt.date).toLocaleDateString().split("/")));
+        console.log(eventDate);
       } catch (error) {
         setError(true);
         console.log(error);
@@ -111,8 +112,8 @@ const EventList = () => {
   };
 
   const isOngoing = (eventDate, today) => {
-    const [year, month, day] = eventDate.map(Number);
-    const [currentYear, currentMonth, currentDay] = today;
+    const [day, month, year] = eventDate.map(Number);
+    const [currentDay, currentMonth, currentYear] = today;
     if (year > currentYear) return true;
     if (year === currentYear) {
       if (month > currentMonth) return true;
@@ -125,11 +126,11 @@ const EventList = () => {
 
   return (
     <>
-      <Breadcum />
+      <BackwardNavigator />
       <main className="bg-white flex flex-col gap-10 rounded-t-lg py-5 text-gray-700">
         <div className="flex justify-between gap-3 items-center">
           <h1 className="font-medium text-xl px-5">All Events</h1>
-          <button onClick={() => openAddEditModal()} className="ms-auto me-2 bg-blue-400 hover:bg-blue-500 w-fit sm:w-36 text-slate-50 p-4 flex items-center justify-center gap-3 rounded-full sm:rounded-lg focus:outline-none">
+          <button onClick={() => openAddEditModal()} className="ms-auto me-2 bg-blue-400 hover:bg-blue-500 w-fit text-slate-50 p-4 flex items-center justify-center gap-3 rounded-full sm:rounded-lg focus:outline-none">
             <FaPlus />
             <span className='hidden sm:flex'>Add Event</span>
           </button>
@@ -175,7 +176,7 @@ const EventList = () => {
                     <tr key={event._id}>
                       <td className="py-2 px-4">{event?.title}</td>
                       <td className="py-2 px-4">
-                        {`${eventDate[index][2]} ${arrOfMonth[Number(eventDate[index][1]) - 1]} ${eventDate[index][0]}`}
+                        {`${eventDate[index][0]} ${arrOfMonth[Number(eventDate[index][1]) - 1]} ${eventDate[index][2]}`}
                       </td>
                       <td className="py-2 px-4">{event?.attendees?.length}</td>
                       <td className="py-2 px-4">{event?.location}</td>
@@ -206,7 +207,7 @@ const EventList = () => {
               </table>
             ) : (
               <div className="bg-white w-full h-40 flex items-center justify-center mt-2">
-                {error ? "An error occured. Try again later" : "No Events Registered"}
+                {error ? "An error occurred. Try again later" : "No Events Registered"}
               </div>
             )}
           </>
