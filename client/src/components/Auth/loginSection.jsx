@@ -24,7 +24,7 @@ function LoginSection() {
       toast.success("User login successfully");
       navigate("/user/profile");
     } catch (error) {
-      toast.error("Wrong details");
+      toast.error(error.response ? error.response.data.message : error.message);
     } finally {
       setIsLoading(false);
     }

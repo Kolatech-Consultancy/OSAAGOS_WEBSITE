@@ -36,9 +36,11 @@ function UserProfilePage() {
       const { name, email } = await response.data;
       setName(name);
       setEmail(email);
-      setUserData(response.data)
+      setUserData(response.data);
     } catch (error) {
-      throw new Error(error.message);
+      throw new Error(
+        error.response ? error.response.data.message : error.message
+      );
     } finally {
       setIsLoading(false);
     }
@@ -55,9 +57,10 @@ function UserProfilePage() {
       await UpdateOneUser(data);
       toast.success("User Updated successfully");
     } catch (error) {
-      console.log(error);
-      toast.error(error.message);
-      throw new Error("User not found");
+      toast.error(error.response ? error.response.data.message : error.message);
+      throw new Error(
+        error.response ? error.response.data.message : error.message
+      );
     } finally {
       setIsLoading(false);
     }
@@ -73,7 +76,7 @@ function UserProfilePage() {
 
   return (
     <div className="max-w-xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
-      <div className="flex items-center justify-center bg-cover bg-center h-30">
+      <div className="flex items-center justify-center bg-cover bg-center h-30 mb-4">
         <img
           className="w-24 h-24 object-cover rounded-full border-2 border-white"
           src={
@@ -82,11 +85,12 @@ function UserProfilePage() {
           alt="Profile"
         />
       </div>
-      <div className="flex justify-between md:flex-nowrap flex-wrap text-gray-800">
-        <div className="text-center px-6 py-4 text-xl font-semibold w-full">
-          <div className="flex justify-between items-center sm:flex-nowrap flex-wrap">
+      <div className="flex justify-between flex-col gap-2 md:flex-nowrap flex-wrap text-gray-800">
+        <p className="px-6 font-semibold text-xl">Personal Details</p>
+        <div className="flex-col flex gap-4 text-center px-6 text-lg  w-full">
+          <div className="flex justify-between flex-col gap-1 sm:flex-nowrap flex-wrap">
             <article>
-              <h2 className="font-semibold  flex items-center gap-4">
+              <h2 className="flex items-center gap-4">
                 <HiOutlineUser />
                 {userData.name}
               </h2>
@@ -97,8 +101,6 @@ function UserProfilePage() {
                 {userData.email}
               </p>
             </article>
-          </div>
-          <div className="flex justify-between items-center sm:flex-nowrap flex-wrap">
             <article>
               <p className="flex items-center gap-4">
                 <LiaAddressCard />
@@ -112,15 +114,15 @@ function UserProfilePage() {
                 {userData.phone}
               </p>
             </article>
+            <p className="flex items-center gap-4">
+              <HiOutlineStatusOnline />
+              {userData.role}
+            </p>
           </div>
-          <p className="flex items-center gap-4">
-            <HiOutlineStatusOnline />
-            {userData.role}
-          </p>
         </div>
       </div>
-      <div className="flex justify-between md:flex-nowrap flex-wrap">
-        <div className="px-6 py-4">
+      <div className="flex justify-between gap-4 md:flex-nowrap flex-wrap mt-4">
+        <div className="px-6 flex-col gap-2">
           <h3 className="text-gray-800 font-medium">Educational Details</h3>
           <p className="text-gray-600 flex items-center gap-4">
             <PiCertificate /> {userData.fieldOfStudy}
@@ -129,7 +131,7 @@ function UserProfilePage() {
             <PiCalendarCheck /> {userData.graduationYear}
           </p>
         </div>
-        <div className="px-6 py-4">
+        <div className="px-6 flex-col gap-2">
           <h3 className="text-gray-800 font-medium">Professional Details</h3>
           <p className="text-gray-600 flex items-center gap-4">
             <PiBagSimple /> {userData.profession}
