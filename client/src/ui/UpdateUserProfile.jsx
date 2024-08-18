@@ -71,16 +71,8 @@ function UpdateUserProfile() {
 
       if (file) {
         data.append("profilePicture", file);
-        console.log("Appending file to FormData:", file);
       }
-
-      // Inspect FormData before submitting
-      for (let pair of data.entries()) {
-        console.log(pair[0], pair[1]);
-      }
-
      const token =  Is_authorized()
-
      await axios.put(
        "https://osaagos-api-alumni-website.onrender.com/api/users/profile",
        data,

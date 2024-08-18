@@ -43,6 +43,7 @@ import NewsOverview from "./components/AdminDashboard/News&Announcements/NewsOve
 import AnalyticsPage from "./components/AdminDashboard/AnalyticsPage";
 import PostsList from "./components/AdminDashboard/Posts/PostsList";
 import AdminProfile from "./components/AdminDashboard/settings/Account";
+import AdminGallery from "./components/AdminDashboard/Gallery/AdminGallery";
 
 function App() {
   return (
@@ -89,18 +90,25 @@ function App() {
               </Route>
             </Route>
 
-            <Route path="/dashboard" element={<DashboardOverview />} >
-              <Route index element={<AnalyticsPage/>} />
+            <Route path="/dashboard" element={<DashboardOverview />}>
+              <Route index element={<AnalyticsPage />} />
               <Route path="alumni" element={<AlumniList />} />
               <Route path="events" element={<EventList />} />
-              <Route path="fundraising-campaign" element={<FundraisingCampaignList />} />
-              <Route path="campaign/:campaignId" element={<CampaignOverview />} />
+              <Route
+                path="fundraising-campaign"
+                element={<FundraisingCampaignList />}
+              />
+              <Route
+                path="campaign/:campaignId"
+                element={<CampaignOverview />}
+              />
               <Route path="news" element={<NewsPage />} />
               <Route path="news/:id" element={<NewsOverview />} />
-              <Route path="groups" element={<GroupsList/>} />
-              <Route path="forums" element={<ForumsList/>} />
-              <Route path="forums/:forumId" element={<PostsList/>} />
-              <Route path="admin/profile" element={<AdminProfile/>} />
+              <Route path="groups" element={<GroupsList />} />
+              <Route path="forums" element={<ForumsList />} />
+              <Route path="forums/:forumId" element={<PostsList />} />
+              <Route path="admin/profile" element={<AdminProfile />} />
+              <Route path="gallery" element={<AdminGallery />} />
             </Route>
 
             <Route path="*" element={<PageNotFound />} />
