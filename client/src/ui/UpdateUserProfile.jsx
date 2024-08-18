@@ -4,12 +4,14 @@ import SpinnerMini from "../components/SpinnerMini";
 import toast from "react-hot-toast";
 import Spinner from "../components/Spinner";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import Is_authorized from "../utils/authorization";
 
 function UpdateUserProfile() {
   const [isSbmit, setIsSubmit] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
   const [formData, setFormData] = useState({
-    profilePicture: null,
     address: "",
     phone: "",
     fieldOfStudy: "",
@@ -34,28 +36,62 @@ function UpdateUserProfile() {
     fetchUser();
   }, []);
 
+  const handleFilesChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setSelectedFile(file);
+      console.log(file);
+    }
+  };
+
   const handleInputChange = (e) => {
     const { name, value, type, files } = e.target;
-
     setFormData((prevFormData) => ({
       ...prevFormData,
       [name]: type === "file" ? files[0] : value,
     }));
   };
 
-  const handleFileChange = (e) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      profilePicture: e.target.files[0],
-    }));
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmit(true);
+
     try {
-      const submitData = { ...formData };
-      await UpdateUsersProfile(submitData);
+      const data = new FormData();
+
+      data.append("address", formData.address);
+      data.append("phone", formData.phone);
+      data.append("fieldOfStudy", formData.fieldOfStudy);
+      data.append("graduationYear", formData.graduationYear);
+      data.append("profession", formData.profession);
+      data.append("company", formData.company);
+
+      const fileInput = document.querySelector('input[type="file"]');
+      const file = fileInput.files[0];
+
+      if (file) {
+        data.append("profilePicture", file);
+        console.log("Appending file to FormData:", file);
+      }
+
+      // Inspect FormData before submitting
+      for (let pair of data.entries()) {
+        console.log(pair[0], pair[1]);
+      }
+
+     const token =  Is_authorized()
+
+     await axios.put(
+       "https://osaagos-api-alumni-website.onrender.com/api/users/profile",
+       data,
+       {
+         headers: {
+           authorization: `Bearer ${token}`,
+           "Content-Type": "multipart/form-data",
+         },
+       }
+     );
+
       toast.success("Your details are updated successfully");
       navigate("/user/profile");
     } catch (error) {
@@ -84,7 +120,7 @@ function UpdateUserProfile() {
           <input
             type="file"
             accept="image/*"
-            onChange={handleFileChange}
+            onChange={handleFilesChange}
             className="mt-1 w-full"
           />
         </div>
