@@ -72,17 +72,19 @@ function UpdateUserProfile() {
       if (file) {
         data.append("profilePicture", file);
       }
-     const token =  Is_authorized()
-     await axios.put(
-       "https://osaagos-api-alumni-website.onrender.com/api/users/profile",
-       data,
-       {
-         headers: {
-           authorization: `Bearer ${token}`,
-           "Content-Type": "multipart/form-data",
-         },
-       }
-     );
+      const token = Is_authorized();
+      const response = await axios.put(
+        "https://osaagos-api-alumni-website.onrender.com/api/users/profile",
+        data,
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      console.log(response);
 
       toast.success("Your details are updated successfully");
       navigate("/user/profile");
