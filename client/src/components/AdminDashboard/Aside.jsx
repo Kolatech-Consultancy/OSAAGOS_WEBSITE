@@ -66,7 +66,7 @@ const Aside = ({ isOpen, setIsOpen, isSmallScreen, setIsSmallScreen }) => {
           <Link to="forums">
             <li className="p-4 hover:bg-gray-600">Manage Forums</li>
           </Link>
-          <Link>
+          <Link to="gallery">
             <li className="p-4 hover:bg-gray-600">Media Gallery</li>
           </Link>
           <Link to="admin/profile">
