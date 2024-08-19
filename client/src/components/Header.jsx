@@ -5,6 +5,7 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import { CiSearch } from "react-icons/ci";
 import toast from "react-hot-toast";
 import { AdminDashboard } from "../services/api";
+import parseJwt from "./TokenDecoder";
 
 const Header = () => {
   const location = useLocation();
@@ -14,6 +15,7 @@ const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
+  const [admin, setAdmin] = useState(false)
 
   const ref = useRef(null);
 
@@ -36,8 +38,20 @@ const Header = () => {
     setSearchResults(results);
   };
 
+  useEffect(() => {
+    const token = localStorage.getItem("token")
+    if (token) {
+      const payload = parseJwt(token)
+      
+      if (payload.role === "Admin") {
+        return setAdmin(true)
+      }
+      setAdmin(false)
+    }
+  }, [token])
 
-  const handleDashboard = async()=>{
+  const handleDashboard = async () => {
+
     try {
       await AdminDashboard()
       toast.success("Access granted!")
@@ -88,8 +102,9 @@ const Header = () => {
                 <button
                   className="bg-orange-400 hidden lg:inline-block hover:bg-orange-600 transition-all duration-200 px-5 py-2 rounded-lg list-none"
                   onClick={() => {
-                    localStorage.setItem("token", "");
+                    localStorage.clear("token");
                     toast.success("Logout Successfully");
+                    setAdmin(false)
                     navigate("/login");
                   }}
                 >
@@ -158,7 +173,7 @@ const Header = () => {
               <Link to="/contactus">
                 <li>Contact Us</li>
               </Link>
-              <li role={"button"} onClick={handleDashboard}>Admin Dashboard</li>
+             {admin &&  <li role={"button"} onClick={handleDashboard}>Admin Dashboard</li>}
 
               {token ? (
                 <div className="lg:hidden mt-6 flex flex-col gap-5">

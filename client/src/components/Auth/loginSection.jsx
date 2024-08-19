@@ -5,6 +5,7 @@ import Button from "../../ui/Button";
 import SpinnerMini from "../SpinnerMini";
 import toast from "react-hot-toast";
 import { useState } from "react";
+import parseJwt from "../TokenDecoder";
 
 function LoginSection() {
   const { register, handleSubmit, reset } = useForm();
@@ -20,9 +21,15 @@ function LoginSection() {
       );
       const { token } = response.data;
       localStorage.setItem("token", token);
+      const payload = parseJwt(token)
       reset();
       toast.success("User login successfully");
-      navigate("/user/profile");
+      if (payload.role === "Admin") {
+        navigate("/dashboard");
+      } else {
+        navigate("/user/profile");
+      }
+
     } catch (error) {
       toast.error(error.response ? error.response.data.message : error.message);
     } finally {

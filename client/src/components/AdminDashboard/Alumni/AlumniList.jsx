@@ -74,7 +74,7 @@ const AlumniList = () => {
                 const newAlumnus = await CreateAlumni(alumniData);
                 setAlumni([...alumni, newAlumnus.data])
                 toast.success("Alumni added successfully");
-                window.location.reload()
+                // window.location.reload()
             }
         } catch (error) {
             console.error(error);

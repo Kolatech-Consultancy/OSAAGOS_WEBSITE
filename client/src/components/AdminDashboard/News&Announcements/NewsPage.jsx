@@ -54,7 +54,7 @@ const NewsPage = () => {
                 const newNews = await addNews(newsItem);
                 setNews([...news, newNews.data]);
                 toast.success("News added successfully.");
-                window.location.reload()
+                // window.location.reload()
             }
         } catch (error) {
             console.error(error);
