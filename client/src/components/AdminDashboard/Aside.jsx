@@ -54,7 +54,7 @@ const Aside = ({ isOpen, setIsOpen, isSmallScreen, setIsSmallScreen }) => {
           <Link to="news">
             <li className="p-4 hover:bg-gray-600">News and Announcements</li>
           </Link>
-          <Link>
+          <Link to="jobs">
             <li className="p-4 hover:bg-gray-600">Job Board</li>
           </Link>
           <Link to="fundraising-campaign">

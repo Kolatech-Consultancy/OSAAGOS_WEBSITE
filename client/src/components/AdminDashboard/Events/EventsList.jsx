@@ -56,7 +56,7 @@ const EventList = () => {
         const newEvent = await addEvent(event);
         setEvents([...events, newEvent.data]);
         toast.success("Event created successfully");
-        window.location.reload()
+        // window.location.reload()
       }
     } catch (error) {
       console.error(error);

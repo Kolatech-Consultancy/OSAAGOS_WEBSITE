@@ -51,7 +51,7 @@ const CampaignOverview = () => {
     return (
         <>
             <div className="w-full mx-auto p-6 bg-white shadow-lg rounded-lg">
-                <h1 className="text-2xl sm:text-4xl font-bold text-gray-800 mb-4">{campaign.title}</h1>
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-4">{campaign.title}</h1>
                 <p className="text-gray-600 text-lg mb-6">{campaign.description}</p>
 
                 <div className="mb-6">
@@ -73,7 +73,7 @@ const CampaignOverview = () => {
                     </div>
                 </div>
                 <div className="mb-8 mt-6">
-                    <h2 className="text-xl sm:text-3xl font-bold text-gray-800 mb-4">Donations</h2>
+                    <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-4">Donations</h2>
                     {donations.length > 0 ? (
                         <ul>
                             {donations.map((donation) => (

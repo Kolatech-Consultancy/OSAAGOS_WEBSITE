@@ -105,26 +105,43 @@ export const getPost = async (forumId) => {
 export const editPost = async (id) => {
     return axios.put(`/api/posts/${id}`)
 };
-export const addPost = async (forumId,post) => {
+export const addPost = async (forumId, post) => {
     return axios.post(`/api/forums/${forumId}/post`, post)
 };
 export const deletePost = async (id) => {
     return axios.delete(`/api/posts/${id}`)
 };
+export const getJob = async () => {
+    return axios.get(`/api/jobs`)
+};
+export const editJob = async (id, job) => {
+    return axios.put(`/api/jobs/${id}`, job)
+};
+export const addJob = async (job) => {
+    return axios.post(`/api/jobs/create`, job)
+};
+export const deleteJob = async (id) => {
+    return axios.delete(`/api/jobs/${id}`)
+};
 
 export const GetOneUser = () => {
-  return axios.get("/api/users/profile");
+    return axios.get("/api/users/profile");
 };
 export const UpdateOneUser = (param) => {
-  return axios.put("/api/users/profile", param);
+    return axios.put("/api/users/profile", param);
 };
 export const UpdateUsersProfile = (param) => {
-  return axios.put("/api/users/profile", param);
+    return axios.put("/api/users/profile", param, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    })
+       
 };
 
 export const getAllEvents = () => {
-  return axios.get("/api/events");
+    return axios.get("/api/events");
 };
 export const getAllGroups = () => {
-  return axios.get("/api/groups");
+    return axios.get("/api/groups");
 };
