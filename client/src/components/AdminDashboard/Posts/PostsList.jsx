@@ -125,7 +125,7 @@ const PostsList = () => {
         <>
             <main className="bg-white flex flex-col gap-10 rounded-t-lg py-5 text-gray-700">
                 <div className="flex justify-between gap-3 items-center">
-                    <h1 className="font-medium text-xl px-5">All Post</h1>
+                    <h1 className="font-medium text-xl px-5">All Posts</h1>
                     <button onClick={() => openAddEditModal()} className="ms-auto me-2 bg-blue-400 hover:bg-blue-500 w-fit text-slate-50 p-4 flex items-center justify-center gap-3 rounded-full sm:rounded-lg focus:outline-none">
                         <FaPlus />
                         <span className='hidden sm:flex'>Add Post</span>
@@ -203,7 +203,7 @@ const PostsList = () => {
                             </table>
                             :
                             <div className="bg-white w-full h-40 flex items-center justify-center mt-2">
-                                {error ? "An error occurred. Try again later" : "No Post Registered"}
+                                {error ? "An error occurred. Try again later" : "No Post Available"}
                             </div>
                         }
                     </>

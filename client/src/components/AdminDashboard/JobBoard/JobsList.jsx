@@ -1,24 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { FaEdit, FaEllipsisH, FaPlus, FaSearch, FaTrash } from 'react-icons/fa';
-import AddEditGroupModal from './AddEditGroupModal';
-import DeleteGroupModal from './DeleteGroupModal';
-import { getGroup, deleteGroup, editGroup, addGroup } from '../../../services/api';
+import { FaEdit, FaEllipsisH, FaPlus, FaSearch, FaTrash, FaUser } from 'react-icons/fa';
+import AddEditJobModal from './AddEditJobModal';
+import DeleteJobModal from './DeleteJobModal';
+import { getJob, deleteJob, editJob, addJob } from '../../../services/api';
 import "../../../index.scss";
 import SpinnerMini from '../../SpinnerMini';
 import toast from 'react-hot-toast';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
-const GroupList = () => {
+const JobsList = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const [Group, setGroup] = useState([]);
+    const [Job, setJob] = useState([]);
     const [isAddEditModalOpen, setIsAddEditModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-    const [currentGroup, setCurrentGroup] = useState(null);
+    const [currentJob, setCurrentJob] = useState(null);
     const [loader, setLoader] = useState(false);
     const [error, setError] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const arrOfMonth = ["Jan", 'Feb', 'Mar', 'April', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     let isMounted = true
+    const {forumId} = useParams()
 
 
 
@@ -45,11 +46,12 @@ const GroupList = () => {
 
 
     useEffect(() => {
-        const fetchGroup = async () => {
+        const fetchJob = async () => {
             try {
                 setLoader(true);
-                const response = await getGroup();
-                setGroup(response.data);
+                const response = await getJob();
+                console.log(response.data);
+                setJob(response.data);
             } catch (error) {
                 setError(true);
                 console.error(error);
@@ -57,84 +59,84 @@ const GroupList = () => {
                 setLoader(false);
             }
         };
-        if (isMounted) fetchGroup();
+        if (isMounted) fetchJob();
         return () => {
             isMounted = false
         }
     }, []);
-    const handleAddEditGroup = async (GroupData) => {
+    const handleAddEditJob = async (JobData) => {
         try {
             setIsLoading(true);
-            if (currentGroup) {
-                await editGroup(currentGroup._id, GroupData);
-                setGroup(Group.map(grp =>
-                    grp._id === currentGroup._id ? GroupData : grp
+            if (currentJob) {
+                await editJob(currentJob._id, JobData);
+                setJob(Job.map(job =>
+                    job._id === currentJob._id ? JobData : job
                 ));
-                toast.success("Group updated successfully");
+                toast.success("Job updated successfully");
             } else {
-                const newGroup = await addGroup(GroupData);
-                setGroup([...Group, newGroup.data])
-                toast.success("Group added successfully");
+                const newJob = await addJob(JobData);
+                setJob([...Job, newJob.data])
+                toast.success("Job added successfully");
                 // window.location.reload()
             }
         } catch (error) {
             console.error(error);
-            toast.error("Error saving group.");
+            toast.error("Error saving Job.");
         } finally {
             setIsLoading(false);
             closeAddEditModal();
         }
     };
 
-    const handleDeleteGroup = async () => {
+    const handleDeleteJob = async () => {
         try {
             setIsLoading(true);
-            await deleteGroup(currentGroup._id);
-            setGroup(Group.filter(al => al._id !== currentGroup._id));
-            toast.success('Group deleted successfully');
+            await deleteJob(currentJob._id);
+            setJob(Job.filter(al => al._id !== currentJob._id));
+            toast.success('Job deleted successfully');
         } catch (error) {
             console.error(error);
-            toast.error("Error deleting Group");
+            toast.error("Error deleting Job");
         } finally {
             setIsLoading(false);
             closeDeleteModal();
         }
     };
 
-    const openAddEditModal = (Group = null) => {
-        setCurrentGroup(Group);
+    const openAddEditModal = (Job = null) => {
+        setCurrentJob(Job);
         setIsAddEditModalOpen(true);
     };
 
     const closeAddEditModal = () => {
-        setCurrentGroup(null);
+        setCurrentJob(null);
         setIsAddEditModalOpen(false);
     };
 
-    const openDeleteModal = (Group) => {
-        setCurrentGroup(Group);
+    const openDeleteModal = (Job) => {
+        setCurrentJob(Job);
         setIsDeleteModalOpen(true);
     };
 
     const closeDeleteModal = () => {
-        setCurrentGroup(null);
+        setCurrentJob(null);
         setIsDeleteModalOpen(false);
     };
     return (
         <>
             <main className="bg-white flex flex-col gap-10 rounded-t-lg py-5 text-gray-700">
                 <div className="flex justify-between gap-3 items-center">
-                    <h1 className="font-medium text-xl px-5">All Groups</h1>
+                    <h1 className="font-medium text-xl px-5">All Jobs</h1>
                     <button onClick={() => openAddEditModal()} className="ms-auto me-2 bg-blue-400 hover:bg-blue-500 w-fit text-slate-50 p-4 flex items-center justify-center gap-3 rounded-full sm:rounded-lg focus:outline-none">
                         <FaPlus />
-                        <span className='hidden sm:flex'>Add Group</span>
+                        <span className='hidden sm:flex'>Add Job</span>
                     </button>
                 </div>
 
                 <section className="flex px-5 flex-wrap md:flex-nowrap py-4 gap-5 items-center border-s-0 border-e-0 border-dashed border-gray-200" style={{ borderWidth: "1px" }}>
                     <div className="border ring-gray-100 flex gap-2 items-center py-2 px-3 rounded-lg w-full md:w-56" style={{ borderWidth: "1px" }}>
                         <FaSearch className="text-gray-500" />
-                        <input type="search" placeholder="Search for Group" className="w-full border-0 focus-visible:outline-none" />
+                        <input type="search" placeholder="Search for Job" className="w-full border-0 focus-visible:outline-none" />
                     </div>
 
                 </section>
@@ -142,27 +144,35 @@ const GroupList = () => {
             <main className='tableContainer overflow-x-scroll mt-1 pb-3'>
                 {loader ?
                     <div className="bg-white w-full h-40 flex items-center justify-center mt-2">
-                        {Group.length === 0 &&
+                        {Job.length === 0 &&
                             <SpinnerMini />
                         }
                     </div>
                     : <>
-                        {Group.length > 0 ?
+                        {Job.length > 0 ?
                             <table className="min-w-full profileTable">
                                 <thead>
                                     <tr>
-                                        <th className="py-2 px-4">Name</th>
-                                        <th className="py-2 px-4">Members</th>
-                                        <th className="py-2 px-4">Creation Date</th>
+                                        <th className="py-2 px-4">Title</th>
+                                        <th className="py-2 px-4">Company Name</th>
+                                        <th className="py-2 px-4">Location</th>
+                                        <th className="py-2 px-4">Salary Range</th>
+                                        <th className="py-2 px-4">Employment Type</th>
+                                        <th className="py-2 px-4">Application Deadline</th>
+                                        <th className="py-2 px-4">Posted Date</th>
                                         <th className="py-2 px-4">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white text-gray-700">
-                                    {Group.map((grp, index) => (
-                                        <tr key={grp._id}>
-                                            <td className="py-2 px-4">{grp.name}</td>
-                                            <td className="py-2 px-4">{grp.members.length}</td>
-                                            <td className="py-2 px-4">{`${new Date(grp.createdAt).getDate()} ${arrOfMonth[new Date(grp.createdAt).getMonth()]}, ${new Date(grp.createdAt).getFullYear()}`}</td>
+                                    {Job.map((job, index) => (
+                                        <tr key={job._id}>
+                                            <td className="py-2 px-4">{job.title}</td>
+                                            <td className="py-2 px-4">{job.companyName}</td>
+                                            <td className="py-2 px-4">{job.location}</td>
+                                            <td className="py-2 px-4">{job.salaryRange}</td>
+                                            <td className="py-2 px-4 capitalize">{job.employmentType}</td>
+                                            <td className="py-2 px-4">{`${new Date(job.applicationDeadline).getDate()} ${arrOfMonth[new Date(job.applicationDeadline).getMonth()]}, ${new Date(job.applicationDeadline).getFullYear()}`}</td>
+                                            <td className="py-2 px-4">{`${new Date(job.postedDate).getDate()} ${arrOfMonth[new Date(job.postedDate).getMonth()]}, ${new Date(job.postedDate).getFullYear()}`}</td>
                                             <td className="py-2 px-4">
                                                 <div className="relative">
                                                     <button
@@ -173,16 +183,23 @@ const GroupList = () => {
                                                     </button>
                                                     {isOpen === index && (
                                                         <div className="dropdown-menu absolute mb-4 right-0 w-44 bg-white border border-gray-200 rounded-md shadow-lg z-10">
+                                                            <Link
+                                                                className="block px-4 py-2 text-green-500 hover:bg-gray-200 w-full text-left"
+
+                                                            >
+                                                                <FaUser className="inline mr-2" />
+                                                                See Job
+                                                            </Link>
                                                             <button
                                                                 className="block px-4 py-2 text-blue-500 hover:bg-gray-200 w-full text-left focus:outline-none"
-                                                                onClick={() => openAddEditModal(grp)}
+                                                                onClick={() => openAddEditModal(job)}
                                                             >
                                                                 <FaEdit className="inline mr-2" />
                                                                 Edit
                                                             </button>
                                                             <button
                                                                 className="block px-4 py-2 text-red-500 hover:bg-gray-200 w-full text-left focus:outline-none"
-                                                                onClick={() => openDeleteModal(grp)}
+                                                                onClick={() => openDeleteModal(job)}
                                                             >
                                                                 <FaTrash className="inline mr-2" />
                                                                 Delete
@@ -197,23 +214,23 @@ const GroupList = () => {
                             </table>
                             :
                             <div className="bg-white w-full h-40 flex items-center justify-center mt-2">
-                                {error ? "An error occurred. Try again later" : "No Group Registered"}
+                                {error ? "An error occurred. Try again later" : "No Job Available"}
                             </div>
                         }
                     </>
                 }
-                <AddEditGroupModal
+                <AddEditJobModal
                     isOpen={isAddEditModalOpen}
                     onClose={closeAddEditModal}
-                    onSave={handleAddEditGroup}
-                    group={currentGroup}
+                    onSave={handleAddEditJob}
+                    job={currentJob}
                     loader={isLoading}
                 />
 
-                <DeleteGroupModal
+                <DeleteJobModal
                     isOpen={isDeleteModalOpen}
                     onClose={closeDeleteModal}
-                    onDelete={handleDeleteGroup}
+                    onDelete={handleDeleteJob}
                     loader={isLoading}
                 />
             </main>
@@ -221,4 +238,4 @@ const GroupList = () => {
     );
 };
 
-export default GroupList;
+export default JobsList;
