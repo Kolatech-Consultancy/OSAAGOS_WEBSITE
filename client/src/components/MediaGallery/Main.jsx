@@ -2,23 +2,24 @@ import React, { useState } from "react";
 import Heading from "./Heading";
 import MediaFilter from "./MediaFilter";
 const mediaItems = [
-  { id: 1, type: "image", url: "https://via.placeholder.com/300" },
-  { id: 2, type: "video", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
-  { id: 3, type: "image", url: "https://via.placeholder.com/300" },
-  { id: 4, type: "video", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
-  { id: 5, type: "image", url: "https://via.placeholder.com/300" },
-  { id: 6, type: "video", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
-  { id: 7, type: "image", url: "https://via.placeholder.com/300" },
-  { id: 8, type: "video", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
-  { id: 9, type: "image", url: "https://via.placeholder.com/300" },
-  { id: 10, type: "video", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
-  { id: 11, type: "image", url: "https://via.placeholder.com/300" },
-  { id: 12, type: "video", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
-  { id: 13, type: "image", url: "https://via.placeholder.com/300" },
-  { id: 14, type: "video", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
-  { id: 15, type: "image", url: "https://via.placeholder.com/300" },
-  { id: 16, type: "video", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
-  // Add more media items as needed
+  {
+    id: 1,
+    fileType: "image",
+    path: "https://via.placeholder.com/300",
+    description: "Hello everyone",
+  },
+  {
+    id: 2,
+    fileType: "video",
+    path: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+  },
+  { id: 3, fileType: "image", path: "https://via.placeholder.com/300" },
+  {
+    id: 4,
+    fileType: "video",
+    path: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+  },
+  { id: 5, fileType: "image", path: "https://via.placeholder.com/300" },
 ];
 
 function filterItems(type) {

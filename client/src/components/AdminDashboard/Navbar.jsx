@@ -10,7 +10,7 @@ const DashNavbar = ({ isOpen, isSmallScreen }) => {
     }
 
     return (
-        <nav className={`bg-white p-2 sm:p-4 fixed top-0 gap-3 flex items-center justify-between shadow-lg `} style={{ width: isOpen && !isSmallScreen ? 'calc(100% - 16rem)' : "100%" }}>
+        <nav className={`bg-white p-2 sm:p-4 fixed top-0 gap-3 flex items-center justify-between shadow-lg  z-50`} style={{ width: isOpen && !isSmallScreen ? 'calc(100% - 16rem)' : "100%" }}>
             <div className="flex items-center">
                 <header role={"button"} onClick={handlePreviousRoute}>
                     <div className="flex items-center">
