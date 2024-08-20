@@ -45,7 +45,7 @@ import PostsList from "./components/AdminDashboard/Posts/PostsList";
 import AdminProfile from "./components/AdminDashboard/settings/Account";
 import JobsList from "./components/AdminDashboard/JobBoard/JobsList";
 import AdminGallery from "./components/AdminDashboard/Gallery/AdminGallery";
-
+import MessagingApp from "./ui/UserMessage";
 
 function App() {
   return (
@@ -84,6 +84,7 @@ function App() {
               >
                 <Route path="profile" element={<UserProfilePage />} />
                 <Route path="chat" element={<UserChat />} />
+                <Route path="chat/:id" element={<MessagingApp />} />
                 <Route path="groups" element={<UserGroups />} />
                 <Route path="update-profile" element={<UpdateUserProfile />} />
                 <Route path="events" element={<EventsPage />} />
@@ -107,11 +108,11 @@ function App() {
               <Route path="news" element={<NewsPage />} />
               <Route path="news/:id" element={<NewsOverview />} />
 
-              <Route path="groups" element={<GroupsList/>} />
-              <Route path="forums" element={<ForumsList/>} />
-              <Route path="forums/:forumId" element={<PostsList/>} />
-              <Route path="admin/profile" element={<AdminProfile/>} />
-              <Route path="jobs" element={<JobsList/>} />
+              <Route path="groups" element={<GroupsList />} />
+              <Route path="forums" element={<ForumsList />} />
+              <Route path="forums/:forumId" element={<PostsList />} />
+              <Route path="admin/profile" element={<AdminProfile />} />
+              <Route path="jobs" element={<JobsList />} />
               <Route path="gallery" element={<AdminGallery />} />
             </Route>
 

@@ -5,18 +5,18 @@ import axios from "axios";
 import Is_authorized from "../../../utils/authorization";
 import toast from "react-hot-toast";
 
-const SearchFilterContainer = styled.div`
+export const SearchFilterContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 5px;
 `;
 
-const SearchInput = styled.input`
+export const SearchInput = styled.input`
   padding: 4px 8px;
   border: 1px solid #ddd;
   border-radius: 4px;
-  width: 200px;
+  width: ${(props) => (props.variant === "big" ? "100%" : "200px")};
 `;
 
 const FilterSelect = styled.select`
@@ -85,13 +85,13 @@ const Button = styled.button`
 `;
 
 // Pagination styling
-const PaginationContainer = styled.div`
+export const PaginationContainer = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 20px;
 `;
 
-const PageButton = styled.button`
+export const PageButton = styled.button`
   background-color: ${(props) => (props.isActive ? "#007bff" : "#f8f9fa")};
   color: ${(props) => (props.isActive ? "white" : "black")};
   padding: 8px 16px;
