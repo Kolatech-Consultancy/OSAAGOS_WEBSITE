@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../utils/axios";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import styled from "styled-components";
@@ -82,7 +82,6 @@ const UserCardContainer = styled.div`
   padding: 10px;
 `;
 
-
 function UserChat() {
   const [fetching, setFetching] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -92,36 +91,10 @@ function UserChat() {
   const handleClick = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
-  const [users, setUsers] = useState([
-    {
-      id: 1,
-      profilePicture: "https://via.placeholder.com/80/0000FF/FFFFFF/?text=JD",
-      fullname: "John Doe",
-    },
-    {
-      id: 2,
-      profilePicture: "https://via.placeholder.com/80/FF0000/FFFFFF/?text=JS",
-      fullname: "Jane Smith",
-    },
-    {
-      id: 3,
-      profilePicture: "https://via.placeholder.com/80/00FF00/FFFFFF/?text=MJ",
-      fullname: "Michael Johnson",
-    },
-    {
-      id: 4,
-      profilePicture: "https://via.placeholder.com/80/FFA500/FFFFFF/?text=RA",
-      fullname: "Robert Adams",
-    },
-    {
-      id: 5,
-      profilePicture: "https://via.placeholder.com/80/800080/FFFFFF/?text=AK",
-      fullname: "Angela King",
-    },
-  ]);
+  const [users, setUsers] = useState([]);
 
   const filteredItems = users.filter((item) => {
-    const matchesSearch = item.fullname
+    const matchesSearch = item.name
       .toLowerCase()
       .includes(searchQuery.toLowerCase());
 
@@ -135,25 +108,16 @@ function UserChat() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const token = Is_authorized();
-      console.log(token);
-
       setFetching(true);
       try {
-        // const response = await axios.get(
-        //   "https://osaagos-api-alumni-website.onrender.com/api/users/allUsers",
-        //   {
-        //     headers: {
-        //       authorization: `Bearer ${token}`,
-        //     },
-        //   }
-        // );
-        // setUsers(response.data);
-        // setFetching(false);
+        const response = await axios.get("/api/users/allUsers");
+        setUsers(response.data);
+        console.log(response.data);
+        setFetching(false);
       } catch (error) {
-        // toast.error(
-        //   error.response ? error.response.data.message : error.message
-        // );
+        toast.error(
+          error.response ? error.response.data.message : error.message
+        );
       } finally {
         setFetching(false);
       }
@@ -177,12 +141,15 @@ function UserChat() {
         </SearchFilterContainer>
       </div>
       <div className="max-w-5xl mx-auto">
-        <UserCardContainer>
-          {currentItems.map((user) => (
-            // <UserProfile key={user.id} user={user} />
-            <UserList key={user.id} user={user} />
-          ))}
-        </UserCardContainer>
+        {fetching ? (
+          <Spinner />
+        ) : (
+          <UserCardContainer>
+            {currentItems.map((user) => (
+              <UserList key={user._id} user={user} />
+            ))}
+          </UserCardContainer>
+        )}
       </div>
       <PaginationContainer>
         {Array.from({ length: totalPages }, (_, index) => (

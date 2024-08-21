@@ -1,8 +1,9 @@
-import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import Is_authorized from "../utils/authorization";
 import toast from "react-hot-toast";
+
+import axios from "../utils/axios";
+import { useParams } from "react-router-dom";
 
 // Container for the whole chat window
 const ChatContainer = styled.div`
@@ -88,33 +89,41 @@ const SendButton = styled.button`
 `;
 
 const MessagingApp = () => {
-  const [messages, setMessages] = useState([
-    { id: 1, text: "Hey, how are you?", sender: "other" },
-    { id: 2, text: "I'm good, thanks! How about you?", sender: "self" },
-    { id: 3, text: "I'm doing well, working on a project.", sender: "other" },
-    { id: 4, text: "That's awesome! Good luck!", sender: "self" },
-  ]);
-
+  const { id } = useParams();
+  const [senderId, setSenderId] = useState("");
+  const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
 
-  const handleSendMessage = () => {
-    const token = Is_authorized();
+  useEffect(() => {
+    const fetchMessages = async () => {
+      try {
+        const sendResp = await axios.get("/api/users/profile");
+        const senderId = sendResp.data._id;
+        setSenderId(senderId);
 
-    if (newMessage.trim() === "") return;
-    setMessages([
-      ...messages,
-      { id: messages.length + 1, text: newMessage, sender: "self" },
-    ]);
+        const response = await axios.get(
+          `/api/messages/messages?contactId=${id}`
+        );
+        console.log(response.data);
 
-    const sentData = axios.post(
-      "https://osaagos-api-alumni-website.onrender.com/",
-      newMessage,
-      {
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
+        setMessages(response.data);
+      } catch (error) {
+        toast.error(
+          error.response ? error.response.data.message : error.message
+        );
       }
-    );
+    };
+    if (id) {
+      fetchMessages();
+    }
+  }, [id]);
+
+  const handleSendMessage = () => {
+    if (newMessage.trim() === "") return;
+    setMessages([...messages, { content: newMessage, sender: senderId }]);
+
+    const data = { receiver: id, content: newMessage };
+    axios.post("/api/messages/send", data);
     toast.success("message sent successfully");
     setNewMessage("");
   };
@@ -124,10 +133,10 @@ const MessagingApp = () => {
       <MessagesContainer>
         {messages.map((message) => (
           <MessageBubble
-            key={message.id}
-            isOwnMessage={message.sender === "self"}
+            key={message._id}
+            isOwnMessage={message.sender === senderId}
           >
-            {message.text}
+            {message.content}
           </MessageBubble>
         ))}
       </MessagesContainer>

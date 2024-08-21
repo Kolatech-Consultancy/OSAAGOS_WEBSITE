@@ -17,12 +17,12 @@ function UserList({ user }) {
     <UserCard>
       <ProfilePicture
         src={user.profilePicture}
-        alt={`${user.fullname}'s profile`}
+        alt={`${user.name}'s profile`}
       />
       <UserInfo>
-        <FullName>{user.fullname}</FullName>
+        <FullName>{user.name}</FullName>
       </UserInfo>
-      <MessageButton onClick={() => handleSelectMessage(user.id)}>
+      <MessageButton onClick={() => handleSelectMessage(user._id)}>
         Message
       </MessageButton>
     </UserCard>

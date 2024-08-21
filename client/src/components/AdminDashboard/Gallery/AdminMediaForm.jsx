@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
+import axios from "../../../utils/axios";
 import styled from "styled-components";
-import axios from "axios";
-import Is_authorized from "../../../utils/authorization";
 import toast from "react-hot-toast";
 import SpinnerMini from "../../SpinnerMini";
 
@@ -68,11 +67,12 @@ const SubmitButton = styled.button`
 const AdminForm = ({ isEditing, setIsEditing, editId, media }) => {
   const [submiting, setSubmiting] = useState(false);
   const [formData, setFormData] = useState({
-    type: "image",
+    fileType: "image",
     title: "",
+    fileUrl: "",
     description: "",
   });
-  const [file, setFile] = useState(null);
+  // const [file, setFile] = useState(null);
 
   useEffect(() => {
     if (isEditing) {
@@ -89,34 +89,28 @@ const AdminForm = ({ isEditing, setIsEditing, editId, media }) => {
     });
   };
 
-  const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
-  };
+  // const handleFileChange = (e) => {
+  //   setFile(e.target.files[0]);
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!file) {
-      alert("Please upload a file");
-      return;
-    }
+    const data = {
+      fileType: formData.fileType,
+      title: formData.title,
+      description: formData.description,
+      fileUrl: formData.fileUrl,
+    };
 
-    const uploadData = new FormData();
-    uploadData.append("file", file);
-    uploadData.append("type", formData.type);
-    uploadData.append("title", formData.title);
-    uploadData.append("description", formData.description);
-
-    const token = Is_authorized();
     try {
       setSubmiting(true);
       if (isEditing) {
         const response = await axios.put(
-          `https://osaagos-api-alumni-website.onrender.com/api/admin/media/:${editId}`,
-          uploadData,
+          `/api/admin/media/:${editId}`,
+          data,
           {
             headers: {
-              authorization: `Bearer ${token}`,
               "Content-Type": "multipart/form-data",
             },
           }
@@ -125,32 +119,29 @@ const AdminForm = ({ isEditing, setIsEditing, editId, media }) => {
         toast.success("Edited successfully");
         setIsEditing(false);
         setFormData({
-          type: "image",
+          fileType: "image",
           title: "",
+          fileUrl :"",
           description: "",
         });
         setSubmiting(false);
       } else {
         setSubmiting(true);
 
-        await axios.post(
-          "https://osaagos-api-alumni-website.onrender.com/api/admin/media",
-          uploadData,
-          {
-            headers: {
-              authorization: `Bearer ${token}`,
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
+        await axios.post("/api/admin/media", data, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
         toast.success("Uploaded successfully");
         setIsEditing(false);
         setFormData({
-          type: "image",
+          fileType: "image",
           title: "",
+          fileUrl :"",
           description: "",
         });
-        setFile(null);
+        // setFile(null);
         setSubmiting(false);
       }
     } catch (error) {
@@ -163,20 +154,20 @@ const AdminForm = ({ isEditing, setIsEditing, editId, media }) => {
   return (
     <FormContainer>
       <Form onSubmit={handleSubmit}>
-        <Label htmlFor="file">Upload Image or Video</Label>
+        {/* <Label htmlFor="file">Upload Image or Video</Label>
         <Input
           type="file"
           id="file"
           accept="image/*, video/*"
           onChange={handleFileChange}
           required
-        />
+        /> */}
 
-        <Label htmlFor="type">Type</Label>
+        <Label htmlFor="fileType">Type</Label>
         <Select
-          id="type"
-          name="type"
-          value={formData.type}
+          id="fileType"
+          name="fileType"
+          value={formData.fileType}
           onChange={handleChange}
         >
           <option value="image">Image</option>
@@ -190,6 +181,16 @@ const AdminForm = ({ isEditing, setIsEditing, editId, media }) => {
           name="title"
           placeholder="Enter the title"
           value={formData.title}
+          onChange={handleChange}
+          required
+        />
+        <Label htmlFor="fileUrl">File Url</Label>
+        <Input
+          type="text"
+          id="fileUrl"
+          name="fileUrl"
+          placeholder="Enter the fileUrl"
+          value={formData.fileUrl}
           onChange={handleChange}
           required
         />

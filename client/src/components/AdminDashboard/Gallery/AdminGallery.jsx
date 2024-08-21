@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import AdminForm from "./AdminMediaForm";
-import axios from "axios";
-import Is_authorized from "../../../utils/authorization";
+import axios from "../../../utils/axios";
 import toast from "react-hot-toast";
 
 export const SearchFilterContainer = styled.div`
@@ -139,17 +138,12 @@ function AdminGallery() {
 
   async function deleteItem(id) {
     const Uri = `https://osaagos-api-alumni-website.onrender.com/api/admin/media/:${id}`;
-    const token = Is_authorized();
 
     try {
       // const conf = confirm("Are you sure you want to delete this item");
       // console.log(conf);
 
-      await axios.delete(Uri, {
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
-      });
+      await axios.delete(Uri);
     } catch (error) {
       toast.error(error.response ? error.response.data.message : error.message);
     }
