@@ -1,18 +1,39 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import toast from "react-hot-toast";
+import { useParams, useNavigate } from "react-router-dom";
 
 import axios from "../utils/axios";
-import { useParams } from "react-router-dom";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 // Container for the whole chat window
 const ChatContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
   height: 100vh;
   max-height: 100vh;
   background-color: #f4f6f9;
+`;
+
+// Header container for back button and user's name
+const Header = styled.div`
+  display: flex;
+  align-items: center;
+  /* justify-content: space-between; */
+  gap: 1rem;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+`;
+
+// Back button styling
+const BackButton = styled.button`
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
 `;
 
 // Chat messages section
@@ -90,7 +111,9 @@ const SendButton = styled.button`
 
 const MessagingApp = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [senderId, setSenderId] = useState("");
+  const [receiverName, setReceiverName] = useState("Loading....");
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
 
@@ -101,11 +124,17 @@ const MessagingApp = () => {
         const senderId = sendResp.data._id;
         setSenderId(senderId);
 
+        // Fetch receiver's name based on id
+        const userResponse = await axios.get(`/api/users/allUsers`);
+        const filteredUser = userResponse.data.filter((data) => {
+          return data._id === id;
+        });
+
+        setReceiverName(filteredUser[0].name);
+
         const response = await axios.get(
           `/api/messages/messages?contactId=${id}`
         );
-        console.log(response.data);
-
         setMessages(response.data);
       } catch (error) {
         toast.error(
@@ -118,18 +147,30 @@ const MessagingApp = () => {
     }
   }, [id]);
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (newMessage.trim() === "") return;
     setMessages([...messages, { content: newMessage, sender: senderId }]);
 
     const data = { receiver: id, content: newMessage };
-    axios.post("/api/messages/send", data);
-    toast.success("message sent successfully");
+    try {
+      await axios.post("/api/messages/send", data);
+      toast.success("Message sent successfully");
+    } catch (error) {
+      toast.error("Failed to send message");
+    }
+
     setNewMessage("");
   };
 
   return (
     <ChatContainer>
+      <Header>
+        <BackButton onClick={() => navigate(-1)}>
+          <IoMdArrowRoundBack />
+        </BackButton>
+        <h3>{receiverName}</h3>
+      </Header>
+
       <MessagesContainer>
         {messages.map((message) => (
           <MessageBubble
@@ -140,6 +181,7 @@ const MessagingApp = () => {
           </MessageBubble>
         ))}
       </MessagesContainer>
+
       <MessageInputContainer>
         <MessageInput
           type="text"
