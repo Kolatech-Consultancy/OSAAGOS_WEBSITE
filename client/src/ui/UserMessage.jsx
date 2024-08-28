@@ -5,6 +5,7 @@ import { useParams, useNavigate } from "react-router-dom";
 
 import axios from "../utils/axios";
 import { IoMdArrowRoundBack } from "react-icons/io";
+import { useLoginUser } from "../components/context/LoginUserContext";
 
 // Container for the whole chat window
 const ChatContainer = styled.div`
@@ -116,14 +117,12 @@ const MessagingApp = () => {
   const [receiverName, setReceiverName] = useState("Loading....");
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
+  const { user } = useLoginUser();
 
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const sendResp = await axios.get("/api/users/profile");
-        const senderId = sendResp.data._id;
-        setSenderId(senderId);
-
+        setSenderId(user);
         // Fetch receiver's name based on id
         const userResponse = await axios.get(`/api/users/allUsers`);
         const filteredUser = userResponse.data.filter((data) => {
@@ -145,7 +144,7 @@ const MessagingApp = () => {
     if (id) {
       fetchMessages();
     }
-  }, [id]);
+  }, [id,user]);
 
   const handleSendMessage = async () => {
     if (newMessage.trim() === "") return;

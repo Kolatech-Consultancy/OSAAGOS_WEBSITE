@@ -46,6 +46,7 @@ import AdminProfile from "./components/AdminDashboard/settings/Account";
 import JobsList from "./components/AdminDashboard/JobBoard/JobsList";
 import AdminGallery from "./components/AdminDashboard/Gallery/AdminGallery";
 import MessagingApp from "./ui/UserMessage";
+import { LoginUserProvider } from "./components/context/LoginUserContext";
 
 function App() {
   return (
@@ -78,7 +79,9 @@ function App() {
                 path="/user"
                 element={
                   <ProtectedRoute>
-                    <UserDashboardLayout />
+                    <LoginUserProvider>
+                      <UserDashboardLayout />
+                    </LoginUserProvider>
                   </ProtectedRoute>
                 }
               >
