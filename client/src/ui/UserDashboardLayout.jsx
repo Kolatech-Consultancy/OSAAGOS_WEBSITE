@@ -2,14 +2,14 @@ import { useState } from "react";
 import { LiaUserEditSolid } from "react-icons/lia";
 import { HiOutlineUserGroup } from "react-icons/hi2";
 import { SlEvent } from "react-icons/sl";
-import { MdOutlinePermMedia, MdWorkOutline } from "react-icons/md";
+import { MdOutlineForum, MdOutlinePermMedia, MdWorkOutline } from "react-icons/md";
 import { AiOutlineHome } from "react-icons/ai";
 import { PiChatsLight } from "react-icons/pi";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { BsArrowBarLeft } from "react-icons/bs";
 
 function UserDashboardLayout() {
-  const [isAsideOpen, setIsAsideOpen] = useState(false);
+  const [isAsideOpen, setIsAsideOpen] = useState(true);
   const location = useLocation().pathname;
 
   const toggleAside = () => {
@@ -110,6 +110,17 @@ function UserDashboardLayout() {
                       <span className="text-gray-600 font-medium">
                         Job Board
                       </span>
+                    </Link>
+                  </li>
+                  <li className="w-full block">
+                    <Link
+                      to="/user/forum"
+                      className={`flex items-center hover:bg-gray-300 rounded-md py-2 px-4 text-gray-600 gap-6 font-light text-base transition-all duration-200 ${
+                        location === "/user/forum" ? "bg-gray-400" : ""
+                      }`}
+                    >
+                      <MdOutlineForum />
+                      <span className="text-gray-600 font-medium">Forum</span>
                     </Link>
                   </li>
                   <li className="w-full block">

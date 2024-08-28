@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react";
 import { getAllGroups } from "../services/api";
 import Spinner from "../components/Spinner";
+import axios from "../utils/axios";
+import toast from "react-hot-toast";
+import { useLoginUser } from "../components/context/LoginUserContext";
+import CreateGroup from "./CreateGroup";
 
 function UserGroups() {
+  const [create, setCreate] = useState(false);
   const groups = [
     {
       _id: "group_id_1",
@@ -23,6 +28,7 @@ function UserGroups() {
       createdBy: "user_id_3",
     },
   ];
+  const { user } = useLoginUser();
   const [groupData, setGroupData] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -31,8 +37,6 @@ function UserGroups() {
     try {
       const response = await getAllGroups();
       const data = response.data;
-      console.log(data);
-
       setGroupData(data);
     } catch (error) {
       throw new Error(
@@ -44,6 +48,7 @@ function UserGroups() {
   }
 
   useEffect(() => {
+    setCreate(false);
     fetchData();
   }, []);
 
@@ -56,15 +61,28 @@ function UserGroups() {
         </div>
       </section>
     );
-  const handleJoin = (groupId) => {
-    console.log(`Joining group with ID: ${groupId}`);
+  const handleJoin = (groupId, joined) => {
+    if (!joined) {
+      axios
+        .post(`/api/groups/join/${groupId}`)
+        .then((ele) => {
+          if (ele.status === 200) toast.success("Group joined");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      console.log("Viewing user");
+    }
   };
-  
+
+  if (create) return <CreateGroup setCreate={setCreate} />;
+
   return (
     <div className="container mx-auto px-4 py-8">
       <h2 className="text-3xl font-semibold text-center mb-6">Groups</h2>
       <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        {groups.map((group) => (
+        {groupData.map((group) => (
           <div
             key={group._id}
             className="bg-white rounded-lg shadow-md p-6 transition-transform transform hover:scale-105"
@@ -73,12 +91,22 @@ function UserGroups() {
             <p className="text-gray-600 mb-4">{group.description}</p>
             <button
               className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 transition-colors"
-              onClick={() => handleJoin(group._id)}
+              onClick={() =>
+                handleJoin(group._id, group.members.includes(user))
+              }
             >
-              Join
+              {group.members.includes(user) ? "View" : "Join"}
             </button>
           </div>
         ))}
+      </div>
+      <div className="flex justify-center items-center mt-4">
+        <p
+          className="cursor-pointer text-center text-lg font-medium border-black border-2 mb-6 px-4 py-2 hover:text-white hover:bg-black transition-all duration-200"
+          onClick={() => setCreate(true)}
+        >
+          Create Group
+        </p>
       </div>
     </div>
   );

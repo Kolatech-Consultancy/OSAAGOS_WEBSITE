@@ -1,18 +1,10 @@
-import axios from "../utils/axios";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import styled from "styled-components";
 import Spinner from "../components/Spinner";
-import Is_authorized from "../utils/authorization";
-import {
-  PageButton,
-  PaginationContainer,
-  SearchFilterContainer,
-  SearchInput,
-} from "../components/AdminDashboard/Gallery/AdminGallery";
 import UserList from "./UserList";
+import { useLoginUser } from "../components/context/LoginUserContext";
 
-// Styled components
 export const UserCard = styled.div`
   display: flex;
   align-items: center;
@@ -32,13 +24,28 @@ export const UserCard = styled.div`
     text-align: center;
   }
 `;
+export const SearchFilterContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 5px;
+`;
 
+export const SearchInput = styled.input`
+  padding: 4px 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: ${(props) => (props.variant === "big" ? "100%" : "200px")};
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+  margin: 0 1rem;
+`;
 export const ProfilePicture = styled.img`
   width: 80px;
   height: 80px;
   border-radius: 50%;
   margin-right: 16px;
-
   @media (max-width: 768px) {
     margin-right: 0;
     margin-bottom: 12px;
@@ -80,19 +87,59 @@ const UserCardContainer = styled.div`
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: 20px;
   padding: 10px;
+
+  @media (max-width: 580px) {
+    padding: 5px;
+    gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+  }
+`;
+
+export const PaginationContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0 10px;
+
+  @media (max-width: 480px) {
+    gap: 0.25rem;
+  }
+`;
+
+export const PageButton = styled.button`
+  background-color: ${(props) => (props.isActive ? "#007bff" : "#f8f9fa")};
+  color: ${(props) => (props.isActive ? "white" : "black")};
+  padding: 6px 12px;
+  margin: 2px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-size: 14px;
+
+  &:hover {
+    background-color: #0056b3;
+    color: white;
+  }
+
+  @media (max-width: 480px) {
+    padding: 4px 10px;
+    font-size: 12px;
+  }
 `;
 
 function UserChat() {
-  const [fetching, setFetching] = useState(false);
+  const { allUser, isFetchingUser: fetching } = useLoginUser();
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const itemsPerPage = 4;
+  const [users, setUsers] = useState([]);
 
   const handleClick = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
-  const [users, setUsers] = useState([]);
-
   const filteredItems = users.filter((item) => {
     const matchesSearch = item.name
       .toLowerCase()
@@ -104,53 +151,48 @@ function UserChat() {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredItems.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredItems.length / itemsPerPage) || 3;
 
   useEffect(() => {
     const fetchData = async () => {
-      setFetching(true);
       try {
-        const response = await axios.get("/api/users/allUsers");
-        setUsers(response.data);
-        console.log(response.data);
-        setFetching(false);
+        setUsers(allUser);
       } catch (error) {
         toast.error(
           error.response ? error.response.data.message : error.message
         );
-      } finally {
-        setFetching(false);
       }
     };
     fetchData();
-  }, []);
+  }, [allUser]);
 
   if (fetching) <Spinner />;
 
   return (
-    <>
-      <div className="max-w-2xl mx-auto my-4">
-        <SearchFilterContainer>
-          <SearchInput
-            type="text"
-            placeholder="Search by name..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            variant="big"
-          />
-        </SearchFilterContainer>
-      </div>
-      <div className="max-w-5xl mx-auto">
-        {fetching ? (
-          <Spinner />
-        ) : (
-          <UserCardContainer>
-            {currentItems.map((user) => (
-              <UserList key={user._id} user={user} />
-            ))}
-          </UserCardContainer>
-        )}
-      </div>
+    <section className="max-w-5xl mx-auto px-4">
+      {/* <div className="max-w-2xl w-full mx-auto my-4 px-4"> */}
+      <SearchFilterContainer>
+        <SearchInput
+          type="text"
+          placeholder="Search by name..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          variant="big"
+        />
+      </SearchFilterContainer>
+      {/* </div> */}
+      {/* <div className="max-w-5xl mx-auto px-4"> */}
+      {fetching ? (
+        <Spinner />
+      ) : (
+        <UserCardContainer>
+          {currentItems.map((user) => (
+            <UserList key={user._id} user={user} />
+          ))}
+        </UserCardContainer>
+      )}
+      {/* </div> */}
+
       <PaginationContainer>
         {Array.from({ length: totalPages }, (_, index) => (
           <PageButton
@@ -162,7 +204,7 @@ function UserChat() {
           </PageButton>
         ))}
       </PaginationContainer>
-    </>
+    </section>
   );
 }
 
