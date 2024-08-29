@@ -6,16 +6,28 @@ import { CiSearch } from "react-icons/ci";
 import toast from "react-hot-toast";
 import { AdminDashboard } from "../services/api";
 import parseJwt from "./TokenDecoder";
+import UserList from "../ui/UserList";
+import axios from "../utils/axios";
+import SpinnerMini from "./SpinnerMini";
+import {
+  FullName,
+  MessageButton,
+  ProfilePicture,
+  UserCard,
+  UserInfo,
+} from "../ui/UserChat";
 
 const Header = () => {
   const location = useLocation();
   const dashboard = location.pathname === "/dashboard";
   const [searchQuery, setSearchQuery] = useState("");
+  const [search, setSearch] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
+  const [user, setUser] = useState([]);
   const [menuOpen, setMenuOpen] = useState(false);
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
-  const [admin, setAdmin] = useState(false)
+  const [admin, setAdmin] = useState(false);
 
   const ref = useRef(null);
 
@@ -25,54 +37,61 @@ const Header = () => {
   function closeMenu() {
     setMenuOpen(false);
   }
-  const handleSearch = () => {
-    // Dummy data for search results
-    const alumniList = [
-      { id: 1, name: "Ibrahim" },
-      { id: 2, name: "Ibrahim" },
-    ];
-
-    const results = alumniList.filter((alumni) =>
-      alumni.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    setSearchResults(results);
+  const handleSearch = async () => {
+    setSearch(true);
+    if (searchQuery.length > 1) {
+      const response = await axios.get(`/api/users/search?name=${searchQuery}`);
+      console.log(response);
+      setSearch(false);
+      setUser(response.data);
+    } else {
+      toast.error("Please fill the input");
+      setSearch(false);
+    }
+    setSearch(false);
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("token")
+    const token = localStorage.getItem("token");
     if (token) {
-      const payload = parseJwt(token)
-      
+      const payload = parseJwt(token);
+
       if (payload.role === "Admin") {
-        return setAdmin(true)
+        return setAdmin(true);
       }
-      setAdmin(false)
+      setAdmin(false);
     }
-  }, [token])
+  }, [token]);
 
   const handleDashboard = async () => {
-
     try {
-      await AdminDashboard()
-      toast.success("Access granted!")
-      navigate("/dashboard")
+      await AdminDashboard();
+      toast.success("Access granted!");
+      navigate("/dashboard");
     } catch (error) {
       console.log(error);
-      toast.error('Access to the admin dashboard denied!')
+      toast.error("Access to the admin dashboard denied!");
     }
-  }
+  };
 
+  const handleSelectMessage = async (route) => {
+    navigate(`/user/chat/${route}`);
+    setSearchQuery("");
+    setUser([]);
+  };
   return (
     <>
       <header className="sticky top-0 z-[100]">
         <div
-          className={`bg-blue-800 flex justify-between ${dashboard ? "mb-3" : ""
-            } text-white py-3 px-4`}
+          className={`bg-blue-800 flex justify-between ${
+            dashboard ? "mb-3" : ""
+          } text-white py-3 px-4`}
         >
           <Link to="/">
             <div
-              className={`${!dashboard && "hidden"
-                } mx-10 flex flex-col justify-center items-center`}
+              className={`${
+                !dashboard && "hidden"
+              } mx-10 flex flex-col justify-center items-center`}
             >
               <img
                 className="w-[6rem] h-[6rem] object-cover"
@@ -83,11 +102,16 @@ const Header = () => {
           </Link>
           <div className="flex gap-2 px-2">
             <article className="flex items-center bg-[rgba(204,204,204,.3)]  rounded-md overflow-hidden">
-              <span className="sm:px-2 px-1 h-full bg-orange-400 font-bold sm:text-xl text-lg flex items-center cursor-pointer">
-                <CiSearch />
+              <span
+                className="sm:px-2 px-1 h-full bg-orange-400 font-bold sm:text-xl text-lg flex items-center cursor-pointer"
+                onClick={handleSearch}
+              >
+                {search ? <SpinnerMini /> : <CiSearch />}
               </span>
               <input
                 type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 className="bg-transparent border-0 outline-0 px-1 lg:px-2 py-1 inline-flex"
                 placeholder="Search Alumni ..."
               />
@@ -104,7 +128,7 @@ const Header = () => {
                   onClick={() => {
                     localStorage.clear("token");
                     toast.success("Logout Successfully");
-                    setAdmin(false)
+                    setAdmin(false);
                     navigate("/login");
                   }}
                 >
@@ -129,8 +153,9 @@ const Header = () => {
           </div>
         </div>
         <div
-          className={`flex justify-between items-center px-10 relative ${dashboard && "hidden"
-            } bg-white items-center shadow-lg`}
+          className={`flex justify-between items-center px-10 relative ${
+            dashboard && "hidden"
+          } bg-white items-center shadow-lg`}
         >
           <Link to="/">
             <div className="flex flex-col justify-start items-start">
@@ -143,8 +168,9 @@ const Header = () => {
           </Link>
 
           <div
-            className={`px-8 lg:px-0 justify-end lg:basis-[70%]  lg:-translate-x-0  pt-14 lg:py-0 test top-0 left-0 bg-blue-800 lg:bg-transparent sm:w-[20rem] w-full lg:w-full h-full transition-all duration-200 ${menuOpen ? "" : "-translate-x-[100%]"
-              }`}
+            className={`px-8 lg:px-0 justify-end lg:basis-[70%]  lg:-translate-x-0  pt-14 lg:py-0 test top-0 left-0 bg-blue-800 lg:bg-transparent sm:w-[20rem] w-full lg:w-full h-full transition-all duration-200 ${
+              menuOpen ? "" : "-translate-x-[100%]"
+            }`}
             ref={ref}
             onClick={() => setMenuOpen(false)}
           >
@@ -173,7 +199,11 @@ const Header = () => {
               <Link to="/contactus">
                 <li>Contact Us</li>
               </Link>
-             {admin &&  <li role={"button"} onClick={handleDashboard}>Admin Dashboard</li>}
+              {admin && (
+                <li role={"button"} onClick={handleDashboard}>
+                  Admin Dashboard
+                </li>
+              )}
 
               {token ? (
                 <div className="lg:hidden mt-6 flex flex-col gap-5">
@@ -221,6 +251,22 @@ const Header = () => {
             <HiMenuAlt3 />
           </div>
         </div>
+        {user.length > 0 && (
+          <article className="fixed lg:right-[25rem] left-0 top-[3.5rem] lg:w-80 w-full p-2 bg-green-700 h-full z-[9999px] overflow-scroll">
+            {user.map((user) => (
+              <div key={user._id}>
+                <UserCard>
+                  <UserInfo>
+                    <FullName>{user.name}</FullName>
+                  </UserInfo>
+                  <MessageButton onClick={() => handleSelectMessage(user._id)}>
+                    Message
+                  </MessageButton>
+                </UserCard>
+              </div>
+            ))}
+          </article>
+        )}
       </header>
     </>
   );
