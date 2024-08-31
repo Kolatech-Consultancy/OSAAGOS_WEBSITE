@@ -46,7 +46,8 @@ import AdminProfile from "./components/AdminDashboard/settings/Account";
 import JobsList from "./components/AdminDashboard/JobBoard/JobsList";
 import JobOverview from "./components/AdminDashboard/JobBoard/JobOverview";
 import AdminGallery from "./components/AdminDashboard/Gallery/AdminGallery";
-
+import MessagingApp from "./ui/UserMessage";
+import { LoginUserProvider } from "./components/context/LoginUserContext";
 
 function App() {
   return (
@@ -79,12 +80,15 @@ function App() {
                 path="/user"
                 element={
                   <ProtectedRoute>
-                    <UserDashboardLayout />
+                    <LoginUserProvider>
+                      <UserDashboardLayout />
+                    </LoginUserProvider>
                   </ProtectedRoute>
                 }
               >
                 <Route path="profile" element={<UserProfilePage />} />
                 <Route path="chat" element={<UserChat />} />
+                <Route path="chat/:id" element={<MessagingApp />} />
                 <Route path="groups" element={<UserGroups />} />
                 <Route path="update-profile" element={<UpdateUserProfile />} />
                 <Route path="events" element={<EventsPage />} />
