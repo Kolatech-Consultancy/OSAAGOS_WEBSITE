@@ -6,6 +6,7 @@ const AddEditAlumniModal = ({ isOpen, onClose, onSave, alumni, loader }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    phone:"",
     password: '',
     education: '',
     profession: '',
@@ -80,6 +81,21 @@ const AddEditAlumniModal = ({ isOpen, onClose, onSave, alumni, loader }) => {
               id="email"
               name='email'
               value={formData.email}
+              onChange={handleChange}
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none"
+              placeholder="Enter Alumni Name"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="phone" className="block text-gray-700 font-medium mb-2">
+              Phone Number
+            </label>
+            <input
+              type="phone"
+              id="phone"
+              name='phone'
+              value={formData.phone}
               onChange={handleChange}
               className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none"
               placeholder="Enter Alumni Name"

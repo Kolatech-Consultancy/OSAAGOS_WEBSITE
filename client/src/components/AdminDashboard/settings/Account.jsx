@@ -19,6 +19,7 @@ const AdminProfile = () => {
         let response = await GetOneUser();
         response.data.password = ''
         setUserDetails(response.data);
+        console.log(response.data);
       } catch (error) {
         setError(true);
         console.error(error);
@@ -96,7 +97,7 @@ const AdminProfile = () => {
           <div className='my-6 flex flex-wrap sm:flex-nowrap items-center gap-3 justify-between'>
             <div className='flex items-center gap-3'>
               <div className='w-[7rem] h-[7rem] rounded-full border'>
-                <img src={userDetails.profilePicture || "/userDef.png"} className='max-h-full max-w-full' alt="" />
+                <img src={userDetails.profilePicture} className='max-h-full max-w-full' alt="" />
               </div>
               <p className="leading-5">
                 <header className='leading-2 font-medium text-lg'>Profile picture</header>

@@ -183,7 +183,7 @@ const JobsList = () => {
                                                     </button>
                                                     {isOpen === index && (
                                                         <div className="dropdown-menu absolute mb-4 right-0 w-44 bg-white border border-gray-200 rounded-md shadow-lg z-10">
-                                                            <Link
+                                                            <Link to={`${job._id}`}
                                                                 className="block px-4 py-2 text-green-500 hover:bg-gray-200 w-full text-left"
 
                                                             >

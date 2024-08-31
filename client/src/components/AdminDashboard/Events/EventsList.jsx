@@ -19,7 +19,7 @@ const EventList = () => {
 
   let isMounted = true;
   const date = new Date();
-  const today = [date.getDate(), date.getMonth() + 1, date.getFullYear()]; // Adjusted month
+  const today = [date.getDate(), date.getMonth(), date.getFullYear()]; // Adjusted month
   const arrOfMonth = ["Jan", 'Feb', 'Mar', 'April', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
   useEffect(() => {
@@ -29,7 +29,7 @@ const EventList = () => {
         const response = await getEvents();
         setEvents(response.data);
         setEventDate(() => response.data.map(evt => new Date(evt.date).toLocaleDateString().split("/")));
-        console.log(eventDate);
+        console.log(response.data, eventDate);
       } catch (error) {
         setError(true);
         console.log(error);
@@ -103,7 +103,10 @@ const EventList = () => {
   };
 
   const isOngoing = (eventDate, today) => {
-    const [day, month, year] = eventDate.map(Number);
+    const day = new Date(eventDate).getDate()
+    const month = new Date(eventDate).getMonth()
+    const year = new Date(eventDate).getFullYear()
+    // const [day, month, year] = eventDate.map(Number);
     const [currentDay, currentMonth, currentYear] = today;
     if (year > currentYear) return true;
     if (year === currentYear) {
@@ -166,12 +169,12 @@ const EventList = () => {
                     <tr key={event._id}>
                       <td className="py-2 px-4">{event?.title}</td>
                       <td className="py-2 px-4">
-                        {`${eventDate[index][0]} ${arrOfMonth[Number(eventDate[index][1]) - 1]} ${eventDate[index][2]}`}
+                      {`${new Date(event.date).getDate()} ${arrOfMonth[new Date(event.date).getMonth()]}, ${new Date(event.date).getFullYear()}`}
                       </td>
                       <td className="py-2 px-4">{event?.attendees?.length}</td>
                       <td className="py-2 px-4">{event?.location}</td>
                       <td className="py-2 px-4">
-                        {isOngoing(eventDate[index], today) ? (
+                        {isOngoing(event.date, today) ? (
                           <span className='bg-green-100 px-4 font-medium text-green-400 py-1 rounded-lg w-fit flex items-center justify-center'>Ongoing</span>
                         ) : (
                           <span className='bg-red-100 px-4 font-medium text-red-400 py-1 rounded-lg w-fit flex items-center justify-center'>Closed</span>

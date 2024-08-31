@@ -1,6 +1,7 @@
 import { FaChevronLeft, FaBell, FaSun, FaMoon, FaSearch, FaCog } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { useMoveBack } from '../../useMoveBack';
+import NotificationButton from './NotificationBell';
 
 const DashNavbar = ({ isOpen, isSmallScreen }) => {
     const moveBack = useMoveBack()
@@ -10,7 +11,7 @@ const DashNavbar = ({ isOpen, isSmallScreen }) => {
     }
 
     return (
-        <nav className={`bg-white p-2 sm:p-4 fixed top-0 gap-3 flex items-center justify-between shadow-lg  z-50`} style={{ width: isOpen && !isSmallScreen ? 'calc(100% - 16rem)' : "100%" }}>
+        <nav className={`bg-white p-2 sm:p-4 fixed top-0 gap-3 flex items-center justify-between shadow-lg  z-40`} style={{ width: isOpen && !isSmallScreen ? 'calc(100% - 16rem)' : "100%" }}>
             <div className="flex items-center">
                 <header role={"button"} onClick={handlePreviousRoute}>
                     <div className="flex items-center">
@@ -29,10 +30,7 @@ const DashNavbar = ({ isOpen, isSmallScreen }) => {
             </div>
 
             <div className="flex items-center space-x-4">
-                <button className="p-2 hover:bg-gray-700 text-slate-400 text-xl rounded-md relative">
-                    <FaBell />
-                    <span className="absolute top-0 right-0 text-white bg-red-500 text-xs rounded-full h-4 w-4 flex items-center justify-center">3</span> {/* Example for notification badge */}
-                </button>
+                <NotificationButton/>
                 <Link to={"admin/profile"}>
                     <button className="p-2 hover:bg-gray-700 text-slate-400 text-xl rounded-md relative">
                         <FaCog />

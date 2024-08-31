@@ -17,10 +17,7 @@ const NewsPage = () => {
     const [error, setError] = useState(false);
     const [isOpen, setIsOpen] = useState(null);
     let isMounted = true
-
-
-
-
+    const arrOfMonth = ["Jan", 'Feb', 'Mar', 'April', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 
     useEffect(() => {
@@ -29,6 +26,7 @@ const NewsPage = () => {
                 setLoader(true);
                 const response = await getNews();
                 setNews(response.data);
+                console.log(response.data);
             } catch (error) {
                 setError(true);
                 console.error(error);
@@ -54,7 +52,7 @@ const NewsPage = () => {
                 const newNews = await addNews(newsItem);
                 setNews([...news, newNews.data]);
                 toast.success("News added successfully.");
-                // window.location.reload()
+                window.location.reload()
             }
         } catch (error) {
             console.error(error);
@@ -150,7 +148,7 @@ const NewsPage = () => {
                         <thead>
                             <tr>
                                 <th className="py-2 px-4">Title</th>
-                                {/* <th className="py-2 px-4">Author</th> */}
+                                <th className="py-2 px-4">Author</th>
                                 <th className="py-2 px-4">Created At</th>
                                 <th className="py-2 px-4">Actions</th>
                             </tr>
@@ -159,8 +157,8 @@ const NewsPage = () => {
                             {news.map((item, index) => (
                                 <tr key={item._id} className="border-b border-gray-200">
                                     <td className="py-2 px-4">{item.title}</td>
-                                    {/* <td className="py-2 px-4">{item.author.name}</td> */}
-                                    <td className="py-2 px-4">{new Date(item.createdAt).toLocaleDateString()}</td>
+                                    <td className="py-2 px-4">{item.author.name}</td>
+                                    <td className="py-2 px-4">{`${new Date(item.createdAt).getDate()} ${arrOfMonth[new Date(item.createdAt).getMonth()]}, ${new Date(item.createdAt).getFullYear()}`}</td>
                                     <td className="py-2 px-4">
                                         <div className="relative">
                                             <button
