@@ -6,7 +6,6 @@ function parseJwt(token) {
             return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
         }).join(''));
         const data = JSON.parse(jsonPayload);
-        console.log(data);
         return {role: data?.role}
     }
 

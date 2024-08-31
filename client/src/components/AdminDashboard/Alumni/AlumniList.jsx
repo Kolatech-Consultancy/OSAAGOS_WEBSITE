@@ -66,10 +66,10 @@ const AlumniList = () => {
             setIsLoading(true);
             if (currentAlumni) {
                 await updateAlumniProfile(currentAlumni._id, alumniData);
-                setAlumni(alumni.map(al => 
+                setAlumni(alumni.map(al =>
                     al._id === currentAlumni._id ? alumniData : al
-                  ));
-                  toast.success("Alumni updated successfully");
+                ));
+                toast.success("Alumni updated successfully");
             } else {
                 const newAlumnus = await CreateAlumni(alumniData);
                 setAlumni([...alumni, newAlumnus.data])
@@ -152,26 +152,38 @@ const AlumniList = () => {
                                     <tr>
                                         <th className="py-2 px-4">Name</th>
                                         <th className="py-2 px-4">Email</th>
+                                        <th className="py-2 px-4">Phone Number</th>
                                         <th className="py-2 px-4">Education</th>
                                         <th className="py-2 px-4">Field Of Study</th>
                                         <th className="py-2 px-4">Graduation Year</th>
                                         <th className="py-2 px-4">Profession</th>
                                         <th className="py-2 px-4">Company</th>
                                         <th className="py-2 px-4">Address</th>
+                                        <th className="py-2 px-4">Status</th>
                                         <th className="py-2 px-4">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white text-gray-700">
                                     {alumni.map((al, index) => (
                                         <tr key={al._id}>
-                                            <td className="py-2 px-4">{al.name || "Nil"}</td>
-                                            <td className="py-2 px-4">{al.email || "Nil"}</td>
-                                            <td className="py-2 px-4 capitalize">{al.education || "Nil"}</td>
-                                            <td className="py-2 px-4 capitalize">{al.profession || "Nil"}</td>
-                                            <td className="py-2 px-4">{al.graduationYear || "Nil"}</td>
-                                            <td className="py-2 px-4 capitalize">{al.fieldOfStudy || "Nil"}</td>
-                                            <td className="py-2 px-4 capitalize">{al.company || "Nil"}</td>
-                                            <td className="py-2 px-4 max-w-44 truncate text-ellipsis capitalize">{al.address || "Nil"}</td>
+                                            <td className="py-2 px-4 max-w-48 truncate text-ellipsis">{al.name || "Nil"}</td>
+                                            <td className="py-2 px-4 max-w-48 truncate text-ellipsis">{al.email || "Nil"}</td>
+                                            <td className="py-2 px-4 max-w-48 truncate text-ellipsis">{al.phone || "Nil"}</td>
+                                            <td className="py-2 px-4 max-w-48 truncate text-ellipsis capitalize">{al.education || "Nil"}</td>
+                                            <td className="py-2 px-4 max-w-48 truncate text-ellipsis capitalize">{al.profession || "Nil"}</td>
+                                            <td className="py-2 px-4 max-w-48 truncate text-ellipsis">{al.graduationYear || "Nil"}</td>
+                                            <td className="py-2 px-4 max-w-48 truncate text-ellipsis capitalize">{al.fieldOfStudy || "Nil"}</td>
+                                            <td className="py-2 px-4 max-w-48 truncate text-ellipsis capitalize">{al.company || "Nil"}</td>
+                                            <td className="py-2 px-4 max-w-48 truncate text-ellipsis capitalize">{al.address || "Nil"}</td>
+                                            <td className={`py-2 px-4 `}>
+                                                <span className={`px-4 font-medium py-1 text-sm rounded-lg w-fit flex items-center justify-center ${al.isVerified ? "text-green-400 bg-green-100" : "text-red-400 bg-red-100"}`}>
+                                                    {al.isVerified ?
+                                                        "Verified"
+                                                        :
+                                                        "Not verified"
+                                                    }
+                                                </span>
+                                            </td>
                                             <td className="py-2 px-4">
                                                 <div className="relative">
                                                     <button
@@ -184,21 +196,21 @@ const AlumniList = () => {
                                                         <div className="dropdown-menu absolute mb-4 right-0 w-44 bg-white border border-gray-200 rounded-md shadow-lg z-10">
                                                             <Link
                                                                 className="block px-4 py-2 text-green-500 hover:bg-gray-200 w-full text-left"
-                                                                
+
                                                             >
                                                                 <FaUser className="inline mr-2" />
                                                                 Overview
                                                             </Link>
                                                             <button
                                                                 className="block px-4 py-2 text-blue-500 hover:bg-gray-200 w-full text-left focus:outline-none"
-                                                                onClick={()=>openAddEditModal(al)}
+                                                                onClick={() => openAddEditModal(al)}
                                                             >
                                                                 <FaEdit className="inline mr-2" />
                                                                 Edit
                                                             </button>
                                                             <button
                                                                 className="block px-4 py-2 text-red-500 hover:bg-gray-200 w-full text-left focus:outline-none"
-                                                                onClick={()=>openDeleteModal(al)}
+                                                                onClick={() => openDeleteModal(al)}
                                                             >
                                                                 <FaTrash className="inline mr-2" />
                                                                 Delete

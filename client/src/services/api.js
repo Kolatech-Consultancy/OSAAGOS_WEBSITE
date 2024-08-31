@@ -112,16 +112,19 @@ export const deletePost = async (id) => {
     return axios.delete(`/api/posts/${id}`)
 };
 export const getJob = async () => {
-    return axios.get(`/api/jobs`)
+    return axios.get(`/api/admin/jobs`)
+};
+export const getJobById = async (jobId) => {
+    return axios.get(`/api/admin/jobs/${jobId}`)
 };
 export const editJob = async (id, job) => {
-    return axios.put(`/api/jobs/${id}`, job)
+    return axios.put(`/api/admin/jobs/${id}`, job)
 };
 export const addJob = async (job) => {
-    return axios.post(`/api/jobs/create`, job)
+    return axios.post(`/api/admin/jobs/`, job)
 };
 export const deleteJob = async (id) => {
-    return axios.delete(`/api/jobs/${id}`)
+    return axios.delete(`/api/admin/jobs/${id}`)
 };
 
 export const GetOneUser = () => {
