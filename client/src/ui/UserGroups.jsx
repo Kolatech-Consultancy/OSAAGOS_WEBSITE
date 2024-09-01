@@ -5,9 +5,12 @@ import axios from "../utils/axios";
 import toast from "react-hot-toast";
 import { useLoginUser } from "../components/context/LoginUserContext";
 import CreateGroup from "./CreateGroup";
+import { useNavigate } from "react-router-dom";
 
 function UserGroups() {
   const [create, setCreate] = useState(false);
+  const navigate = useNavigate();
+
   const groups = [
     {
       _id: "group_id_1",
@@ -37,6 +40,7 @@ function UserGroups() {
     try {
       const response = await getAllGroups();
       const data = response.data;
+
       setGroupData(data);
     } catch (error) {
       throw new Error(
@@ -67,12 +71,26 @@ function UserGroups() {
         .post(`/api/groups/join/${groupId}`)
         .then((ele) => {
           if (ele.status === 200) toast.success("Group joined");
+          console.log(ele);
         })
         .catch((error) => {
           console.log(error);
+          toast.error(
+            error.response ? error.response.data.message : error.message
+          );
         });
     } else {
       console.log("Viewing user");
+      navigate(`${groupId}`);
+    }
+  };
+
+  const handleLeave = (groupId) => {
+    try {
+      axios.post(`/api/groups/leave/${groupId}`);
+      toast.success("You've left the group");
+    } catch (error) {
+      toast.error(error.response ? error.response.data.message : error.message);
     }
   };
 
@@ -89,14 +107,24 @@ function UserGroups() {
           >
             <h3 className="text-xl font-bold mb-2">{group.name}</h3>
             <p className="text-gray-600 mb-4">{group.description}</p>
-            <button
-              className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 transition-colors"
-              onClick={() =>
-                handleJoin(group._id, group.members.includes(user))
-              }
-            >
-              {group.members.includes(user) ? "View" : "Join"}
-            </button>
+            <div className="flex justify-between items-center">
+              <button
+                className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 transition-colors"
+                onClick={() =>
+                  handleJoin(group._id, group.members.includes(user))
+                }
+              >
+                {group.members.includes(user) ? "View" : "Join"}
+              </button>
+              {group.members.includes(user) && (
+                <button
+                  className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 transition-colors"
+                  onClick={handleLeave(group._id)}
+                >
+                  Leave
+                </button>
+              )}
+            </div>
           </div>
         ))}
       </div>

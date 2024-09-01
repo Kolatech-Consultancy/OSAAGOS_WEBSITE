@@ -69,7 +69,6 @@ const CreateButton = styled.button`
 const CreateGroup = ({ setCreate }) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -85,7 +84,9 @@ const CreateGroup = ({ setCreate }) => {
     };
 
     try {
-      await axios.post("/api/groups/create", groupData);
+      const res = await axios.post("/api/groups/create", groupData);
+      console.log(res);
+
       toast.success("Group created successfully");
       setName("");
       setDescription("");
