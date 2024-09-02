@@ -119,7 +119,7 @@ function UserGroups() {
               {group.members.includes(user) && (
                 <button
                   className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 transition-colors"
-                  onClick={handleLeave(group._id)}
+                  onClick={() => handleLeave(group._id)}
                 >
                   Leave
                 </button>
