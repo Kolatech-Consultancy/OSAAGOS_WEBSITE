@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import {
-  // ActionButton,
-  // ActionsContainer,
   PostContainer,
   PostContent,
   PostTitle,
@@ -16,12 +14,50 @@ import {
   UserInfo,
 } from "./UserGroupMessage";
 import axios from "../utils/axios";
+import { HiOutlineDotsVertical } from "react-icons/hi";
+import { MdDelete } from "react-icons/md";
+import { useLoginUser } from "../components/context/LoginUserContext";
+import toast from "react-hot-toast";
 
 const GroupPost = ({ post, handleReplySubmit, replyInput, setReplyInput }) => {
   const [replies, setReplies] = useState([]);
-  // const navigate = useNavigate();
+  const [show, setShow] = useState(false);
+  const [showReplyDel, setShowReplyDel] = useState({});
+  const { user } = useLoginUser();
 
-  useEffect(() => {    
+  function handleDeletePost(id) {
+    axios
+      .delete(`/api/groups/posts/${id}`)
+      .then(() => {
+        toast.success("Post deleted");
+      })
+      .catch((error) => {
+        console.error(error);
+        toast.error(
+          error.response && error.response.data && error.response.data.message
+            ? error.response.data.message
+            : "An error occurred while deleting the post."
+        );
+      });
+  }
+
+  function handleDeleteReply(id) {
+    axios
+      .delete(`/api/groups/replies/${id}`)
+      .then(() => {
+        toast.success("Reply deleted");
+        setReplies(replies.filter((reply) => reply._id !== id));
+      })
+      .catch((error) =>
+        toast.error(
+          error.response && error.response.data && error.response.data.message
+            ? error.response.data.message
+            : "An error occurred while deleting the post."
+        )
+      );
+  }
+
+  useEffect(() => {
     async function getReplies() {
       const res = await axios.get(`/api/groups/posts/${post._id}/replies`);
       setReplies(res.data);
@@ -29,17 +65,38 @@ const GroupPost = ({ post, handleReplySubmit, replyInput, setReplyInput }) => {
     getReplies();
   }, [post._id]);
 
+  const toggleReplyDeletePanel = (replyId) => {
+    setShowReplyDel((prev) => ({
+      ...prev,
+      [replyId]: !prev[replyId],
+    }));
+  };
 
   return (
     <PostContainer>
-      <UserInfo>Posted by {post.author?.name}</UserInfo>
+      <div className="flex justify-between items-center">
+        <UserInfo>Posted by {post.author?.name}</UserInfo>
+        {post.author._id === user && (
+          <div
+            className="cursor-pointer relative"
+            onClick={() => setShow(!show)}
+          >
+            <HiOutlineDotsVertical />
+            {show && (
+              <article className="border shadow-lg bg-white p-2 rounded-sm absolute whitespace-nowrap right-full">
+                <p
+                  className="flex justify-center items-center"
+                  onClick={() => handleDeletePost(post._id)}
+                >
+                  Delete Post <MdDelete />
+                </p>
+              </article>
+            )}
+          </div>
+        )}
+      </div>
       <PostTitle>{post.title}</PostTitle>
       <PostContent>{post.content}</PostContent>
-      {/* <ActionsContainer>
-        <ActionButton>Like</ActionButton>
-        <ActionButton onClick={handleCommentClick}>Comment</ActionButton>{" "}
-        <ActionButton>Share</ActionButton>
-      </ActionsContainer> */}
 
       <ReplyContainer>
         <ReplyInput
@@ -54,12 +111,30 @@ const GroupPost = ({ post, handleReplySubmit, replyInput, setReplyInput }) => {
 
         <ReplyList>
           {replies.map((reply, index) => (
-            <ReplyItem key={index}>
-              <ReplyImage src={reply.profilePicture} alt="User" />
-              <ReplyContent>
-                <ReplyUser>{reply.author?.name}</ReplyUser>
-                {reply.content}
-              </ReplyContent>
+            <ReplyItem key={reply._id}>
+              <div className="flex items-start">
+                <ReplyImage src={reply.profilePicture} alt="User" />
+                <ReplyContent>
+                  <ReplyUser>{reply.author?.name}</ReplyUser>
+                  {reply.content}
+                </ReplyContent>
+              </div>
+              <div
+                className="cursor-pointer relative flex justify-end"
+                onClick={() => toggleReplyDeletePanel(reply._id)}
+              >
+                <HiOutlineDotsVertical />
+                {showReplyDel[reply._id] && (
+                  <article className="border shadow-lg bg-white p-2 rounded-sm absolute whitespace-nowrap right-full">
+                    <p
+                      className="flex justify-center items-center"
+                      onClick={() => handleDeleteReply(reply._id)}
+                    >
+                      Delete Reply <MdDelete />
+                    </p>
+                  </article>
+                )}
+              </div>
             </ReplyItem>
           ))}
         </ReplyList>
