@@ -1,37 +1,47 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import axios from "../../utils/axios";
+import { getAllGroups } from "../../services/api";
 
-const MessageContext = createContext(undefined);
+const GroupContext = createContext(undefined);
 
-function MessageProvider({ children }) {
+function GroupProvider({ children }) {
   const [isFetchingMessage, setIsFetchingMessage] = useState(false);
-
-  useEffect(() => {
-    async function fetchData() {
-        setIsFetchingMessage(true);
-        
+  const [groupData, setGroupData] = useState([]);
 
 
+ async function fetchData() {
+   setIsFetchingMessage(true);
+   try {
+     const response = await getAllGroups();
+     const data = response.data;
+     setGroupData(data);
+   } catch (error) {
+     throw new Error(
+       error.response ? error.response.data.message : error.message
+     );
+   } finally {
+     setIsFetchingMessage(false);
+   }
+ }
 
-      setIsFetchingMessage(false);
-    }
-    fetchData();
-  }, []);
+ useEffect(() => {
+   fetchData();
+ }, []);
+
 
   return (
-    <MessageContext.Provider
-      value={{ isFetchingMessage }}
+    <GroupContext.Provider
+      value={{ isFetchingMessage,groupData }}
     >
       {children}
-    </MessageContext.Provider>
+    </GroupContext.Provider>
   );
 }
 
-function useMessage() {
-  const context = useContext(MessageContext);
+function useGroup() {
+  const context = useContext(GroupContext);
   if (context === undefined)
     throw new Error("Filter context was used outside of filter provider");
   return context;
 }
 
-export { MessageProvider, useMessage };
+export { GroupProvider, useGroup };

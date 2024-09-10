@@ -1,94 +1,58 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import toast from "react-hot-toast";
-import { useParams, useNavigate } from "react-router-dom";
-
+import GroupPost from "./GroupPost";
 import axios from "../utils/axios";
-import { IoMdArrowRoundBack } from "react-icons/io";
-import { useLoginUser } from "../components/context/LoginUserContext";
+import { useParams } from "react-router-dom";
+import { useGroup } from "../components/context/MessagesContext";
+import toast from "react-hot-toast";
 
-// Container for the whole chat window
-const ChatContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  max-height: 100vh;
+const GroupContainer = styled.div`
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
   background-color: #f4f6f9;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+  @media (max-width: 768px) {
+    padding: 15px;
+    margin: 10px;
+  }
 `;
 
-// Header container for back button and user's name
-const Header = styled.div`
-  display: flex;
-  align-items: center;
-  /* justify-content: space-between; */
-  gap: 1rem;
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
+const GroupHeader = styled.div`
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #ddd;
+`;
+
+const GroupName = styled.h1`
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 5px;
+`;
+
+const GroupDescription = styled.p`
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 10px;
+`;
+
+const CreatePostContainer = styled.div`
+  background-color: #fff;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 `;
 
-// Back button styling
-const BackButton = styled.button`
-  background-color: transparent;
-  border: none;
-  color: white;
-  font-size: 18px;
-  cursor: pointer;
-`;
-
-// Chat messages section
-const MessagesContainer = styled.div`
-  flex-grow: 1;
-  overflow-y: auto;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-`;
-
-// Individual message bubble
-const MessageBubble = styled.div`
-  max-width: 60%;
-  padding: 10px 15px;
+const Input = styled.input`
+  width: 100%;
+  padding: 10px;
   margin-bottom: 10px;
-  border-radius: 18px;
-  color: white;
-  position: relative;
-  font-size: 16px;
-
-  ${(props) =>
-    props.isOwnMessage
-      ? `
-    background-color: #007bff;
-    align-self: flex-end;
-    border-bottom-right-radius: 0;
-  `
-      : `
-    background-color: #e4e6eb;
-    align-self: flex-start;
-    color: #333;
-    border-bottom-left-radius: 0;
-  `}
-`;
-
-// Message input container fixed at the bottom
-const MessageInputContainer = styled.div`
-  padding: 10px;
-  background-color: #fff;
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-  display: flex;
-  position: sticky;
-  bottom: 0;
-`;
-
-// Message input styling
-const MessageInput = styled.input`
-  flex-grow: 1;
-  padding: 10px;
-  font-size: 16px;
-  border-radius: 20px;
   border: 1px solid #ccc;
-  margin-right: 10px;
+  border-radius: 5px;
+  font-size: 1rem;
   outline: none;
 
   &:focus {
@@ -96,13 +60,27 @@ const MessageInput = styled.input`
   }
 `;
 
-// Send button styling
-const SendButton = styled.button`
+export const Textarea = styled.textarea`
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  resize: vertical;
+  outline: none;
+
+  &:focus {
+    border-color: #007bff;
+  }
+`;
+
+export const SubmitButton = styled.button`
+  padding: 10px 20px;
   background-color: #007bff;
   color: white;
   border: none;
-  padding: 10px 20px;
-  border-radius: 20px;
+  border-radius: 5px;
   cursor: pointer;
 
   &:hover {
@@ -110,91 +88,234 @@ const SendButton = styled.button`
   }
 `;
 
-const UserGroupMessagingApp = () => {
+export const UserInfo = styled.div`
+  font-size: 0.9rem;
+  color: #007bff;
+  margin-bottom: 20px;
+`;
+
+export const PostContainer = styled.div`
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    padding: 15px;
+  }
+`;
+
+export const PostTitle = styled.h2`
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 10px;
+`;
+
+export const PostContent = styled.p`
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.5;
+  margin-bottom: 15px;
+`;
+
+export const ActionsContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #eee;
+  padding-top: 10px;
+  margin-top: 10px;
+`;
+
+export const ActionButton = styled.button`
+  background-color: transparent;
+  border: none;
+  color: #007bff;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 5px;
+  transition: background-color 0.2s, color 0.2s;
+
+  &:hover {
+    background-color: #f0f2f5;
+    color: #0056b3;
+  }
+`;
+
+export const ReplyContainer = styled.div`
+  margin-top: 15px;
+  padding: 10px;
+  border-top: 1px solid #eee;
+`;
+
+export const ReplyInput = styled.input`
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  outline: none;
+
+  &:focus {
+    border-color: #007bff;
+  }
+`;
+
+export const ReplyButton = styled.button`
+  padding: 8px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+`;
+
+export const ReplyList = styled.div`
+  margin-top: 10px;
+`;
+
+export const ReplyItem = styled.div`
+  display: flex;
+  align-items: flex-start;
+  background-color: #f0f2f5;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 5px;
+  font-size: 0.9rem;
+  color: #333;
+`;
+
+export const ReplyImage = styled.img`
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 10px;
+`;
+
+export const ReplyContent = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+export const ReplyUser = styled.span`
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #007bff;
+`;
+
+const GroupPage = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
-  const [senderId, setSenderId] = useState("");
-  const [receiverName, setReceiverName] = useState("Loading....");
-  const [messages, setMessages] = useState([]);
-  const [newMessage, setNewMessage] = useState("");
-  const { user } = useLoginUser();
+  const { groupData } = useGroup();
+  const [group, setGroup] = useState({ name: "", description: "" });
+  const [posts, setPosts] = useState([]);
+  const [newPost, setNewPost] = useState({ title: "", content: "" });
+  const [replyInput, setReplyInput] = useState("");
 
-  useEffect(() => {
-    const fetchMessages = async () => {
-      try {
-        setSenderId(user);
-        // Fetch group's name based on id
-        const groupResponse = await axios.get(`/api/groups`);
-        console.log(groupResponse);
-
-        const filteredUser = groupResponse.data.filter((data) => {
-          return data._id === id;
-        });
-
-        setReceiverName(filteredUser[0].name);
-
-        // const response = await axios.get(
-        //   `/api/messages/messages?contactId=${id}`
-        // );
-          // setMessages(response.data);
-          
-      } catch (error) {
-        toast.error(
-          error.response ? error.response.data.message : error.message
-        );
-      }
-    };
-    if (id) {
-      fetchMessages();
-    }
-  }, [id, user]);
-
-  const handleSendMessage = async () => {
-    if (newMessage.trim() === "") return;
-    setMessages([...messages, { content: newMessage, sender: senderId }]);
-
-    // const data = { receiver: id, content: newMessage };
-    try {
-      //   await axios.post("/api/messages/send", data);
-      toast.success("Message functionality coming");
-    } catch (error) {
-      toast.error("Failed to send message");
-    }
-
-    setNewMessage("");
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewPost((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleCreatePost = () => {
+    if (!newPost.title || !newPost.content) return;
+
+    const newPostData = {
+      replies: [],
+      ...newPost,
+    };
+    axios
+      .post(`/api/groups/${id}/posts`, { content: newPost.content })
+      .then((result) => {
+        toast.success("posted sucessfully");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    setPosts([newPostData, ...posts]);
+    setNewPost({ title: "", content: "" });
+  };
+
+  const handleReplySubmit = (postId) => {
+    if (!replyInput) return;
+
+    const newReply = {
+      content: replyInput,
+    };
+
+    axios
+      .post(`/api/groups/posts/${postId}/replies`, newReply)
+      .then((res) => {
+        toast.success("replied");
+      })
+      .catch((error) =>
+        toast.error(
+          error.response ? error.response.data.message : error.message
+        )
+      );
+
+    setReplyInput("");
+  };
+
+  useEffect(() => {
+    async function getPost() {
+      try {
+        const res = await axios.get(`/api/groups/${id}/posts`);
+        setPosts(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    const data = groupData.filter((element) => {
+      return element._id === id;
+    });
+    setGroup(data);
+    getPost();
+  }, [id, groupData]);
+
   return (
-    <ChatContainer>
-      <Header>
-        <BackButton onClick={() => navigate(-1)}>
-          <IoMdArrowRoundBack />
-        </BackButton>
-        <h3>{receiverName}</h3>
-      </Header>
+    <GroupContainer>
+      <GroupHeader>
+        <GroupName>{group.name}</GroupName>
+        <GroupDescription>{group.description}</GroupDescription>
+      </GroupHeader>
 
-      <MessagesContainer>
-        {messages.map((message) => (
-          <MessageBubble
-            key={message._id}
-            isOwnMessage={message.sender === senderId}
-          >
-            {message.content}
-          </MessageBubble>
-        ))}
-      </MessagesContainer>
-
-      <MessageInputContainer>
-        <MessageInput
+      <CreatePostContainer>
+        <Input
           type="text"
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-          placeholder="Type a message..."
+          placeholder="Post Title"
+          name="title"
+          value={newPost.title}
+          onChange={handleInputChange}
         />
-        <SendButton onClick={handleSendMessage}>Send</SendButton>
-      </MessageInputContainer>
-    </ChatContainer>
+        <Textarea
+          rows="4"
+          placeholder="Post Content"
+          name="content"
+          value={newPost.content}
+          onChange={handleInputChange}
+        />
+        <SubmitButton onClick={handleCreatePost}>Post</SubmitButton>
+      </CreatePostContainer>
+
+      {posts.map((post) => (
+        <GroupPost
+          key={post._id}
+          post={post}
+          handleReplySubmit={handleReplySubmit}
+          replyInput={replyInput}
+          setReplyInput={setReplyInput}
+        />
+      ))}
+    </GroupContainer>
   );
 };
 
-export default UserGroupMessagingApp;
+export default GroupPage;
