@@ -36,7 +36,7 @@ import UserChat from "./ui/UserChat";
 import UpdateUserProfile from "./ui/UpdateUserProfile";
 import UserGroups from "./ui/UserGroups";
 import ResetPass from "./ui/ResetPass";
-import Reset from "./ui/Reset";
+// import Reset from "./ui/Reset";
 import CampaignOverview from "./components/AdminDashboard/FundraisingCampaign/CampaignOverview";
 import NewsPage from "./components/AdminDashboard/News&Announcements/NewsPage";
 import NewsOverview from "./components/AdminDashboard/News&Announcements/NewsOverview";
@@ -49,6 +49,7 @@ import AdminGallery from "./components/AdminDashboard/Gallery/AdminGallery";
 import MessagingApp from "./ui/UserMessage";
 import { LoginUserProvider } from "./components/context/LoginUserContext";
 import UserGroupMessagingApp from "./ui/UserGroupMessage";
+import { GroupProvider } from "./components/context/MessagesContext";
 
 function App() {
   return (
@@ -81,9 +82,11 @@ function App() {
                 path="/user"
                 element={
                   <ProtectedRoute>
-                    <LoginUserProvider>
-                      <UserDashboardLayout />
-                    </LoginUserProvider>
+                    <GroupProvider>
+                      <LoginUserProvider>
+                        <UserDashboardLayout />
+                      </LoginUserProvider>
+                    </GroupProvider>
                   </ProtectedRoute>
                 }
               >
@@ -114,12 +117,12 @@ function App() {
               <Route path="news" element={<NewsPage />} />
               <Route path="news/:id" element={<NewsOverview />} />
 
-              <Route path="groups" element={<GroupsList/>} />
-              <Route path="forums" element={<ForumsList/>} />
-              <Route path="forums/:forumId" element={<PostsList/>} />
-              <Route path="admin/profile" element={<AdminProfile/>} />
-              <Route path="jobs" element={<JobsList/>} />
-              <Route path="jobs/:jobId" element={<JobOverview/>} />
+              <Route path="groups" element={<GroupsList />} />
+              <Route path="forums" element={<ForumsList />} />
+              <Route path="forums/:forumId" element={<PostsList />} />
+              <Route path="admin/profile" element={<AdminProfile />} />
+              <Route path="jobs" element={<JobsList />} />
+              <Route path="jobs/:jobId" element={<JobOverview />} />
               <Route path="gallery" element={<AdminGallery />} />
             </Route>
 
