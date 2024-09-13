@@ -82,6 +82,7 @@ function UserGroups() {
           <div
             key={group._id}
             className="bg-white rounded-lg shadow-md p-6 transition-transform transform hover:scale-105"
+            onClick={() => handleGroupMessage(group._id)}
           >
             <h3 className="text-xl font-bold mb-2">{group.name}</h3>
             <p className="text-gray-600 mb-4">{group.description}</p>

@@ -184,12 +184,14 @@ export const ReplyList = styled.div`
 export const ReplyItem = styled.div`
   display: flex;
   align-items: flex-start;
+  justify-content: space-between;
   background-color: #f0f2f5;
   padding: 10px;
   border-radius: 5px;
   margin-bottom: 5px;
   font-size: 0.9rem;
   color: #333;
+  position: relative;
 `;
 
 export const ReplyImage = styled.img`
@@ -236,7 +238,11 @@ const GroupPage = () => {
         toast.success("posted sucessfully");
       })
       .catch((error) => {
-        console.log(error);
+        toast.error(
+          error.response && error.response.data && error.response.data.message
+            ? error.response.data.message
+            : "An error occurred while deleting the post."
+        );
       });
     setPosts([newPostData, ...posts]);
     setNewPost({ title: "", content: "" });
@@ -304,7 +310,9 @@ const GroupPage = () => {
         />
         <SubmitButton onClick={handleCreatePost}>Post</SubmitButton>
       </CreatePostContainer>
-
+      {posts.length < 1 && (
+        <p className="text-3xl text-center mt-4"> There are no post yet</p>
+      )}
       {posts.map((post) => (
         <GroupPost
           key={post._id}
