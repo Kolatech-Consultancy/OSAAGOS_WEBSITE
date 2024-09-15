@@ -4,8 +4,8 @@ import SpinnerMini from "../components/SpinnerMini";
 import toast from "react-hot-toast";
 import Spinner from "../components/Spinner";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import Is_authorized from "../utils/authorization";
+import axios from "../utils/axios";
 
 function UpdateUserProfile() {
   const [isSbmit, setIsSubmit] = useState(false);
@@ -72,24 +72,16 @@ function UpdateUserProfile() {
       if (file) {
         data.append("profilePicture", file);
       }
-      const token = Is_authorized();
-      const response = await axios.put(
-        "https://osaagos-api-alumni-website.onrender.com/api/users/profile",
-        data,
-        {
-          headers: {
-            authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
+      const response = await axios.put("/api/users/profile", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
       console.log(response);
-
       toast.success("Your details are updated successfully");
       navigate("/user/profile");
     } catch (error) {
-      console.log(error);
+      console.log(error.response ? error.response.data.message : error.message);
       toast.error(error.response ? error.response.data.message : error.message);
     } finally {
       setIsSubmit(false);
