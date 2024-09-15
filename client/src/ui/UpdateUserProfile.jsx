@@ -89,6 +89,7 @@ function UpdateUserProfile() {
       toast.success("Your details are updated successfully");
       navigate("/user/profile");
     } catch (error) {
+      console.log(error);
       toast.error(error.response ? error.response.data.message : error.message);
     } finally {
       setIsSubmit(false);

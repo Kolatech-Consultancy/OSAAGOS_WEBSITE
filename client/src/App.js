@@ -49,7 +49,9 @@ import AdminGallery from "./components/AdminDashboard/Gallery/AdminGallery";
 import MessagingApp from "./ui/UserMessage";
 import { LoginUserProvider } from "./components/context/LoginUserContext";
 import UserGroupMessagingApp from "./ui/UserGroupMessage";
+import ForumGroupMessagingApp from "./ui/UserForumMessage";
 import { GroupProvider } from "./components/context/MessagesContext";
+import UserForum from "./ui/UserForum";
 
 function App() {
   return (
@@ -94,7 +96,9 @@ function App() {
                 <Route path="chat" element={<UserChat />} />
                 <Route path="chat/:id" element={<MessagingApp />} />
                 <Route path="groups" element={<UserGroups />} />
+                <Route path="forum" element={<UserForum />} />
                 <Route path="groups/:id" element={<UserGroupMessagingApp />} />
+                <Route path="forum/:id" element={<ForumGroupMessagingApp />} />
                 <Route path="update-profile" element={<UpdateUserProfile />} />
                 <Route path="events" element={<EventsPage />} />
                 <Route path="jobs" element={<JobBoard />} />

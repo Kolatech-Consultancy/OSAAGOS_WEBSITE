@@ -66,7 +66,7 @@ const CreateButton = styled.button`
   }
 `;
 
-const CreateGroup = ({ setCreate }) => {
+const CreateGroup = ({ setCreate, url, nameId }) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
 
@@ -84,10 +84,10 @@ const CreateGroup = ({ setCreate }) => {
     };
 
     try {
-      const res = await axios.post("/api/groups/create", groupData);
+      const res = await axios.post(url, groupData);
       console.log(res);
 
-      toast.success("Group created successfully");
+      toast.success(`${nameId} created successfully"`);
       setName("");
       setDescription("");
       setCreate(false);
@@ -99,20 +99,20 @@ const CreateGroup = ({ setCreate }) => {
   return (
     <GroupContainer>
       <GroupForm onSubmit={handleSubmit}>
-        <h2>Create a Group</h2>
+        <h2>Create a {nameId}</h2>
         <InputField
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          placeholder="Group Name"
+          placeholder={`${nameId} name`}
         />
         <TextArea
           rows="4"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          placeholder="Group Description"
+          placeholder={`${nameId} Description"`}
         />
-        <CreateButton type="submit">Create Group</CreateButton>
+        <CreateButton type="submit">Create {nameId}</CreateButton>
       </GroupForm>
 
       <div className="flex justify-center items-center mt-4">
@@ -120,7 +120,7 @@ const CreateGroup = ({ setCreate }) => {
           className="cursor-pointer text-center text-lg font-medium border-black border-2 mb-6 px-4 py-2 hover:text-white hover:bg-black transition-all duration-200"
           onClick={() => setCreate(false)}
         >
-          Back to Groups
+          Back to {nameId}
         </p>
       </div>
     </GroupContainer>
