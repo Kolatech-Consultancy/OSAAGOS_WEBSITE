@@ -72,7 +72,14 @@ function UserGroups() {
   function handleGroupMessage(id) {
     navigate(`${id}`);
   }
-  if (create) return <CreateGroup setCreate={setCreate} />;
+  if (create)
+    return (
+      <CreateGroup
+        setCreate={setCreate}
+        url="/api/groups/create"
+        nameId="Group"
+      />
+    );
 
   return (
     <div className="container mx-auto px-4 py-8">

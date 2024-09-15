@@ -233,14 +233,14 @@ const GroupPage = () => {
       ...newPost,
     };
     axios
-      .post(`/api/groups/${id}/posts`, { content: newPost.content })
+      .post(`/api/forums/${id}/post`, { content: newPost.content })
       .then((result) => {
-        toast.success("posted sucessfully");
         console.log(result);
+
+        toast.success("posted successfully");
       })
       .catch((error) => {
         console.log(error);
-
         toast.error(
           error.response && error.response.data && error.response.data.message
             ? error.response.data.message
@@ -259,9 +259,8 @@ const GroupPage = () => {
     };
 
     axios
-      .post(`/api/groups/posts/${postId}/replies`, newReply)
+      .post(`/api/forums/posts/${postId}/replies`, newReply)
       .then((res) => {
-        console.log(res);
         toast.success("replied");
       })
       .catch((error) =>
@@ -276,10 +275,13 @@ const GroupPage = () => {
   useEffect(() => {
     async function getPost() {
       try {
-        const res = await axios.get(`/api/groups/${id}/posts`);
+        const res = await axios.get(`/api/forums/${id}/posts`);
         setPosts(res.data);
       } catch (error) {
         console.log(error);
+        toast.error(
+          error.response ? error.response.data.message : error.message
+        );
       }
     }
 
@@ -324,7 +326,7 @@ const GroupPage = () => {
           handleReplySubmit={handleReplySubmit}
           replyInput={replyInput}
           setReplyInput={setReplyInput}
-          nameId="groups"
+          nameId="forums"
         />
       ))}
     </GroupContainer>

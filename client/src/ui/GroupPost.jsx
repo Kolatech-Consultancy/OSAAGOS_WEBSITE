@@ -19,51 +19,83 @@ import { MdDelete } from "react-icons/md";
 import { useLoginUser } from "../components/context/LoginUserContext";
 import toast from "react-hot-toast";
 
-const GroupPost = ({ post, handleReplySubmit, replyInput, setReplyInput }) => {
+const GroupPost = ({
+  post,
+  handleReplySubmit,
+  replyInput,
+  setReplyInput,
+  nameId,
+}) => {
   const [replies, setReplies] = useState([]);
   const [show, setShow] = useState(false);
   const [showReplyDel, setShowReplyDel] = useState({});
   const { user } = useLoginUser();
 
   function handleDeletePost(id) {
-    axios
-      .delete(`/api/groups/posts/${id}`)
-      .then(() => {
-        toast.success("Post deleted");
-      })
-      .catch((error) => {
-        console.error(error);
-        toast.error(
-          error.response && error.response.data && error.response.data.message
-            ? error.response.data.message
-            : "An error occurred while deleting the post."
-        );
-      });
+    const postFilter = post._id === id;
+    if (postFilter) {
+      axios
+        .delete(`/api/${nameId}/posts/${id}`)
+        .then(() => {
+          toast.success("Post deleted");
+        })
+        .catch((error) => {
+          console.error(error);
+          toast.error(
+            error.response && error.response.data && error.response.data.message
+              ? error.response.data.message
+              : "An error occurred while deleting the post."
+          );
+        });
+    } else {
+      toast.error("Post not found");
+    }
   }
 
   function handleDeleteReply(id) {
-    axios
-      .delete(`/api/groups/replies/${id}`)
-      .then(() => {
-        toast.success("Reply deleted");
-        setReplies(replies.filter((reply) => reply._id !== id));
-      })
-      .catch((error) =>
-        toast.error(
-          error.response && error.response.data && error.response.data.message
-            ? error.response.data.message
-            : "An error occurred while deleting the post."
-        )
-      );
+    if (nameId === "forums") {
+      axios
+        .delete(`/api/${nameId}/posts/replies/${id}`)
+        .then(() => {
+          toast.success("Reply deleted");
+          setReplies(replies.filter((reply) => reply._id !== id));
+        })
+        .catch((error) =>
+          toast.error(
+            error.response && error.response.data && error.response.data.message
+              ? error.response.data.message
+              : "An error occurred while deleting the post."
+          )
+        );
+    } else {
+      axios
+        .delete(`/api/${nameId}/replies/${id}`)
+        .then(() => {
+          toast.success("Reply deleted");
+          setReplies(replies.filter((reply) => reply._id !== id));
+        })
+        .catch((error) =>
+          toast.error(
+            error.response && error.response.data && error.response.data.message
+              ? error.response.data.message
+              : "An error occurred while deleting the post."
+          )
+        );
+    }
   }
 
   useEffect(() => {
     async function getReplies() {
-      const res = await axios.get(`/api/groups/posts/${post._id}/replies`);
-      setReplies(res.data);
+      try {
+        const res = await axios.get(`/api/${nameId}/posts/${post._id}/replies`);
+        setReplies(res.data);
+      } catch (error) {
+        console.log(error);
+      }
     }
+
     getReplies();
-  }, [post._id]);
+  }, [post._id, nameId]);
 
   const toggleReplyDeletePanel = (replyId) => {
     setShowReplyDel((prev) => ({
@@ -76,7 +108,7 @@ const GroupPost = ({ post, handleReplySubmit, replyInput, setReplyInput }) => {
     <PostContainer>
       <div className="flex justify-between items-center">
         <UserInfo>Posted by {post.author?.name}</UserInfo>
-        {post.author._id === user && (
+        {post.author?._id === user && (
           <div
             className="cursor-pointer relative"
             onClick={() => setShow(!show)}
@@ -119,22 +151,24 @@ const GroupPost = ({ post, handleReplySubmit, replyInput, setReplyInput }) => {
                   {reply.content}
                 </ReplyContent>
               </div>
-              <div
-                className="cursor-pointer relative flex justify-end"
-                onClick={() => toggleReplyDeletePanel(reply._id)}
-              >
-                <HiOutlineDotsVertical />
-                {showReplyDel[reply._id] && (
-                  <article className="border shadow-lg bg-white p-2 rounded-sm absolute whitespace-nowrap right-full">
-                    <p
-                      className="flex justify-center items-center"
-                      onClick={() => handleDeleteReply(reply._id)}
-                    >
-                      Delete Reply <MdDelete />
-                    </p>
-                  </article>
-                )}
-              </div>
+              {reply.author._id === user && (
+                <div
+                  className="cursor-pointer relative flex justify-end"
+                  onClick={() => toggleReplyDeletePanel(reply._id)}
+                >
+                  <HiOutlineDotsVertical />
+                  {showReplyDel[reply._id] && (
+                    <article className="border shadow-lg bg-white p-2 rounded-sm absolute whitespace-nowrap right-full">
+                      <p
+                        className="flex justify-center items-center"
+                        onClick={() => handleDeleteReply(reply._id)}
+                      >
+                        Delete Reply <MdDelete />
+                      </p>
+                    </article>
+                  )}
+                </div>
+              )}
             </ReplyItem>
           ))}
         </ReplyList>
