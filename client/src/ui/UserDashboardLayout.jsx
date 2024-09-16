@@ -2,7 +2,11 @@ import { useState } from "react";
 import { LiaUserEditSolid } from "react-icons/lia";
 import { HiOutlineUserGroup } from "react-icons/hi2";
 import { SlEvent } from "react-icons/sl";
-import { MdOutlineForum, MdOutlinePermMedia, MdWorkOutline } from "react-icons/md";
+import {
+  MdOutlineForum,
+  MdOutlinePermMedia,
+  MdWorkOutline,
+} from "react-icons/md";
 import { AiOutlineHome } from "react-icons/ai";
 import { PiChatsLight } from "react-icons/pi";
 import { Link, Outlet, useLocation } from "react-router-dom";
@@ -11,7 +15,6 @@ import { BsArrowBarLeft } from "react-icons/bs";
 function UserDashboardLayout() {
   const [isAsideOpen, setIsAsideOpen] = useState(true);
   const location = useLocation().pathname;
-
   const toggleAside = () => {
     setIsAsideOpen(!isAsideOpen);
   };
@@ -40,11 +43,14 @@ function UserDashboardLayout() {
                   />
                 </div>
                 <ul className="flex flex-col gap-2">
-                  <li className="w-full block">
+                  <li
+                    className="w-full block"
+                    onClick={() => setIsAsideOpen(false)}
+                  >
                     <Link
                       to="/user/profile"
                       className={`flex items-center hover:bg-gray-300 rounded-md py-2 px-4 text-gray-600 gap-6 font-light text-base transition-all duration-200 ${
-                        location === "/user/profile" ? "bg-gray-400" : ""
+                        location.includes("/user/profile") ? "bg-gray-400" : ""
                       }`}
                     >
                       <AiOutlineHome />
@@ -53,33 +59,44 @@ function UserDashboardLayout() {
                       </span>
                     </Link>
                   </li>
-                  <li className="w-full block">
+                  <li
+                    className="w-full block"
+                    onClick={() => setIsAsideOpen(false)}
+                  >
                     <Link
                       to="/user/chat"
                       className={`flex items-center hover:bg-gray-300 rounded-md py-2 px-4 text-gray-600 gap-6 font-light text-base transition-all duration-200 ${
-                        location === "/user/chat" ? "bg-gray-400" : ""
+                        location.includes("/user/chat") ? "bg-gray-400" : ""
                       }`}
                     >
                       <PiChatsLight />
                       <span className="text-gray-600 font-medium">Chat</span>
                     </Link>
                   </li>
-                  <li className="w-full block">
+                  <li
+                    className="w-full block"
+                    onClick={() => setIsAsideOpen(false)}
+                  >
                     <Link
                       to="/user/groups"
                       className={`flex items-center hover:bg-gray-300 rounded-md py-2 px-4 text-gray-600 gap-6 font-light text-base transition-all duration-200 ${
-                        location === "/user/groups" ? "bg-gray-400" : ""
+                        location.includes("/user/groups") ? "bg-gray-400" : ""
                       }`}
                     >
                       <HiOutlineUserGroup />
                       <span className="text-gray-600 font-medium">Groups</span>
                     </Link>
                   </li>
-                  <li className="w-full block">
+                  <li
+                    className="w-full block"
+                    onClick={() => setIsAsideOpen(false)}
+                  >
                     <Link
                       to="/user/update-profile"
                       className={`flex items-center hover:bg-gray-300 rounded-md py-2 px-4 text-gray-600 gap-6 font-light text-base transition-all duration-200 ${
-                        location === "/user/update-profile" ? "bg-gray-400" : ""
+                        location.includes("/user/update-profile")
+                          ? "bg-gray-400"
+                          : ""
                       }`}
                     >
                       <LiaUserEditSolid />
@@ -88,22 +105,28 @@ function UserDashboardLayout() {
                       </span>
                     </Link>
                   </li>
-                  <li className="w-full block">
+                  <li
+                    className="w-full block"
+                    onClick={() => setIsAsideOpen(false)}
+                  >
                     <Link
                       to="/user/events"
                       className={`flex items-center hover:bg-gray-300 rounded-md py-2 px-4 text-gray-600 gap-6 font-light text-base transition-all duration-200 ${
-                        location === "/user/events" ? "bg-gray-400" : ""
+                        location.includes("/user/events") ? "bg-gray-400" : ""
                       }`}
                     >
                       <SlEvent />
                       <span className="text-gray-600 font-medium">Events</span>
                     </Link>
                   </li>
-                  <li className="w-full block">
+                  <li
+                    className="w-full block"
+                    onClick={() => setIsAsideOpen(false)}
+                  >
                     <Link
                       to="/user/jobs"
                       className={`flex items-center hover:bg-gray-300 rounded-md py-2 px-4 text-gray-600 gap-6 font-light text-base transition-all duration-200 ${
-                        location === "/user/jobs" ? "bg-gray-400" : ""
+                        location.includes("/user/jobs") ? "bg-gray-400" : ""
                       }`}
                     >
                       <MdWorkOutline />
@@ -112,22 +135,28 @@ function UserDashboardLayout() {
                       </span>
                     </Link>
                   </li>
-                  <li className="w-full block">
+                  <li
+                    className="w-full block"
+                    onClick={() => setIsAsideOpen(false)}
+                  >
                     <Link
                       to="/user/forum"
                       className={`flex items-center hover:bg-gray-300 rounded-md py-2 px-4 text-gray-600 gap-6 font-light text-base transition-all duration-200 ${
-                        location === "/user/forum" ? "bg-gray-400" : ""
+                        location.includes("/user/forum") ? "bg-gray-400" : ""
                       }`}
                     >
                       <MdOutlineForum />
                       <span className="text-gray-600 font-medium">Forum</span>
                     </Link>
                   </li>
-                  <li className="w-full block">
+                  <li
+                    className="w-full block"
+                    onClick={() => setIsAsideOpen(false)}
+                  >
                     <Link
                       to="/user/media"
                       className={`flex items-center hover:bg-gray-300 rounded-md py-2 px-4 text-gray-600 gap-6 font-light text-base transition-all duration-200 ${
-                        location === "/user/media" ? "bg-gray-400" : ""
+                        location.includes("/user/media") ? "bg-gray-400" : ""
                       }`}
                     >
                       <MdOutlinePermMedia />
