@@ -41,7 +41,7 @@ function LoginSection() {
     <>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="sm:p-20 p-4 w-2/3 mx-auto"
+        className="sm:p-20 p-4 md:w-2/3 w-full mx-auto"
       >
         <p className="text-4xl text-center font-semibold">LOGIN FORM</p>
         <div className="grid grid-cols-1 mt-8 formControl gap-2">
@@ -76,9 +76,12 @@ function LoginSection() {
           </div>
         </div>
         <div className="flex justify-between h-20 px-4 pt-4">
-          <hr className=" w-40" style={{ alignSelf: "center" }} />
+          <hr
+            className="w-40 md:block hidden"
+            style={{ alignSelf: "center" }}
+          />
           <span
-            className="text-sm text-gray-400"
+            className="text-sm text-gray-400 flex gap-1 text-center justify-center items-center"
             style={{ alignSelf: "center" }}
           >
             Don’t have an account?
@@ -86,7 +89,10 @@ function LoginSection() {
               Sign Up
             </Link>
           </span>
-          <hr className=" w-40" style={{ alignSelf: "center" }} />
+          <hr
+            className="w-40 md:block hidden"
+            style={{ alignSelf: "center" }}
+          />
         </div>
         <div className="flex justify-center items-center">
           <Link
