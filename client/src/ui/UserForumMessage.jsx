@@ -235,9 +235,12 @@ const GroupPage = () => {
     axios
       .post(`/api/forums/${id}/post`, { content: newPost.content })
       .then((result) => {
-        console.log(result);
-
-        toast.success("posted successfully");
+        const createdPost = result.data;
+        if (!createdPost.author) {
+          toast.error("Author information is missing in the response");
+        }
+        toast.success("Posted successfully");
+        setPosts([...posts, createdPost]);
       })
       .catch((error) => {
         console.log(error);
@@ -249,27 +252,6 @@ const GroupPage = () => {
       });
     setPosts([newPostData, ...posts]);
     setNewPost({ title: "", content: "" });
-  };
-
-  const handleReplySubmit = (postId) => {
-    if (!replyInput) return;
-
-    const newReply = {
-      content: replyInput,
-    };
-
-    axios
-      .post(`/api/forums/posts/${postId}/replies`, newReply)
-      .then((res) => {
-        toast.success("replied");
-      })
-      .catch((error) =>
-        toast.error(
-          error.response ? error.response.data.message : error.message
-        )
-      );
-
-    setReplyInput("");
   };
 
   useEffect(() => {
@@ -319,14 +301,15 @@ const GroupPage = () => {
       {posts.length < 1 && (
         <p className="text-3xl text-center mt-4"> There are no post yet</p>
       )}
-      {posts.map((post) => (
+      {posts.map((post, index) => (
         <GroupPost
-          key={post._id}
+          key={post._id ? post._id : index}
           post={post}
-          handleReplySubmit={handleReplySubmit}
           replyInput={replyInput}
           setReplyInput={setReplyInput}
           nameId="forums"
+          setPosts={setPosts}
+          posts={posts}
         />
       ))}
     </GroupContainer>

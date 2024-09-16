@@ -89,7 +89,8 @@ export const SubmitButton = styled.button`
 `;
 
 export const UserInfo = styled.div`
-  font-size: 0.9rem;
+  font-size: 1rem;
+  font-weight: 700;
   color: #007bff;
   margin-bottom: 20px;
 `;
@@ -228,49 +229,30 @@ const GroupPage = () => {
   const handleCreatePost = () => {
     if (!newPost.title || !newPost.content) return;
 
-    const newPostData = {
-      replies: [],
-      ...newPost,
-    };
     axios
-      .post(`/api/groups/${id}/posts`, { content: newPost.content })
+      .post(`/api/groups/${id}/posts`, {
+        title: newPost.title,
+        content: newPost.content,
+      })
       .then((result) => {
-        toast.success("posted sucessfully");
-        console.log(result);
+        const createdPost = result.data;
+        if (!createdPost.author) {
+          toast.error("Author information is missing in the response");
+        }
+        toast.success("Posted successfully");
+        setPosts([...posts, createdPost]);
       })
       .catch((error) => {
         console.log(error);
-
         toast.error(
           error.response && error.response.data && error.response.data.message
             ? error.response.data.message
-            : "An error occurred while deleting the post."
+            : "An error occurred while creating the post."
         );
       });
-    setPosts([newPostData, ...posts]);
+
+    // Clear the input fields
     setNewPost({ title: "", content: "" });
-  };
-
-  const handleReplySubmit = (postId) => {
-    if (!replyInput) return;
-
-    const newReply = {
-      content: replyInput,
-    };
-
-    axios
-      .post(`/api/groups/posts/${postId}/replies`, newReply)
-      .then((res) => {
-        console.log(res);
-        toast.success("replied");
-      })
-      .catch((error) =>
-        toast.error(
-          error.response ? error.response.data.message : error.message
-        )
-      );
-
-    setReplyInput("");
   };
 
   useEffect(() => {
@@ -321,10 +303,11 @@ const GroupPage = () => {
         <GroupPost
           key={post._id}
           post={post}
-          handleReplySubmit={handleReplySubmit}
           replyInput={replyInput}
           setReplyInput={setReplyInput}
           nameId="groups"
+          setPosts={setPosts}
+          posts={posts}
         />
       ))}
     </GroupContainer>

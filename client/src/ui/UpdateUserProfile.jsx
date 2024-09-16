@@ -4,13 +4,12 @@ import SpinnerMini from "../components/SpinnerMini";
 import toast from "react-hot-toast";
 import Spinner from "../components/Spinner";
 import { useNavigate } from "react-router-dom";
-import Is_authorized from "../utils/authorization";
 import axios from "../utils/axios";
 
 function UpdateUserProfile() {
   const [isSbmit, setIsSubmit] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [_, setSelectedFile] = useState(null);
   const [formData, setFormData] = useState({
     address: "",
     phone: "",
@@ -40,7 +39,6 @@ function UpdateUserProfile() {
     const file = event.target.files[0];
     if (file) {
       setSelectedFile(file);
-      console.log(file);
     }
   };
 
@@ -72,16 +70,14 @@ function UpdateUserProfile() {
       if (file) {
         data.append("profilePicture", file);
       }
-      const response = await axios.put("/api/users/profile", data, {
+     await axios.put("/api/users/profile", data, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log(response);
       toast.success("Your details are updated successfully");
       navigate("/user/profile");
     } catch (error) {
-      console.log(error.response ? error.response.data.message : error.message);
       toast.error(error.response ? error.response.data.message : error.message);
     } finally {
       setIsSubmit(false);
