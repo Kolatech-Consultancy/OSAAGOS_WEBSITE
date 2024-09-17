@@ -2,14 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { FaEdit, FaEllipsisH, FaPlus, FaSearch, FaTrash, FaUser } from 'react-icons/fa';
 import AddEditForumModal from './AddEditForumModal';
 import DeleteForumModal from './DeleteForumModal';
-import { getForum, deleteForum, editForum, addForum } from '../../../services/api';
+import { getForum, deleteForum, editForum, addForum, approveForum, denyForum } from '../../../services/api';
 import "../../../index.scss";
 import SpinnerMini from '../../SpinnerMini';
 import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom';
+import { formatDate } from '../../../services/formatDate';
+import { useToggleDropdown } from '../useCloseDropdown';
 
 const ForumsList = () => {
-    const [isOpen, setIsOpen] = useState(false);
     const [Forum, setForum] = useState([]);
     const [isAddEditModalOpen, setIsAddEditModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -17,31 +18,9 @@ const ForumsList = () => {
     const [loader, setLoader] = useState(false);
     const [error, setError] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const arrOfMonth = ["Jan", 'Feb', 'Mar', 'April', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     let isMounted = true
+    const {isOpen, toggleDropdown} = useToggleDropdown()
 
-
-
-
-
-    const toggleDropdown = (index, event) => {
-        event.stopPropagation();
-        setIsOpen((prev) => (prev === index ? null : index));
-    };
-
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (!event.target.closest('.dropdown')) {
-                setIsOpen(null);
-            }
-        };
-
-        window.addEventListener('click', handleClickOutside);
-
-        return () => {
-            window.removeEventListener('click', handleClickOutside);
-        };
-    }, []);
 
 
     useEffect(() => {
@@ -50,6 +29,8 @@ const ForumsList = () => {
                 setLoader(true);
                 const response = await getForum();
                 setForum(response.data);
+                console.log(response.data);
+
             } catch (error) {
                 setError(true);
                 console.error(error);
@@ -85,6 +66,20 @@ const ForumsList = () => {
             closeAddEditModal();
         }
     };
+
+    const switchFuntion = async (status, id) => {
+        try {
+            if (status == "approve") {
+                const approval = await approveForum(id)
+
+            } else {
+                const deny= await denyForum(id)
+            }
+        } catch (error) {
+            console.error(error);
+            toast.error("Error changing status.");
+        }
+    }
 
     const handleDeleteForum = async () => {
         try {
@@ -162,7 +157,12 @@ const ForumsList = () => {
                                         <tr key={frm._id}>
                                             <td className="py-2 px-4">{frm.title}</td>
                                             <td className="py-2 px-4">{frm.createdBy.name}</td>
-                                            <td className="py-2 px-4">{`${new Date(frm.createdAt).getDate()} ${arrOfMonth[new Date(frm.createdAt).getMonth()]}, ${new Date(frm.createdAt).getFullYear()}`}</td>
+                                            <td className="py-2 px-4">{formatDate(frm.createdAt)}</td>
+                                            <td className={`py-2 px-4 `}>
+                                                <span className={`px-4 font-medium py-1 text-sm rounded-lg w-32 flex items-center justify-center ${frm.status == "pending" ? "text-yellow-400 bg-yellow-100" : frm.status == "approved" ? "text-green-400 bg-green-100" : "text-red-400 bg-red-100"}`}>
+                                                    {frm.status}
+                                                </span>
+                                            </td>
                                             <td className="py-2 px-4">
                                                 <div className="relative">
                                                     <button
@@ -173,13 +173,21 @@ const ForumsList = () => {
                                                     </button>
                                                     {isOpen === index && (
                                                         <div className="dropdown-menu absolute mb-4 right-0 w-44 bg-white border border-gray-200 rounded-md shadow-lg z-10">
-                                                            <Link to={frm._id}
-                                                                className="block px-4 py-2 text-green-500 hover:bg-gray-200 w-full text-left"
-
+                                                            <button className="block px-4 py-2  w-full text-left focus:outline-none"
                                                             >
-                                                                <FaUser className="inline mr-2" />
-                                                                Posts
-                                                            </Link>
+                                                                {frm.status == "pending" ?
+                                                                    <div>
+                                                                        <span onClick={() => switchFuntion("approve", frm._id)} className='text-green-500 hover:underline'>Approve</span>
+                                                                         <span> / </span>
+                                                                         <span onClick={() => switchFuntion("deny", frm._id)} className='text-red-500 hover:underline'> Deny</span>
+                                                                    </div> : 
+                                                                    <Link  to={frm._id} className='text-green-500 hover:bg-gray-200'>
+                                                                        <FaUser className="inline mr-2" />
+                                                                        Posts
+                                                                    </Link>
+                                                            }
+
+                                                            </button>
                                                             <button
                                                                 className="block px-4 py-2 text-blue-500 hover:bg-gray-200 w-full text-left focus:outline-none"
                                                                 onClick={() => openAddEditModal(frm)}

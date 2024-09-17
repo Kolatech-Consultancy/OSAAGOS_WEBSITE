@@ -36,7 +36,7 @@ import UserChat from "./ui/UserChat";
 import UpdateUserProfile from "./ui/UpdateUserProfile";
 import UserGroups from "./ui/UserGroups";
 import ResetPass from "./ui/ResetPass";
-import Reset from "./ui/Reset";
+// import Reset from "./ui/Reset";
 import CampaignOverview from "./components/AdminDashboard/FundraisingCampaign/CampaignOverview";
 import NewsPage from "./components/AdminDashboard/News&Announcements/NewsPage";
 import NewsOverview from "./components/AdminDashboard/News&Announcements/NewsOverview";
@@ -48,6 +48,11 @@ import JobOverview from "./components/AdminDashboard/JobBoard/JobOverview";
 import AdminGallery from "./components/AdminDashboard/Gallery/AdminGallery";
 import MessagingApp from "./ui/UserMessage";
 import { LoginUserProvider } from "./components/context/LoginUserContext";
+import PostOverview from "./components/AdminDashboard/Posts/PostOverview";
+import UserGroupMessagingApp from "./ui/UserGroupMessage";
+import ForumGroupMessagingApp from "./ui/UserForumMessage";
+import { GroupProvider } from "./components/context/MessagesContext";
+import UserForum from "./ui/UserForum";
 
 function App() {
   return (
@@ -80,9 +85,11 @@ function App() {
                 path="/user"
                 element={
                   <ProtectedRoute>
-                    <LoginUserProvider>
-                      <UserDashboardLayout />
-                    </LoginUserProvider>
+                    <GroupProvider>
+                      <LoginUserProvider>
+                        <UserDashboardLayout />
+                      </LoginUserProvider>
+                    </GroupProvider>
                   </ProtectedRoute>
                 }
               >
@@ -90,6 +97,9 @@ function App() {
                 <Route path="chat" element={<UserChat />} />
                 <Route path="chat/:id" element={<MessagingApp />} />
                 <Route path="groups" element={<UserGroups />} />
+                <Route path="forum" element={<UserForum />} />
+                <Route path="groups/:id" element={<UserGroupMessagingApp />} />
+                <Route path="forum/:id" element={<ForumGroupMessagingApp />} />
                 <Route path="update-profile" element={<UpdateUserProfile />} />
                 <Route path="events" element={<EventsPage />} />
                 <Route path="jobs" element={<JobBoard />} />
@@ -115,6 +125,7 @@ function App() {
               <Route path="groups" element={<GroupsList/>} />
               <Route path="forums" element={<ForumsList/>} />
               <Route path="forums/:forumId" element={<PostsList/>} />
+              <Route path="forum/posts/:postId" element={<PostOverview/>}/>
               <Route path="admin/profile" element={<AdminProfile/>} />
               <Route path="jobs" element={<JobsList/>} />
               <Route path="jobs/:jobId" element={<JobOverview/>} />

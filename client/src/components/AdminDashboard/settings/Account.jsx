@@ -96,8 +96,8 @@ const AdminProfile = () => {
           <hr className='border-gray-400' />
           <div className='my-6 flex flex-wrap sm:flex-nowrap items-center gap-3 justify-between'>
             <div className='flex items-center gap-3'>
-              <div className='w-[7rem] h-[7rem] rounded-full border'>
-                <img src={userDetails.profilePicture} className='max-h-full max-w-full' alt="" />
+              <div className='max-w-[7rem] max-h-[7rem] rounded-full border'>
+                <img src={userDetails.profilePicture || "/userDef.png"} className='max-h-full max-w-full rounded-full' alt="" />
               </div>
               <p className="leading-5">
                 <header className='leading-2 font-medium text-lg'>Profile picture</header>

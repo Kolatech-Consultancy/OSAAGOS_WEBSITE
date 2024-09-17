@@ -9,6 +9,8 @@ import {
 import { useNavigate } from "react-router-dom";
 
 function UserList({ user }) {
+  console.log(user);
+
   const navigate = useNavigate();
   function handleSelectMessage(id) {
     navigate(`${id}`);

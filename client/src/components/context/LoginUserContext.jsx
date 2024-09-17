@@ -21,8 +21,14 @@ function LoginUserProvider({ children }) {
     fetchData();
   }, []);
 
+  function getUserOb() {
+    return allUser.filter((users) => users._id === user);
+  }
+
   return (
-    <UserContext.Provider value={{ user, setUser, allUser, isFetchingUser }}>
+    <UserContext.Provider
+      value={{ user, setUser, allUser, isFetchingUser, getUserOb }}
+    >
       {children}
     </UserContext.Provider>
   );

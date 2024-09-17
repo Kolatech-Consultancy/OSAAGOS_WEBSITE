@@ -7,9 +7,10 @@ import "../../../index.scss";
 import SpinnerMini from '../../SpinnerMini';
 import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom';
+import { useToggleDropdown } from '../useCloseDropdown';
 
 const AlumniList = () => {
-    const [isOpen, setIsOpen] = useState(false);
+    // const [isOpen, setIsOpen] = useState(false);
     const [alumni, setAlumni] = useState([]);
     const [isAddEditModalOpen, setIsAddEditModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -18,30 +19,7 @@ const AlumniList = () => {
     const [error, setError] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     let isMounted = true
-
-
-
-
-
-    const toggleDropdown = (index, event) => {
-        event.stopPropagation();
-        setIsOpen((prev) => (prev === index ? null : index));
-    };
-
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (!event.target.closest('.dropdown')) {
-                setIsOpen(null);
-            }
-        };
-
-        window.addEventListener('click', handleClickOutside);
-
-        return () => {
-            window.removeEventListener('click', handleClickOutside);
-        };
-    }, []);
-
+    const {isOpen, toggleDropdown} = useToggleDropdown()
 
     useEffect(() => {
         const fetchAlumni = async () => {
