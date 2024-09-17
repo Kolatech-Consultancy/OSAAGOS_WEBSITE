@@ -6,7 +6,7 @@ const AddEditAlumniModal = ({ isOpen, onClose, onSave, alumni, loader }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    phone:"",
+    phone: "",
     password: '',
     education: '',
     profession: '',
@@ -18,7 +18,7 @@ const AddEditAlumniModal = ({ isOpen, onClose, onSave, alumni, loader }) => {
 
   useEffect(() => {
     if (alumni) {
-      setFormData({...alumni, password:null});
+      setFormData({ ...alumni, password: null });
     } else {
       setFormData(
         {
@@ -56,7 +56,7 @@ const AddEditAlumniModal = ({ isOpen, onClose, onSave, alumni, loader }) => {
             <FaTimes />
           </button>
         </div>
-        <form onSubmit={handleSubmit} style={{height:"75vh", overflowY:"scroll"}}>
+        <form onSubmit={handleSubmit} style={{ maxHeight: "75vh", overflowY: "scroll" }}>
           <div className="mb-4">
             <label htmlFor="name" className="block text-gray-700 font-medium mb-2">
               Name
@@ -102,21 +102,23 @@ const AddEditAlumniModal = ({ isOpen, onClose, onSave, alumni, loader }) => {
               required
             />
           </div>
-          <div className="mb-4">
-            <label htmlFor="password" className="block text-gray-700 font-medium mb-2">
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              name='password'
-              value={formData.password}
-              onChange={handleChange}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none"
-              placeholder="Enter password"
-              required
-            />
-          </div>
+          {alumni ? "" :
+            <div className="mb-4">
+              <label htmlFor="password" className="block text-gray-700 font-medium mb-2">
+                Password
+              </label>
+              <input
+                type="password"
+                id="password"
+                name='password'
+                value={formData.password}
+                onChange={handleChange}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none"
+                placeholder="Enter password"
+                required
+              />
+            </div>
+          }
           {alumni ? <div className="mb-4">
             <label htmlFor="education" className="block text-gray-700 font-medium mb-2">
               Education
@@ -162,7 +164,7 @@ const AddEditAlumniModal = ({ isOpen, onClose, onSave, alumni, loader }) => {
 
             />
           </div>
-          
+
           {alumni ?
             <>
               <div className="mb-4">
@@ -177,12 +179,12 @@ const AddEditAlumniModal = ({ isOpen, onClose, onSave, alumni, loader }) => {
                   onChange={handleChange}
                   className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none"
                   placeholder="Enter profession"
-    
+
                 />
               </div>
               <div className="mb-4">
                 <label htmlFor="company" className="block text-gray-700 font-medium mb-2">
-                 Company
+                  Company
                 </label>
                 <input
                   type="text"
@@ -192,12 +194,12 @@ const AddEditAlumniModal = ({ isOpen, onClose, onSave, alumni, loader }) => {
                   onChange={handleChange}
                   className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none"
                   placeholder="Enter Company's  Name"
-    
+
                 />
               </div>
               <div className="mb-4">
                 <label htmlFor="address" className="block text-gray-700 font-medium mb-2">
-                 Address
+                  Address
                 </label>
                 <input
                   type="text"
@@ -207,7 +209,7 @@ const AddEditAlumniModal = ({ isOpen, onClose, onSave, alumni, loader }) => {
                   onChange={handleChange}
                   className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none"
                   placeholder="Enter company address"
-    
+
                 />
               </div>
             </>
@@ -227,7 +229,7 @@ const AddEditAlumniModal = ({ isOpen, onClose, onSave, alumni, loader }) => {
               className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg focus:outline-none"
               disabled={loader}
             >
-              {loader ? <SpinnerMini/> : alumni ? 'Update' : 'Add'}
+              {loader ? <SpinnerMini /> : alumni ? 'Update' : 'Add'}
             </button>
           </div>
         </form>
