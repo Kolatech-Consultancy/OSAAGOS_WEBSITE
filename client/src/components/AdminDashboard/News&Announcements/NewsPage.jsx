@@ -6,6 +6,8 @@ import { addNews, deleteNews, editNews, getNews } from '../../../services/api';
 import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom';
 import DeleteNewsModal from './DeleteNewsModal';
+import { useToggleDropdown } from '../useCloseDropdown';
+import { formatDate } from '../../../services/formatDate';
 
 const NewsPage = () => {
     const [news, setNews] = useState([]);
@@ -15,10 +17,8 @@ const NewsPage = () => {
     const [loader, setLoader] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(false);
-    const [isOpen, setIsOpen] = useState(null);
     let isMounted = true
-    const arrOfMonth = ["Jan", 'Feb', 'Mar', 'April', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
+    const {isOpen, toggleDropdown} = useToggleDropdown()
 
     useEffect(() => {
         const fetchNews = async () => {
@@ -100,25 +100,6 @@ const NewsPage = () => {
         setIsDeleteModalOpen(false)
     }
 
-    const toggleDropdown = (index, event) => {
-        event.stopPropagation();
-        setIsOpen((prev) => (prev === index ? null : index));
-    };
-
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (!event.target.closest('.dropdown')) {
-                setIsOpen(null);
-            }
-        };
-
-        window.addEventListener('click', handleClickOutside);
-
-        return () => {
-            window.removeEventListener('click', handleClickOutside);
-        };
-    }, []);
-
 
 
 
@@ -158,7 +139,7 @@ const NewsPage = () => {
                                 <tr key={item._id} className="border-b border-gray-200">
                                     <td className="py-2 px-4">{item.title}</td>
                                     <td className="py-2 px-4">{item.author.name}</td>
-                                    <td className="py-2 px-4">{`${new Date(item.createdAt).getDate()} ${arrOfMonth[new Date(item.createdAt).getMonth()]}, ${new Date(item.createdAt).getFullYear()}`}</td>
+                                    <td className="py-2 px-4">{formatDate(item.createdAt)}</td>
                                     <td className="py-2 px-4">
                                         <div className="relative">
                                             <button

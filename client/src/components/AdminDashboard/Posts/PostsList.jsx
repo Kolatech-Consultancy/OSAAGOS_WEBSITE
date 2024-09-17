@@ -7,9 +7,10 @@ import "../../../index.scss";
 import SpinnerMini from '../../SpinnerMini';
 import toast from 'react-hot-toast';
 import { Link, useParams } from 'react-router-dom';
+import { useToggleDropdown } from '../useCloseDropdown';
+import { formatDate } from '../../../services/formatDate';
 
 const PostsList = () => {
-    const [isOpen, setIsOpen] = useState(false);
     const [Post, setPost] = useState([]);
     const [isAddEditModalOpen, setIsAddEditModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -17,32 +18,13 @@ const PostsList = () => {
     const [loader, setLoader] = useState(false);
     const [error, setError] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const arrOfMonth = ["Jan", 'Feb', 'Mar', 'April', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     let isMounted = true
     const {forumId} = useParams()
+    const {isOpen, toggleDropdown} = useToggleDropdown()
 
 
 
 
-
-    const toggleDropdown = (index, event) => {
-        event.stopPropagation();
-        setIsOpen((prev) => (prev === index ? null : index));
-    };
-
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (!event.target.closest('.dropdown')) {
-                setIsOpen(null);
-            }
-        };
-
-        window.addEventListener('click', handleClickOutside);
-
-        return () => {
-            window.removeEventListener('click', handleClickOutside);
-        };
-    }, []);
 
 
     useEffect(() => {
@@ -67,13 +49,14 @@ const PostsList = () => {
         try {
             setIsLoading(true);
             if (currentPost) {
-                await editPost(currentPost._id, PostData);
+                await editPost(currentPost._id, {content: PostData.content});
                 setPost(Post.map(pst =>
                     pst._id === currentPost._id ? PostData : pst
                 ));
                 toast.success("Post updated successfully");
+                window.location.reload()
             } else {
-                const newPost = await addPost(forumId,PostData);
+                const newPost = await addPost(forumId,{ forumId: forumId, content: PostData.content});
                 setPost([...Post, newPost.data])
                 toast.success("Post added successfully");
                 window.location.reload()
@@ -161,7 +144,7 @@ const PostsList = () => {
                                     {Post.map((pst, index) => (
                                         <tr key={pst._id}>
                                             <td className="py-2 px-4">{pst.author.name}</td>
-                                            <td className="py-2 px-4">{`${new Date(pst.timestamp).getDate()} ${arrOfMonth[new Date(pst.timestamp).getMonth()]}, ${new Date(pst.timestamp).getFullYear()}`}</td>
+                                            <td className="py-2 px-4">{formatDate(pst.timestamp)}</td>
                                             <td className="py-2 px-4">
                                                 <div className="relative">
                                                     <button
@@ -172,27 +155,27 @@ const PostsList = () => {
                                                     </button>
                                                     {isOpen === index && (
                                                         <div className="dropdown-menu absolute mb-4 right-0 w-44 bg-white border border-gray-200 rounded-md shadow-lg z-10">
-                                                            <Link
+                                                            <Link to={`/dashboard/forum/posts/${pst._id}`}
                                                                 className="block px-4 py-2 text-green-500 hover:bg-gray-200 w-full text-left"
 
                                                             >
                                                                 <FaUser className="inline mr-2" />
                                                                 See Post
                                                             </Link>
-                                                            {/* <button
+                                                            <button
                                                                 className="block px-4 py-2 text-blue-500 hover:bg-gray-200 w-full text-left focus:outline-none"
                                                                 onClick={() => openAddEditModal(pst)}
                                                             >
                                                                 <FaEdit className="inline mr-2" />
                                                                 Edit
-                                                            </button> */}
-                                                            {/* <button
+                                                            </button>
+                                                            <button
                                                                 className="block px-4 py-2 text-red-500 hover:bg-gray-200 w-full text-left focus:outline-none"
                                                                 onClick={() => openDeleteModal(pst)}
                                                             >
                                                                 <FaTrash className="inline mr-2" />
                                                                 Delete
-                                                            </button> */}
+                                                            </button>
                                                         </div>
                                                     )}
                                                 </div>

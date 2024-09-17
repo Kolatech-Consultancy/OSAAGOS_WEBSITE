@@ -7,9 +7,11 @@ import "../../../index.scss";
 import SpinnerMini from '../../SpinnerMini';
 import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom';
+import { useToggleDropdown } from '../useCloseDropdown';
+import { formatDate } from '../../../services/formatDate';
 
 const GroupList = () => {
-    const [isOpen, setIsOpen] = useState(false);
+
     const [Group, setGroup] = useState([]);
     const [isAddEditModalOpen, setIsAddEditModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -17,31 +19,8 @@ const GroupList = () => {
     const [loader, setLoader] = useState(false);
     const [error, setError] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const arrOfMonth = ["Jan", 'Feb', 'Mar', 'April', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     let isMounted = true
-
-
-
-
-
-    const toggleDropdown = (index, event) => {
-        event.stopPropagation();
-        setIsOpen((prev) => (prev === index ? null : index));
-    };
-
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (!event.target.closest('.dropdown')) {
-                setIsOpen(null);
-            }
-        };
-
-        window.addEventListener('click', handleClickOutside);
-
-        return () => {
-            window.removeEventListener('click', handleClickOutside);
-        };
-    }, []);
+    const { isOpen, toggleDropdown } = useToggleDropdown()
 
 
     useEffect(() => {
@@ -154,6 +133,7 @@ const GroupList = () => {
                                         <th className="py-2 px-4">Name</th>
                                         <th className="py-2 px-4">Members</th>
                                         <th className="py-2 px-4">Creation Date</th>
+                                        <th className="py-2 px-4">status</th>
                                         <th className="py-2 px-4">Action</th>
                                     </tr>
                                 </thead>
@@ -162,7 +142,10 @@ const GroupList = () => {
                                         <tr key={grp._id}>
                                             <td className="py-2 px-4">{grp.name}</td>
                                             <td className="py-2 px-4">{grp.members.length}</td>
-                                            <td className="py-2 px-4">{`${new Date(grp.createdAt).getDate()} ${arrOfMonth[new Date(grp.createdAt).getMonth()]}, ${new Date(grp.createdAt).getFullYear()}`}</td>
+                                            <td className="py-2 px-4">{formatDate(grp.createdAt)}</td>
+                                            <td className="py-2 px-4">
+                                                <span className={`px-4 py-1 rounded-lg w-fit flex items-center justify-center font-medium ${grp.status == "pending" ? "bg-yellow-100 text-yellow-500" : " bg-green-100 text-green-500"} `}>{grp.status}</span>
+                                            </td>
                                             <td className="py-2 px-4">
                                                 <div className="relative">
                                                     <button
