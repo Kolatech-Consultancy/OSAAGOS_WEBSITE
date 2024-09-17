@@ -41,7 +41,6 @@ const Header = () => {
     setSearch(true);
     if (searchQuery.length > 1) {
       const response = await axios.get(`/api/users/search?name=${searchQuery}`);
-      console.log(response);
       setSearch(false);
       setUser(response.data);
     } else {
@@ -252,7 +251,7 @@ const Header = () => {
           </div>
         </div>
         {user.length > 0 && (
-          <article className="fixed lg:right-[25rem] left-0 top-[3.5rem] lg:w-80 w-full p-2 bg-green-700 h-full z-[9999px] overflow-scroll">
+          <article className="fixed lg:right-[25rem] left-0 top-[3.5rem] lg:w-80 w-full p-2 bg-gray-700 h-full z-[9999px] overflow-scroll">
             {user.map((user) => (
               <div key={user._id}>
                 <UserCard>

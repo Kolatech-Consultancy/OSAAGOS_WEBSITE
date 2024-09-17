@@ -169,3 +169,7 @@ export const getAllEvents = () => {
 export const getAllGroups = () => {
     return axios.get("/api/groups");
 };
+
+export const getAllForums = () => {
+    return axios.get("/api/forums");
+}

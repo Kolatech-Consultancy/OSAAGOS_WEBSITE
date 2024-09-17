@@ -3,9 +3,9 @@ import Button from "./Button";
 import Form from "./Form";
 import FormRow from "./FormRow";
 import Input from "./Input";
-import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import axios from "../utils/axios";
 
 function ResetPass() {
   const navigate = useNavigate();
@@ -14,13 +14,10 @@ function ResetPass() {
 
   const findUser = async (userData) => {
     try {
-      const response = await axios.get(
-        "https://osaagos-api-alumni-website.onrender.com/api/users/profile/email",
-        userData
-      );
+      const response = await axios.get("/api/users/profile/email", userData);
       if (response.data) {
         toast.success("User found");
-        navigate("/reset");
+        // navigate("/reset");
       }
     } catch (error) {
       console.log(error);

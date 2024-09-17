@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../../ui/Button";
@@ -6,6 +5,7 @@ import SpinnerMini from "../SpinnerMini";
 import toast from "react-hot-toast";
 import { useState } from "react";
 import parseJwt from "../TokenDecoder";
+import axios from "../../utils/axios";
 
 function LoginSection() {
   const { register, handleSubmit, reset } = useForm();
@@ -15,13 +15,10 @@ function LoginSection() {
   const loginUser = async (userData) => {
     setIsLoading(true);
     try {
-      const response = await axios.post(
-        "https://osaagos-api-alumni-website.onrender.com/api/users/login",
-        userData
-      );
+      const response = await axios.post("/api/users/login", userData);
       const { token } = response.data;
       localStorage.setItem("token", token);
-      const payload = parseJwt(token)
+      const payload = parseJwt(token);
       reset();
       toast.success("User login successfully");
       if (payload.role === "Admin") {
@@ -29,7 +26,6 @@ function LoginSection() {
       } else {
         navigate("/user/profile");
       }
-
     } catch (error) {
       toast.error(error.response ? error.response.data.message : error.message);
     } finally {
@@ -93,7 +89,10 @@ function LoginSection() {
           <hr className=" w-40" style={{ alignSelf: "center" }} />
         </div>
         <div className="flex justify-center items-center">
-          <Link to={"/reset-password"} className="text-center text-blue-500 hover:text-blue-700 text-sm font-semibold">
+          <Link
+            to={"/reset-password"}
+            className="text-center text-blue-500 hover:text-blue-700 text-sm font-semibold"
+          >
             Forgot password
           </Link>
         </div>

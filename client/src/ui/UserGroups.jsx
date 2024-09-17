@@ -5,29 +5,11 @@ import axios from "../utils/axios";
 import toast from "react-hot-toast";
 import { useLoginUser } from "../components/context/LoginUserContext";
 import CreateGroup from "./CreateGroup";
+import { useNavigate } from "react-router-dom";
 
 function UserGroups() {
   const [create, setCreate] = useState(false);
-  const groups = [
-    {
-      _id: "group_id_1",
-      name: "Tech Enthusiasts",
-      description: "A group for tech lovers",
-      createdBy: "user_id_1",
-    },
-    {
-      _id: "group_id_2",
-      name: "Book Lovers",
-      description: "A group for book enthusiasts",
-      createdBy: "user_id_2",
-    },
-    {
-      _id: "group_id_3",
-      name: "Art Aficionados",
-      description: "A community for art lovers",
-      createdBy: "user_id_3",
-    },
-  ];
+  const navigate = useNavigate();
   const { user } = useLoginUser();
   const [groupData, setGroupData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -69,14 +51,35 @@ function UserGroups() {
           if (ele.status === 200) toast.success("Group joined");
         })
         .catch((error) => {
-          console.log(error);
+          toast.error(
+            error.response ? error.response.data.message : error.message
+          );
         });
     } else {
       console.log("Viewing user");
+      navigate(`${groupId}`);
     }
   };
 
-  if (create) return <CreateGroup setCreate={setCreate} />;
+  const handleLeave = (groupId) => {
+    try {
+      axios.post(`/api/groups/leave/${groupId}`);
+      toast.success("You've left the group");
+    } catch (error) {
+      toast.error(error.response ? error.response.data.message : error.message);
+    }
+  };
+  function handleGroupMessage(id) {
+    navigate(`${id}`);
+  }
+  if (create)
+    return (
+      <CreateGroup
+        setCreate={setCreate}
+        url="/api/groups/create"
+        nameId="Group"
+      />
+    );
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -86,17 +89,41 @@ function UserGroups() {
           <div
             key={group._id}
             className="bg-white rounded-lg shadow-md p-6 transition-transform transform hover:scale-105"
+            onClick={() => handleGroupMessage(group._id)}
           >
             <h3 className="text-xl font-bold mb-2">{group.name}</h3>
             <p className="text-gray-600 mb-4">{group.description}</p>
-            <button
-              className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 transition-colors"
-              onClick={() =>
-                handleJoin(group._id, group.members.includes(user))
-              }
-            >
-              {group.members.includes(user) ? "View" : "Join"}
-            </button>
+            {group.status === "pending" ? (
+              <p className="">Group is under review</p>
+            ) : (
+              <div className="flex justify-between items-center">
+                {group.members.includes(user) ? (
+                  <button
+                    className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 transition-colors"
+                    onClick={() => handleGroupMessage(group._id)}
+                  >
+                    View
+                  </button>
+                ) : (
+                  <button
+                    className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 transition-colors"
+                    onClick={() =>
+                      handleJoin(group._id, group.members.includes(user))
+                    }
+                  >
+                    Join
+                  </button>
+                )}
+                {group.members.includes(user) && (
+                  <button
+                    className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 transition-colors"
+                    onClick={() => handleLeave(group._id)}
+                  >
+                    Leave
+                  </button>
+                )}
+              </div>
+            )}
           </div>
         ))}
       </div>
