@@ -8,6 +8,7 @@ const AddEditFundraisingModal = ({ isOpen, onClose, onSave, campaign, loader }) 
     targetAmount: '',
     startDate: '',
     endDate: '',
+    currency: ''
   });
 
   useEffect(() => {
@@ -62,19 +63,37 @@ const AddEditFundraisingModal = ({ isOpen, onClose, onSave, campaign, loader }) 
               required
             />
           </div>
-          <div className="mb-4">
+          <div className='mb-4'>
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="targetAmount">
               Target Amount
             </label>
-            <input
-              type="number"
-              name="targetAmount"
-              id="targetAmount"
-              value={formData.targetAmount}
-              onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              required
-            />
+            <div className="flex items-center border border-gray-300 rounded-md overflow-hidden">
+       
+              <select
+                type="text"
+                name="currency"
+                id="currency"
+                value={formData.currency}
+                onChange={handleChange}
+                className="p-2 bg-transparent focus:outline-none focus:ring-0  h-full"
+              >
+                <option value="NGN">NGN</option>
+                <option value="USD">USD</option>
+              </select>
+
+              <div className="border h-8 w-px border-gray-300"></div>
+              <input
+                type="number"
+                name="targetAmount"
+                id="targetAmount"
+                value={formData.targetAmount}
+                onChange={handleChange}
+                placeholder={`Enter amount in ${formData.currency || "NGN"}`}
+                className="p-2 w-full focus:outline-none focus:ring-0"
+              />
+            
+              
+            </div>
           </div>
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="startDate">

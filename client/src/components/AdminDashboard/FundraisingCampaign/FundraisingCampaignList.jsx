@@ -7,8 +7,9 @@ import SpinnerMini from '../../SpinnerMini';
 import { addCampaign, editCampaign, getCampaigns } from '../../../services/api';
 import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom';
+import { formatDate } from '../../../services/formatDate';
+import { useToggleDropdown } from '../useCloseDropdown';
 const FundraisingCampaignList = () => {
-    const [isOpen, setIsOpen] = useState(null);
     const [campaigns, setCampaigns] = useState([]);
     const [isAddEditModalOpen, setIsAddEditModalOpen] = useState(false);
     // const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -17,28 +18,8 @@ const FundraisingCampaignList = () => {
     const [isLoading, setIsLoading] = useState(false);
     let isMounted = true
     const [error, setError] = useState(false);
-    const arrOfMonth = ["Jan", 'Feb', 'Mar', 'April', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const {isOpen, toggleDropdown} = useToggleDropdown()
 
-
-
-    const toggleDropdown = (index, event) => {
-        event.stopPropagation();
-        setIsOpen((prev) => (prev === index ? null : index));
-    };
-
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (!event.target.closest('.dropdown')) {
-                setIsOpen(null);
-            }
-        };
-
-        window.addEventListener('click', handleClickOutside);
-
-        return () => {
-            window.removeEventListener('click', handleClickOutside);
-        };
-    }, []);
 
     useEffect(() => {
         const fetchCampaigns = async () => {
@@ -158,9 +139,9 @@ const FundraisingCampaignList = () => {
                             {campaigns.map((campaign, index) => (
                                 <tr key={campaign._id} className="border-b border-gray-200">
                                     <td className="py-2 px-4 ">{campaign.title}</td>
-                                    <td className="py-2 px-4 ">${campaign.targetAmount}</td>
-                                    <td className="py-2 px-4">{`${new Date(campaign.startDate).getDate()} ${arrOfMonth[new Date(campaign.startDate).getMonth()]}, ${new Date(campaign.startDate).getFullYear()}`}</td>
-                                    <td className="py-2 px-4">{`${new Date(campaign.endDate).getDate()} ${arrOfMonth[new Date(campaign.endDate).getMonth()]}, ${new Date(campaign.endDate).getFullYear()}`}</td>
+                                    <td className="py-2 px-4 "> <span>{campaign.currency == "USD"? "$" : campaign.currency == "NGN" ? "N" : "$" }</span>{campaign.targetAmount}</td>
+                                    <td className="py-2 px-4">{formatDate(campaign.startDate)}</td>
+                                    <td className="py-2 px-4">{formatDate(campaign.endDate)}</td>
                                     <td className="py-2 px-4 ">{campaign.createdBy.name}</td>
                                     <td className="py-2 px-4 ">
                                         <div className="relative">

@@ -7,9 +7,10 @@ import "../../../index.scss";
 import SpinnerMini from '../../SpinnerMini';
 import toast from 'react-hot-toast';
 import { Link, useParams } from 'react-router-dom';
+import { useToggleDropdown } from '../useCloseDropdown';
+import { formatDate } from '../../../services/formatDate';
 
 const JobsList = () => {
-    const [isOpen, setIsOpen] = useState(false);
     const [Job, setJob] = useState([]);
     const [isAddEditModalOpen, setIsAddEditModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -17,32 +18,10 @@ const JobsList = () => {
     const [loader, setLoader] = useState(false);
     const [error, setError] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const arrOfMonth = ["Jan", 'Feb', 'Mar', 'April', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const arrOfMonth = ["Jan", 'Feb', 'Mar', 'April', 'May', 'June', 'uly', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     let isMounted = true
-    const {forumId} = useParams()
+    const {isOpen, toggleDropdown} = useToggleDropdown()
 
-
-
-
-
-    const toggleDropdown = (index, event) => {
-        event.stopPropagation();
-        setIsOpen((prev) => (prev === index ? null : index));
-    };
-
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (!event.target.closest('.dropdown')) {
-                setIsOpen(null);
-            }
-        };
-
-        window.addEventListener('click', handleClickOutside);
-
-        return () => {
-            window.removeEventListener('click', handleClickOutside);
-        };
-    }, []);
 
 
     useEffect(() => {
@@ -171,8 +150,8 @@ const JobsList = () => {
                                             <td className="py-2 px-4">{job.location}</td>
                                             <td className="py-2 px-4">{job.salaryRange}</td>
                                             <td className="py-2 px-4 capitalize">{job.employmentType}</td>
-                                            <td className="py-2 px-4">{`${new Date(job.applicationDeadline).getDate()} ${arrOfMonth[new Date(job.applicationDeadline).getMonth()]}, ${new Date(job.applicationDeadline).getFullYear()}`}</td>
-                                            <td className="py-2 px-4">{`${new Date(job.postedDate).getDate()} ${arrOfMonth[new Date(job.postedDate).getMonth()]}, ${new Date(job.postedDate).getFullYear()}`}</td>
+                                            <td className="py-2 px-4">{formatDate(job.applicationDeadline)}</td>
+                                            <td className="py-2 px-4">{formatDate(job.postedDate)}</td>
                                             <td className="py-2 px-4">
                                                 <div className="relative">
                                                     <button

@@ -6,6 +6,7 @@ import { getEvents, addEvent, editEvent, deleteEvent } from '../../../services/a
 import "../../../index.scss"
 import SpinnerMini from '../../SpinnerMini';
 import toast from 'react-hot-toast';
+import { formatDate } from '../../../services/formatDate';
 
 const EventList = () => {
   const [events, setEvents] = useState([]);
@@ -19,8 +20,7 @@ const EventList = () => {
 
   let isMounted = true;
   const date = new Date();
-  const today = [date.getDate(), date.getMonth(), date.getFullYear()]; // Adjusted month
-  const arrOfMonth = ["Jan", 'Feb', 'Mar', 'April', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const today = [date.getDate(), date.getMonth(), date.getFullYear()]; 
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -28,7 +28,7 @@ const EventList = () => {
         setLoader(true);
         const response = await getEvents();
         setEvents(response.data);
-        setEventDate(() => response.data.map(evt => new Date(evt.date).toLocaleDateString().split("/")));
+        setEventDate(response.data);
         console.log(response.data, eventDate);
       } catch (error) {
         setError(true);
@@ -169,7 +169,7 @@ const EventList = () => {
                     <tr key={event._id}>
                       <td className="py-2 px-4">{event?.title}</td>
                       <td className="py-2 px-4">
-                      {`${new Date(event.date).getDate()} ${arrOfMonth[new Date(event.date).getMonth()]}, ${new Date(event.date).getFullYear()}`}
+                      {formatDate(event.date)}
                       </td>
                       <td className="py-2 px-4">{event?.attendees?.length}</td>
                       <td className="py-2 px-4">{event?.location}</td>

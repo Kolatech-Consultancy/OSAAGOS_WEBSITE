@@ -48,6 +48,7 @@ import JobOverview from "./components/AdminDashboard/JobBoard/JobOverview";
 import AdminGallery from "./components/AdminDashboard/Gallery/AdminGallery";
 import MessagingApp from "./ui/UserMessage";
 import { LoginUserProvider } from "./components/context/LoginUserContext";
+import PostOverview from "./components/AdminDashboard/Posts/PostOverview";
 import UserGroupMessagingApp from "./ui/UserGroupMessage";
 import ForumGroupMessagingApp from "./ui/UserForumMessage";
 import { GroupProvider } from "./components/context/MessagesContext";
@@ -121,12 +122,13 @@ function App() {
               <Route path="news" element={<NewsPage />} />
               <Route path="news/:id" element={<NewsOverview />} />
 
-              <Route path="groups" element={<GroupsList />} />
-              <Route path="forums" element={<ForumsList />} />
-              <Route path="forums/:forumId" element={<PostsList />} />
-              <Route path="admin/profile" element={<AdminProfile />} />
-              <Route path="jobs" element={<JobsList />} />
-              <Route path="jobs/:jobId" element={<JobOverview />} />
+              <Route path="groups" element={<GroupsList/>} />
+              <Route path="forums" element={<ForumsList/>} />
+              <Route path="forums/:forumId" element={<PostsList/>} />
+              <Route path="forum/posts/:postId" element={<PostOverview/>}/>
+              <Route path="admin/profile" element={<AdminProfile/>} />
+              <Route path="jobs" element={<JobsList/>} />
+              <Route path="jobs/:jobId" element={<JobOverview/>} />
               <Route path="gallery" element={<AdminGallery />} />
             </Route>
 

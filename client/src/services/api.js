@@ -1,5 +1,7 @@
 import axios from "../utils/axios"
 
+
+//admin routes
 export const AdminDashboard = () => {
     return axios.get("/api/users/admin/dashboard")
 }
@@ -36,8 +38,6 @@ export const getAnalytics = async () => {
     return axios.get(`/api/admin/analytics`)
 };
 
-
-
 export const getCampaigns = async () => {
     return axios.get("/api/campaigns")
 };
@@ -50,67 +50,87 @@ export const editCampaign = async (id, updatedcampaign) => {
     return axios.put(`/api/campaigns/${id}`, updatedcampaign)
 };
 
-// export const deleteEvent = async (id) => {
-//     return axios.delete(`/api/campaigns/events/${id}`)
-// };
-
 export const getSingleCampaign = async (campaignId) => {
     return axios.get(`/api/campaigns/${campaignId}`)
 };
+
 export const getCampaignDonations = async (campaignId) => {
     return axios.get(`/api/donations/campaign/${campaignId}`)
 };
+
 export const getNews = async () => {
     return axios.get(`/api/admin/news`)
 };
+
 export const getNewsById = async (id) => {
     return axios.get(`/api/news/${id}`)
 };
+
 export const editNews = async (id) => {
     return axios.put(`/api/admin/news/${id}`)
 };
+
 export const addNews = async (news) => {
     return axios.post("/api/admin/news", news)
 };
+
 export const deleteNews = async (id) => {
     return axios.delete(`/api/admin/news/${id}`)
 };
+// ggroup
+
 export const getGroup = async () => {
-    return axios.get(`/api/groups/`)
+    return axios.get(`/api/admin/group`)
 };
 export const editGroup = async (id) => {
-    return axios.put(`/api/groups/${id}`)
+    return axios.put(`/api/admin/groups/${id}`)
 };
 export const addGroup = async (group) => {
-    return axios.post("/api/groups/create", group)
+    return axios.post("/api/admin/group", group)
 };
 export const deleteGroup = async (id) => {
-    return axios.delete(`/api/groups/${id}`)
+    return axios.delete(`/api/admin/group/${id}`)
 };
+
+//forum
 export const getForum = async () => {
-    return axios.get(`/api/forums/`)
+    return axios.get(`/api/admin/forum/`)
+};
+export const getForumById = async (forumId) => {
+    return axios.get(`/api/admin/forum/${forumId}`)
 };
 export const editForum = async (id) => {
-    return axios.put(`/api/forums/${id}`)
+    return axios.put(`/api/admin/forum/${id}`)
+};
+export const approveForum= async (id) => {
+    return axios.post(`/api/admin/forum/${id}/approve`)
+};
+export const denyForum= async (id) => {
+    return axios.post(`/api/admin/forum/${id}/deny`)
 };
 export const addForum = async (Forum) => {
-    return axios.post("/api/forums/create", Forum)
+    return axios.post("/api/admin/forum", Forum)
 };
 export const deleteForum = async (id) => {
-    return axios.delete(`/api/forums/${id}`)
+    return axios.delete(`/api/admin/forum/${id}`)
 };
 export const getPost = async (forumId) => {
-    return axios.get(`/api/forums/${forumId}/posts`)
+    return axios.get(`/api/admin/forums/${forumId}/posts`)
 };
-export const editPost = async (id) => {
-    return axios.put(`/api/posts/${id}`)
+export const getPostById = async (postId) => {
+    return axios.get(`/api/admin/forums/posts/${postId}`)
+};
+export const editPost = async (id, data) => {
+    return axios.put(`/api/admin/forums/posts/${id}`, data)
 };
 export const addPost = async (forumId, post) => {
-    return axios.post(`/api/forums/${forumId}/post`, post)
+    return axios.post(`/api/admin/forums/${forumId}/posts`, post)
 };
-export const deletePost = async (id) => {
-    return axios.delete(`/api/posts/${id}`)
+export const deletePost = async (postId) => {
+    return axios.delete(`/api/admin/forums/posts/${postId}`)
 };
+
+//job
 export const getJob = async () => {
     return axios.get(`/api/admin/jobs`)
 };
@@ -127,6 +147,7 @@ export const deleteJob = async (id) => {
     return axios.delete(`/api/admin/jobs/${id}`)
 };
 
+//admin routes
 export const GetOneUser = () => {
     return axios.get("/api/users/profile");
 };
