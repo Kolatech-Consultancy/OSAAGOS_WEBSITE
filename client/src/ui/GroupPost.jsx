@@ -18,7 +18,7 @@ import { HiOutlineDotsVertical } from "react-icons/hi";
 import { MdDelete } from "react-icons/md";
 import { useLoginUser } from "../components/context/LoginUserContext";
 import toast from "react-hot-toast";
-import { format, isToday, isYesterday } from "date-fns";
+import { format } from "date-fns";
 
 const GroupPost = ({
   post,

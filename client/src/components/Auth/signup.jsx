@@ -6,28 +6,23 @@ import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
 import Button from "../../ui/Button";
 import { useForm } from "react-hook-form";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import axios from "../../utils/axios";
 
 function SignUp() {
   const { register, formState, getValues, handleSubmit, reset } = useForm();
   const { errors, isLoading } = formState;
-//   const isLoading = false;
+  //   const isLoading = false;
   const navigate = useNavigate();
 
   const registerUser = async (userData) => {
     try {
-      const response = await axios.post(
-        " https://osaagos-api-alumni-website.onrender.com/api/users/register",
-        userData
-      );
-      console.log("User registered successfully:", response.data);
+      await axios.post("/api/users/register", userData);
       toast.success("User created successfully");
-        
       navigate("/login");
     } catch (error) {
-         toast.error(error.response ? error.response.data.message : error.message);
+      toast.error(error.response ? error.response.data.message : error.message);
     }
   };
 

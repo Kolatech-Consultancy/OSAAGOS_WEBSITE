@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import GroupPost from "./GroupPost";
 import axios from "../utils/axios";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useGroup } from "../components/context/MessagesContext";
 import toast from "react-hot-toast";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 const GroupContainer = styled.div`
   max-width: 800px;
@@ -23,20 +24,23 @@ const GroupContainer = styled.div`
 const GroupHeader = styled.div`
   margin-bottom: 20px;
   padding-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   border-bottom: 1px solid #ddd;
 `;
 
 const GroupName = styled.h1`
-  font-size: 1.8rem;
+  font-size: 1.4rem;
   color: #333;
   margin-bottom: 5px;
 `;
 
-const GroupDescription = styled.p`
-  font-size: 1rem;
-  color: #666;
-  margin-bottom: 10px;
-`;
+// const GroupDescription = styled.p`
+//   font-size: 1rem;
+//   color: #666;
+//   margin-bottom: 10px;
+// `;
 
 const CreatePostContainer = styled.div`
   background-color: #fff;
@@ -212,10 +216,18 @@ export const ReplyUser = styled.span`
   color: #007bff;
 `;
 
+export const BackButton = styled.button`
+  background-color: transparent;
+  border: none;
+  color: black;
+  font-size: 18px;
+  cursor: pointer;
+`;
+
+
 const GroupPage = () => {
   const { id } = useParams();
-  const { groupData } = useGroup();
-  const [group, setGroup] = useState({ name: "", description: "" });
+  const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const [newPost, setNewPost] = useState({ title: "", content: "" });
   const [replyInput, setReplyInput] = useState("");
@@ -266,19 +278,15 @@ const GroupPage = () => {
         );
       }
     }
-
-    const data = groupData.filter((element) => {
-      return element._id === id;
-    });
-    setGroup(data);
     getPost();
-  }, [id, groupData]);
+  }, [id]);
 
   return (
     <GroupContainer>
       <GroupHeader>
-        <GroupName>{group.name}</GroupName>
-        <GroupDescription>{group.description}</GroupDescription>
+        <BackButton onClick={() => navigate(-1)}>
+          <IoMdArrowRoundBack />
+        </BackButton>
       </GroupHeader>
 
       <CreatePostContainer>
