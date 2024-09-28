@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import GroupPost from "./GroupPost";
 import axios from "../utils/axios";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useGroup } from "../components/context/MessagesContext";
 import toast from "react-hot-toast";
+// import { BackButton } from "./UserMessage";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 const GroupContainer = styled.div`
   max-width: 800px;
@@ -23,20 +25,23 @@ const GroupContainer = styled.div`
 const GroupHeader = styled.div`
   margin-bottom: 20px;
   padding-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   border-bottom: 1px solid #ddd;
 `;
 
 const GroupName = styled.h1`
-  font-size: 1.8rem;
+  font-size: 1.4rem;
   color: #333;
   margin-bottom: 5px;
 `;
 
-const GroupDescription = styled.p`
-  font-size: 1rem;
-  color: #666;
-  margin-bottom: 10px;
-`;
+// const GroupDescription = styled.p`
+//   font-size: 1rem;
+//   color: #666;
+//   margin-bottom: 10px;
+// `;
 
 const CreatePostContainer = styled.div`
   background-color: #fff;
@@ -201,6 +206,13 @@ export const ReplyImage = styled.img`
   border-radius: 50%;
   margin-right: 10px;
 `;
+export const BackButton = styled.button`
+  background-color: transparent;
+  border: none;
+  color: black;
+  font-size: 18px;
+  cursor: pointer;
+`;
 
 export const ReplyContent = styled.div`
   display: flex;
@@ -215,6 +227,8 @@ export const ReplyUser = styled.span`
 
 const GroupPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+
   const { groupData } = useGroup();
   const [group, setGroup] = useState({ name: "", description: "" });
   const [posts, setPosts] = useState([]);
@@ -267,16 +281,18 @@ const GroupPage = () => {
 
     const data = groupData.filter((element) => {
       return element._id === id;
-    });
-    setGroup(data);
+    });    
+    setGroup({ name: data[0].name });
     getPost();
   }, [id, groupData]);
 
   return (
     <GroupContainer>
       <GroupHeader>
+        <BackButton onClick={() => navigate(-1)}>
+          <IoMdArrowRoundBack />
+        </BackButton>
         <GroupName>{group.name}</GroupName>
-        <GroupDescription>{group.description}</GroupDescription>
       </GroupHeader>
 
       <CreatePostContainer>
