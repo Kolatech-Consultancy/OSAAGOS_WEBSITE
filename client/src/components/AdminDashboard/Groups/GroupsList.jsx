@@ -1,20 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { FaEdit, FaEllipsisH, FaPlus, FaSearch, FaTrash } from 'react-icons/fa';
+import { FaEdit, FaEllipsisH, FaPlus, FaSearch, FaTrash, FaUser } from 'react-icons/fa';
 import AddEditGroupModal from './AddEditGroupModal';
 import DeleteGroupModal from './DeleteGroupModal';
-import { getGroup, deleteGroup, editGroup, addGroup } from '../../../services/api';
+import { getGroup, deleteGroup, editGroup, addGroup, approveGroup, denyGroup } from '../../../services/api';
 import "../../../index.scss";
 import SpinnerMini from '../../SpinnerMini';
 import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom';
 import { useToggleDropdown } from '../useCloseDropdown';
 import { formatDate } from '../../../services/formatDate';
+import ApproveDenyGroupModal from './ApproveDenyGroupModal';
 
 const GroupList = () => {
 
     const [Group, setGroup] = useState([]);
     const [isAddEditModalOpen, setIsAddEditModalOpen] = useState(false);
-    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+    const [isApproveDenyModalOpen, setIsApproveDenyModalOpen] = useState(false);
+    const [approveDeny, setApproveDeny] = useState(null);;
     const [currentGroup, setCurrentGroup] = useState(null);
     const [loader, setLoader] = useState(false);
     const [error, setError] = useState(false);
@@ -80,6 +83,31 @@ const GroupList = () => {
         }
     };
 
+    const handleApproveDenyGroup = async () => {
+        const {status, id} = approveDeny
+        try {
+            setIsLoading(true);
+            if (status == "approve") {
+                await approveGroup(id)
+
+            } else {
+                await denyGroup(id)
+            }
+            // setForum(Forum.map(frm => frm._id === id ? frm.status = status : frm));
+            // console.log(Forum);
+            
+            toast.success(`Forum saved successfully`);
+            window.location.reload()
+        } catch (error) {
+            console.error(error);
+            toast.error("Error saving changes");
+        } finally {
+            setIsLoading(false);
+            closeApproveDenyModal()
+        }
+    };
+
+
     const openAddEditModal = (Group = null) => {
         setCurrentGroup(Group);
         setIsAddEditModalOpen(true);
@@ -99,6 +127,17 @@ const GroupList = () => {
         setCurrentGroup(null);
         setIsDeleteModalOpen(false);
     };
+    const openApproveDenyModal = (status, id) => {
+        setApproveDeny({ status, id })
+        setIsApproveDenyModalOpen(true)
+    };
+
+    const closeApproveDenyModal = () => {
+        setApproveDeny(null)
+        setIsApproveDenyModalOpen(false)
+    };
+
+
     return (
         <>
             <main className="bg-white flex flex-col gap-10 rounded-t-lg py-5 text-gray-700">
@@ -144,7 +183,7 @@ const GroupList = () => {
                                             <td className="py-2 px-4">{grp.members.length}</td>
                                             <td className="py-2 px-4">{formatDate(grp.createdAt)}</td>
                                             <td className="py-2 px-4">
-                                                <span className={`px-4 py-1 rounded-lg w-fit flex items-center justify-center font-medium ${grp.status == "pending" ? "bg-yellow-100 text-yellow-500" : " bg-green-100 text-green-500"} `}>{grp.status}</span>
+                                                <span className={`px-4 py-1 rounded-lg w-fit flex items-center justify-center font-medium ${grp.status == "pending" ? "bg-yellow-100 text-yellow-500" : grp.status == "denied" ? "text-red-400 bg-red-100" : " bg-green-100 text-green-500"} `}>{grp.status}</span>
                                             </td>
                                             <td className="py-2 px-4">
                                                 <div className="relative">
@@ -155,7 +194,22 @@ const GroupList = () => {
                                                         <FaEllipsisH />
                                                     </button>
                                                     {isOpen === index && (
-                                                        <div className="dropdown-menu absolute mb-4 right-0 w-44 bg-white border border-gray-200 rounded-md shadow-lg z-10">
+                                                        <div className={`dropdown-menu absolute mb-4 right-0 w-44 bg-white border border-gray-200 rounded-md shadow-lg z-10`}>
+                                                            <button className={`block px-4 py-2  w-full text-left ${grp.status !== "pending" && " hover:bg-gray-200"} focus:outline-none`}
+                                                            >
+                                                                {grp.status == "pending" ?
+                                                                    <div>
+                                                                        <span onClick={() => openApproveDenyModal("approve", grp._id)} className='text-green-500 hover:underline'>Approve</span>
+                                                                        <span> / </span>
+                                                                        <span onClick={() => openApproveDenyModal("deny", grp._id)} className='text-red-500 hover:underline'> Deny</span>
+                                                                    </div> :
+                                                                    <Link to={`${grp._id}/members`} className='text-green-500 w-full'>
+                                                                        <FaUser className="inline mr-2" />
+                                                                        Members
+                                                                    </Link>
+                                                                }
+
+                                                            </button>
                                                             <button
                                                                 className="block px-4 py-2 text-blue-500 hover:bg-gray-200 w-full text-left focus:outline-none"
                                                                 onClick={() => openAddEditModal(grp)}
@@ -197,6 +251,14 @@ const GroupList = () => {
                     isOpen={isDeleteModalOpen}
                     onClose={closeDeleteModal}
                     onDelete={handleDeleteGroup}
+                    loader={isLoading}
+                />
+
+                <ApproveDenyGroupModal
+                    isOpen={isApproveDenyModalOpen}
+                    onClose={closeApproveDenyModal}
+                    onSave={handleApproveDenyGroup}
+                    action={approveDeny?.status}
                     loader={isLoading}
                 />
             </main>

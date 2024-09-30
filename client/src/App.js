@@ -22,6 +22,7 @@ import AddNewsForm from "./components/NewsAndAnnouncements/NewsForm";
 import Layout from "./Layout";
 import AlumniList from "./components/AdminDashboard/Alumni/AlumniList";
 import GroupsList from "./components/AdminDashboard/Groups/GroupsList";
+import MembersList from "./components/AdminDashboard/Groups/Members/MembersList";
 import ForumsList from "./components/AdminDashboard/Forum/ForumsList";
 import PageNotFound from "./components/PageNotFound";
 import GlobalStyles from "./GlobalStyles";
@@ -123,6 +124,7 @@ function App() {
               <Route path="news/:id" element={<NewsOverview />} />
 
               <Route path="groups" element={<GroupsList/>} />
+              <Route path="groups/:groupId/members" element={<MembersList/>} />
               <Route path="forums" element={<ForumsList/>} />
               <Route path="forums/:forumId" element={<PostsList/>} />
               <Route path="forum/posts/:postId" element={<PostOverview/>}/>

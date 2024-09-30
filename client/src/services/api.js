@@ -88,6 +88,21 @@ export const editGroup = async (id) => {
 export const addGroup = async (group) => {
     return axios.post("/api/admin/group", group)
 };
+export const approveGroup= async (id) => {
+    return axios.post(`/api/admin/group/${id}/approve`)
+};
+export const denyGroup= async (id) => {
+    return axios.post(`/api/admin/group/${id}/deny`)
+};
+export const getGroupMembers= async (groupId) => {
+    return axios.get(`/api/admin/groups/${groupId}/members`)
+};
+export const addGroupMember = async (groupId, userId) => {
+    return axios.post(`/api/admin/groups/${groupId}/members/${userId}`)
+};
+export const deleteGroupMember = async (groupId, userId) => {
+    return axios.delete(`/api/admin/groups/${groupId}/members/${userId}`)
+};
 export const deleteGroup = async (id) => {
     return axios.delete(`/api/admin/group/${id}`)
 };

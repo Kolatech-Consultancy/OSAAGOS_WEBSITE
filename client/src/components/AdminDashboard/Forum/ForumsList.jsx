@@ -9,12 +9,15 @@ import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom';
 import { formatDate } from '../../../services/formatDate';
 import { useToggleDropdown } from '../useCloseDropdown';
+import ApproveDenyForumModal from './ApproveDenyForumModal';
 
 const ForumsList = () => {
     const [Forum, setForum] = useState([]);
     const [isAddEditModalOpen, setIsAddEditModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [isApproveDenyModalOpen, setIsApproveDenyModalOpen] = useState(false);
     const [currentForum, setCurrentForum] = useState(null);
+    const [approveDeny, setApproveDeny] = useState(null);
     const [loader, setLoader] = useState(false);
     const [error, setError] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -85,7 +88,7 @@ const ForumsList = () => {
         try {
             setIsLoading(true);
             await deleteForum(currentForum._id);
-            setForum(Forum.filter(al => al._id !== currentForum._id));
+            setForum(Forum.filter(frm => frm._id !== currentForum._id));
             toast.success('Forum deleted successfully');
         } catch (error) {
             console.error(error);
@@ -93,6 +96,29 @@ const ForumsList = () => {
         } finally {
             setIsLoading(false);
             closeDeleteModal();
+        }
+    };
+    const handleApproveDenyForum = async () => {
+        const {status, id} = approveDeny
+        try {
+            setIsLoading(true);
+            if (status == "approve") {
+                await approveForum(id)
+
+            } else {
+                await denyForum(id)
+            }
+            // setForum(Forum.map(frm => frm._id === id ? frm.status = status : frm));
+            // console.log(Forum);
+            
+            toast.success(`Forum saved successfully`);
+            window.location.reload()
+        } catch (error) {
+            console.error(error);
+            toast.error("Error saving changes");
+        } finally {
+            setIsLoading(false);
+            closeApproveDenyModal()
         }
     };
 
@@ -114,6 +140,15 @@ const ForumsList = () => {
     const closeDeleteModal = () => {
         setCurrentForum(null);
         setIsDeleteModalOpen(false);
+    };
+    const openApproveDenyModal = (status, id) => {
+        setApproveDeny({status, id})
+        setIsApproveDenyModalOpen(true)
+    };
+
+    const closeApproveDenyModal = () => {
+        setApproveDeny(null)
+        setIsApproveDenyModalOpen(false)
     };
     return (
         <>
@@ -156,7 +191,7 @@ const ForumsList = () => {
                                     {Forum.map((frm, index) => (
                                         <tr key={frm._id}>
                                             <td className="py-2 px-4">{frm.title}</td>
-                                            <td className="py-2 px-4">{frm.createdBy.name}</td>
+                                            <td className="py-2 px-4">{frm.createdBy?.name}</td>
                                             <td className="py-2 px-4">{formatDate(frm.createdAt)}</td>
                                             <td className={`py-2 px-4 `}>
                                                 <span className={`px-4 font-medium py-1 text-sm rounded-lg w-32 flex items-center justify-center ${frm.status == "pending" ? "text-yellow-400 bg-yellow-100" : frm.status == "approved" ? "text-green-400 bg-green-100" : "text-red-400 bg-red-100"}`}>
@@ -177,9 +212,9 @@ const ForumsList = () => {
                                                             >
                                                                 {frm.status == "pending" ?
                                                                     <div>
-                                                                        <span onClick={() => switchFuntion("approve", frm._id)} className='text-green-500 hover:underline'>Approve</span>
+                                                                        <span onClick={() => openApproveDenyModal("approve", frm._id)} className='text-green-500 hover:underline'>Approve</span>
                                                                          <span> / </span>
-                                                                         <span onClick={() => switchFuntion("deny", frm._id)} className='text-red-500 hover:underline'> Deny</span>
+                                                                         <span onClick={() => openApproveDenyModal("deny", frm._id)} className='text-red-500 hover:underline'> Deny</span>
                                                                     </div> : 
                                                                     <Link  to={frm._id} className='text-green-500 hover:bg-gray-200'>
                                                                         <FaUser className="inline mr-2" />
@@ -229,6 +264,14 @@ const ForumsList = () => {
                     isOpen={isDeleteModalOpen}
                     onClose={closeDeleteModal}
                     onDelete={handleDeleteForum}
+                    loader={isLoading}
+                />
+
+                <ApproveDenyForumModal
+                    isOpen={isApproveDenyModalOpen}
+                    onClose={closeApproveDenyModal}
+                    onSave={handleApproveDenyForum}
+                    action={approveDeny?.status}
                     loader={isLoading}
                 />
             </main>
