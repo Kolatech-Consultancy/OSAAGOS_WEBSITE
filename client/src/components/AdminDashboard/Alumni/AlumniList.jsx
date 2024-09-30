@@ -27,6 +27,8 @@ const AlumniList = () => {
                 setLoader(true);
                 const response = await GetAlumni();
                 setAlumni(response.data);
+                console.log(response.data);
+                
             } catch (error) {
                 setError(true);
                 console.error(error);
