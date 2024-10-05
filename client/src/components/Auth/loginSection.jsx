@@ -75,7 +75,7 @@ function LoginSection() {
             </Button>
           </div>
         </div>
-        <div className="flex justify-between h-20 px-4 pt-4">
+        <div className="flex justify-between text-center h-20 px-4 pt-4">
           <hr
             className="w-40 md:block hidden"
             style={{ alignSelf: "center" }}
