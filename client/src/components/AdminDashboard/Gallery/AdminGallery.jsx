@@ -147,8 +147,8 @@ const MediaPage = () => {
               {media.map((item, index) => (
                 <tr key={item._id} className="border-b border-gray-200">
                   <td className="py-2 px-4">
-                    {item.title.split(" ").length > 3
-                      ? item.title.split(" ").slice(0, 3).join(" ") + "..."
+                    {item.title.split(" ").length > 5
+                      ? item.title.split(" ").slice(0, 5).join(" ") + " ..."
                       : item.title}
                   </td>
                   <td className="py-2 px-4">{item.fileType}</td>

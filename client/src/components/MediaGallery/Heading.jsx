@@ -58,11 +58,9 @@ function Heading() {
         <p>Media Gallery</p>
       </Item1>
       <Item2>
-        Etiam vitae tortor. Curabitur nisi. In hac habitasse platea dictumst.
-        Praesent ac massa at ligula laoreet iaculis. Praesent ac massa at ligula
-        laoreet iaculis. sollicitudin, ipsum eu pulvinar rutrum, tellus ipsum
-        laoreet sapien, quis venenatis ante odio sit amet eros. Nullam quis
-        ante. Curabitur vestibulum.
+        Explore our gallery of stunning visuals and captivating videos. Each
+        piece is a unique story of creativity and beauty, waiting to be
+        discovered.
       </Item2>
       <Item3>
         <button className="bg-blue-800 hover:bg-blue-600 text-lg py-2 px-4 text-white">

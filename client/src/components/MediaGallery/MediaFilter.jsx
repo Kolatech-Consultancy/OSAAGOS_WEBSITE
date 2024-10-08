@@ -22,7 +22,6 @@ function MediaFilter({ filterVal, setFilterVal }) {
     <CenteredFlex className="flex justify-center w-full border-b-2 border-blue-700 mb-6">
       <Flex>
         {filterLabel.map((el) => {
-          console.log(filterVal.toLowerCase() === el.label.toLowerCase());
           return (
             <li
               key={el.label}
