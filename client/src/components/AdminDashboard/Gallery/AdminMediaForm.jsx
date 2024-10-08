@@ -4,7 +4,6 @@ import styled from "styled-components";
 import toast from "react-hot-toast";
 import SpinnerMini from "../../SpinnerMini";
 
-// Styled components for the form
 const FormContainer = styled.div`
   width: 100%;
   max-width: 600px;
@@ -72,14 +71,13 @@ const AdminForm = ({ isEditing, setIsEditing, editId, media }) => {
     fileUrl: "",
     description: "",
   });
-  // const [file, setFile] = useState(null);
 
   useEffect(() => {
     if (isEditing) {
       const data = media.find((item) => item._id === editId);
       setFormData(data);
     }
-  }, [isEditing, editId]);
+  }, [isEditing, editId, media]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -88,10 +86,6 @@ const AdminForm = ({ isEditing, setIsEditing, editId, media }) => {
       [name]: value,
     });
   };
-
-  // const handleFileChange = (e) => {
-  //   setFile(e.target.files[0]);
-  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -106,22 +100,18 @@ const AdminForm = ({ isEditing, setIsEditing, editId, media }) => {
     try {
       setSubmiting(true);
       if (isEditing) {
-        const response = await axios.put(
-          `/api/admin/media/:${editId}`,
-          data,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
+        const response = await axios.put(`/api/admin/media/:${editId}`, data, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
         console.log("Response:", response.data);
         toast.success("Edited successfully");
         setIsEditing(false);
         setFormData({
           fileType: "image",
           title: "",
-          fileUrl :"",
+          fileUrl: "",
           description: "",
         });
         setSubmiting(false);
@@ -138,10 +128,9 @@ const AdminForm = ({ isEditing, setIsEditing, editId, media }) => {
         setFormData({
           fileType: "image",
           title: "",
-          fileUrl :"",
+          fileUrl: "",
           description: "",
         });
-        // setFile(null);
         setSubmiting(false);
       }
     } catch (error) {
@@ -154,15 +143,6 @@ const AdminForm = ({ isEditing, setIsEditing, editId, media }) => {
   return (
     <FormContainer>
       <Form onSubmit={handleSubmit}>
-        {/* <Label htmlFor="file">Upload Image or Video</Label>
-        <Input
-          type="file"
-          id="file"
-          accept="image/*, video/*"
-          onChange={handleFileChange}
-          required
-        /> */}
-
         <Label htmlFor="fileType">Type</Label>
         <Select
           id="fileType"
