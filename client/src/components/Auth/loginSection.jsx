@@ -41,7 +41,7 @@ function LoginSection() {
     <>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="sm:p-20 p-4 md:w-2/3 w-full mx-auto"
+        className="sm:p-20 p-4 md:w-2/3 mx-auto"
       >
         <p className="text-4xl text-center font-semibold">LOGIN FORM</p>
         <div className="grid grid-cols-1 mt-8 formControl gap-2">
@@ -69,30 +69,24 @@ function LoginSection() {
               className="block w-full h-14 border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-orange-400 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-400 focus-visible:outline focus-visible:outline-0 sm:text-sm bg-orange-50 sm:leading-6"
             />
           </div>
-          <div className="sm:col-span-1 mt-2 flex justify-center">
-            <Button size="small" disabled={isLoading}>
-              {!isLoading ? "Log in" : <SpinnerMini />}
+          <div className="sm:col-span-1 mt-2  flex justify-center">
+            <Button size="small" className="w-full" disabled={isLoading}>
+              {!isLoading ? "Log in" : <SpinnerMini className="mx-auto"/>}
             </Button>
           </div>
         </div>
-        <div className="flex justify-between text-center h-20 px-4 pt-4">
-          <hr
-            className="w-40 md:block hidden"
-            style={{ alignSelf: "center" }}
-          />
-          <span
-            className="text-sm text-gray-400 flex gap-1 text-center justify-center items-center"
-            style={{ alignSelf: "center" }}
+        <div className="flex justify-between gap-2 py-4">
+          <hr className="hidden sm:flex w-2/5" style={{ alignSelf: "center" }} />
+          <div
+            className="text-sm w-full text-gray-400 text-center"
           >
             Don’t have an account?
-            <Link to="/sign-up" className="text-orange-400">
+            <Link to="/sign-up" className="text-orange-400 ">
               Sign Up
             </Link>
-          </span>
-          <hr
-            className="w-40 md:block hidden"
-            style={{ alignSelf: "center" }}
-          />
+          </div>
+          <hr className="hidden sm:flex w-2/5" style={{ alignSelf: "center" }} />
+
         </div>
         <div className="flex justify-center items-center">
           <Link
