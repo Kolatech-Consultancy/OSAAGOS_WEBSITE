@@ -29,7 +29,7 @@ const Header = styled.div`
 `;
 
 // Back button styling
-const BackButton = styled.button`
+export const BackButton = styled.button`
   background-color: transparent;
   border: none;
   color: white;

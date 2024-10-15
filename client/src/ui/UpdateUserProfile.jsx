@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { GetOneUser, UpdateUsersProfile } from "../services/api";
+import { GetOneUser } from "../services/api";
 import SpinnerMini from "../components/SpinnerMini";
 import toast from "react-hot-toast";
 import Spinner from "../components/Spinner";

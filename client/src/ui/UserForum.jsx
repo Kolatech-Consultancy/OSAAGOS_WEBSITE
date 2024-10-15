@@ -1,16 +1,13 @@
 import { useEffect, useState } from "react";
-import { getAllForums, getAllGroups } from "../services/api";
+import { getAllForums } from "../services/api";
 import Spinner from "../components/Spinner";
-import axios from "../utils/axios";
 import toast from "react-hot-toast";
-import { useLoginUser } from "../components/context/LoginUserContext";
 import CreateGroup from "./CreateGroup";
 import { useNavigate } from "react-router-dom";
 
 function UserForum() {
   const [create, setCreate] = useState(false);
   const navigate = useNavigate();
-  const { user } = useLoginUser();
   const [forumData, setForumData] = useState([]);
   const [loading, setLoading] = useState(false);
 

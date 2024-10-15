@@ -79,7 +79,6 @@ function LoginSection() {
           <hr className="hidden sm:flex w-2/5" style={{ alignSelf: "center" }} />
           <div
             className="text-sm w-full text-gray-400 text-center"
-            style={{ alignSelf: "center" }}
           >
             Don’t have an account?
             <Link to="/sign-up" className="text-orange-400 ">
@@ -87,6 +86,7 @@ function LoginSection() {
             </Link>
           </div>
           <hr className="hidden sm:flex w-2/5" style={{ alignSelf: "center" }} />
+
         </div>
         <div className="flex justify-center items-center">
           <Link

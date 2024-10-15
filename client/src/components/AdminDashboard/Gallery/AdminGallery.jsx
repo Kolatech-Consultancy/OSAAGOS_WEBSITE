@@ -1,289 +1,222 @@
-import { useEffect, useState } from "react";
-import styled from "styled-components";
-import AdminForm from "./AdminMediaForm";
-import axios from "../../../utils/axios";
+import React, { useState, useEffect } from "react";
+import { FaPlus, FaEdit, FaEllipsisH, FaTrash } from "react-icons/fa";
+import AddEditMediaModal from "./AddEditMediaModal";
+import SpinnerMini from "../../SpinnerMini";
+
 import toast from "react-hot-toast";
+import { useToggleDropdown } from "../useCloseDropdown";
+import { formatDate } from "../../../services/formatDate";
+import axios from "../../../utils/axios";
+import OverviewModal from "./OverviewModal";
 
-export const SearchFilterContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 5px;
-`;
-
-export const SearchInput = styled.input`
-  padding: 4px 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  width: ${(props) => (props.variant === "big" ? "100%" : "200px")};
-`;
-
-const FilterSelect = styled.select`
-  padding: 4px 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-`;
-const Table = styled.table`
-  min-width: 100%;
-  background-color: white;
-  border-collapse: collapse;
-`;
-
-const TableRow = styled.tr`
-  border-bottom: 1px solid #e5e7eb;
-`;
-
-const TableCell = styled.td`
-  padding: 16px;
-  vertical-align: middle;
-`;
-
-const Image = styled.img`
-  width: 106px;
-  height: 86px;
-  border-radius: 8px;
-`;
-
-const Iframe = styled.iframe`
-  width: 106px;
-  height: 86px;
-  border-radius: 8px;
-`;
-
-const Title = styled.h3`
-  font-size: 1.125rem;
-  font-weight: bold;
-  margin-bottom: 8px;
-`;
-
-const Description = styled.p`
-  font-size: 0.875rem;
-  color: #4b5563;
-`;
-
-const ButtonContainer = styled.div`
-  text-align: right;
-  white-space: nowrap;
-`;
-
-const Button = styled.button`
-  background-color: ${(props) =>
-    props.variant === "delete" ? "#dc3545" : "#007bff"};
-  color: white;
-  padding: 8px 12px;
-  margin-left: 10px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-
-  &:hover {
-    background-color: ${(props) =>
-      props.variant === "delete" ? "#c82333" : "#0056b3"};
-  }
-`;
-
-// Pagination styling
-export const PaginationContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-`;
-
-export const PageButton = styled.button`
-  background-color: ${(props) => (props.isActive ? "#007bff" : "#f8f9fa")};
-  color: ${(props) => (props.isActive ? "white" : "black")};
-  padding: 8px 16px;
-  margin: 0 5px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-
-  &:hover {
-    background-color: #0056b3;
-    color: white;
-  }
-`;
-
-function AdminGallery() {
-  const [fetching, setFetching] = useState(false);
-  const [active, setActive] = useState("gallery");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filter, setFilter] = useState("all");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [isEditing, setIsEditing] = useState(false);
-  const [editId, setEditId] = useState("");
-  const itemsPerPage = 3;
+const MediaPage = () => {
   const [media, setMedia] = useState([]);
+  const [isAddEditModalOpen, setIsAddEditModalOpen] = useState(false);
+  const [currentMedia, setCurrentMedia] = useState(null);
+  const [loader, setLoader] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const [isOverviewModalOpen, setIsOverviewModalOpen] = useState(false);
+  const { isOpen, toggleDropdown } = useToggleDropdown();
 
-  const filteredItems = media.filter((item) => {
-    const matchesSearch = item.title
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase());
-    const matchesFilter =
-      filter === "all" || item.fileType.toLowerCase() === filter.toLowerCase();
-    return matchesSearch && matchesFilter;
-  });
+  useEffect(() => {
+    const fetchMedia = async () => {
+      try {
+        setLoader(true);
+        const response = await axios.get("/api/media");
+        console.log(response);
+        setMedia(response.data);
+      } catch (error) {
+        setError(true);
+        console.error(error);
+      } finally {
+        setLoader(false);
+      }
+    };
+    fetchMedia();
+  }, []);
 
-  // Pagination logic
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredItems.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
-
-  const handleClick = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
-
-  async function deleteItem(id) {
-    const Uri = `https://osaagos-api-alumni-website.onrender.com/api/admin/media/:${id}`;
-
+  async function editMedia(id, data) {
     try {
-      // const conf = confirm("Are you sure you want to delete this item");
-      // console.log(conf);
-
-      await axios.delete(Uri);
+      const response = await axios.put(`/api/admin/media/${id}`, data);
+      return response.data;
     } catch (error) {
-      toast.error(error.response ? error.response.data.message : error.message);
+      console.error("Error updating media:", error);
+      throw new error("Error updating media");
     }
   }
 
-  function handleEdit(id) {
-    setActive("modal");
-    setIsEditing(true);
-    setEditId(id);
-  }
-  useEffect(() => {
-    const fetchData = async () => {
-      setFetching(true);
-      try {
-        const response = await axios.get(
-          "https://osaagos-api-alumni-website.onrender.com/api/media"
+  const handleAddEditMedia = async (mediaItem) => {
+    try {
+      setIsLoading(true);
+      if (currentMedia) {
+        const editedMedia = await editMedia(currentMedia._id, mediaItem);
+        setMedia(
+          media.map((m) => (m._id === currentMedia._id ? editedMedia : m))
         );
-        setMedia(response.data);
-        setFetching(false);
-      } catch (error) {
-        toast.error(
-          error.response ? error.response.data.message : error.message
-        );
-      } finally {
-        setFetching(false);
+        toast.success("Media updated successfully.");
+      } else {
+        const newMedia = await axios.post("/api/admin/media", mediaItem);
+        setMedia([...media, newMedia.data]);
+        toast.success("Media added successfully.");
+        window.location.reload();
       }
-    };
-    fetchData();
-  }, []);
+    } catch (error) {
+      console.error(error);
+      toast.error("Error saving media.");
+    } finally {
+      setIsLoading(false);
+      closeAddEditModal();
+    }
+  };
+
+  async function deleteMedia(id) {
+    try {
+      const response = await axios.delete(`/api/admin/media/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error("Error deleting media:", error);
+      throw new Error("Error deleting media");
+    }
+  }
+
+  const handleDeleteMedia = async (currentMedia) => {
+    try {
+      setIsLoading(true);
+      await deleteMedia(currentMedia._id);
+      setMedia(media.filter((m) => m._id !== currentMedia._id));
+      toast.success("Media deleted successfully");
+    } catch (error) {
+      console.error(error);
+      toast.error("Error deleting media");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const openAddEditModal = (mediaItem = null) => {
+    setCurrentMedia(mediaItem);
+    setIsAddEditModalOpen(true);
+  };
+
+  const closeAddEditModal = () => {
+    setCurrentMedia(null);
+    setIsAddEditModalOpen(false);
+  };
+  const openOverviewModal = (mediaItem) => {
+    setCurrentMedia(mediaItem);
+    setIsOverviewModalOpen(true);
+  };
+
+  const closeOverviewModal = () => {
+    setCurrentMedia(null);
+    setIsOverviewModalOpen(false);
+  };
 
   return (
-    <main>
-      <nav className="bg-white text-xl flex gap-4 text-center justify-between md:flex-row flex-col rounded-t-lg py-6 px-4">
-        <div className="flex gap-4">
-          <p
-            className={`cursor-pointer px-4 py-2 border rounded-md hover:bg-black hover:text-white transition-all duration-200 ${
-              active === "gallery" ? "bg-black text-white" : ""
-            }`}
-            onClick={(e) => {
-              setActive("gallery");
-              setEditId("");
-              setIsEditing(false);
-            }}
+    <>
+      <main className="bg-white flex flex-col gap-10 rounded-t-lg py-5 text-gray-700">
+        <div className="flex justify-between gap-3 items-center">
+          <h1 className="font-medium text-xl px-5">Media</h1>
+          <button
+            onClick={() => openAddEditModal()}
+            className="ms-auto me-2 bg-blue-400 hover:bg-blue-500 w-fit text-slate-50 p-4 flex items-center justify-center gap-3 rounded-full sm:rounded-lg focus:outline-none"
           >
-            Gallery
-          </p>
-          <p
-            className={`cursor-pointer px-4 py-2 border rounded-md hover:bg-black hover:text-white transition-all duration-200 ${
-              active === "modal" ? "bg-black text-white" : ""
-            }`}
-            onClick={(e) => setActive("modal")}
-          >
-            Create
-          </p>
+            <FaPlus />
+            <span className="hidden sm:flex">Add Media</span>
+          </button>
         </div>
+      </main>
 
-        <SearchFilterContainer>
-          <SearchInput
-            type="text"
-            placeholder="Search by title..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          <FilterSelect
-            value={filter}
-            onChange={(e) => setFilter(e.target.value)}
-          >
-            <option value="all">All</option>
-            <option value="image">Image</option>
-            <option value="video">Video</option>
-          </FilterSelect>
-        </SearchFilterContainer>
-      </nav>
-      <section className="bg-white p-2 rounded-b-md mt-4 h-full">
-        {active === "gallery" && (
-          <Table>
-            <tbody>
-              {currentItems.map((item) => (
-                <TableRow key={item.id}>
-                  <TableCell>
-                    {item.fileType === "image" && (
-                      <Image src={item.path} alt={item.title} />
-                    )}
-                    {item.fileType === "video" && (
-                      <Iframe
-                        src={item.path}
-                        alt={item.title}
-                        title="Video"
-                        frameBorder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                      />
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    <Title>{item.title}</Title>
-                    <Description>{item.description}</Description>
-                  </TableCell>
-                  <TableCell>
-                    <ButtonContainer>
-                      <Button onClick={() => handleEdit(item._id)}>Edit</Button>
-                      <Button
-                        variant="delete"
-                        onClick={() => deleteItem(item._id)}
+      <main className="tableContainer overflow-x-scroll mt-1 pb-3">
+        {loader ? (
+          <div className="bg-white w-full h-40 flex items-center justify-center mt-2">
+            <SpinnerMini />
+          </div>
+        ) : media.length > 0 ? (
+          <table className="min-w-full profileTable">
+            <thead>
+              <tr>
+                <th className="py-2 px-4">Title</th>
+                <th className="py-2 px-4">Type</th>
+                <th className="py-2 px-4">Created At</th>
+                <th className="py-2 px-4">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white text-gray-700">
+              {media.map((item, index) => (
+                <tr key={item._id} className="border-b border-gray-200">
+                  <td className="py-2 px-4">
+                    {item.title.split(" ").length > 3
+                      ? item.title.split(" ").slice(0, 3).join(" ") + "..."
+                      : item.title}
+                  </td>
+                  <td className="py-2 px-4">{item.fileType}</td>
+                  <td className="py-2 px-4">{formatDate(item.createdAt)}</td>
+
+                  <td className="py-2 px-4">
+                    <button
+                      className="text-blue-500 hover:underline"
+                      onClick={() => openOverviewModal(item)}
+                    >
+                      Overview
+                    </button>
+                  </td>
+
+                  <td className="py-2 px-4">
+                    <div className="relative">
+                      <button
+                        className="text-slate-500 bg-slate-300 p-1 rounded focus:outline-none"
+                        onClick={(event) => toggleDropdown(index, event)}
                       >
-                        Delete
-                      </Button>
-                    </ButtonContainer>
-                  </TableCell>
-                </TableRow>
+                        <FaEllipsisH />
+                      </button>
+                      {isOpen === index && (
+                        <div className="dropdown-menu mb-4 absolute right-0 w-44 bg-white border border-gray-200 rounded-md shadow-lg z-10">
+                          <button
+                            className="block px-4 py-2 text-blue-500 hover:bg-gray-200 w-full text-left focus:outline-none"
+                            onClick={() => openAddEditModal(item)}
+                          >
+                            <FaEdit className="inline mr-2" />
+                            Edit
+                          </button>
+                          <button
+                            className="block px-4 py-2 text-red-500 hover:bg-gray-200 w-full text-left focus:outline-none"
+                            onClick={() => handleDeleteMedia(item)}
+                          >
+                            <FaTrash className="inline mr-2" />
+                            Delete
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  </td>
+                </tr>
               ))}
             </tbody>
-          </Table>
-        )}
-        {active === "modal" && (
-          <div>
-            <AdminForm
-              isEditing={isEditing}
-              setIsEditing={setIsEditing}
-              editId={editId}
-              media={media}
-            />
+          </table>
+        ) : (
+          <div className="bg-white w-full h-40 flex items-center justify-center mt-2">
+            {error
+              ? "An error occurred. Try again later."
+              : "No media available."}
           </div>
         )}
-      </section>
-      {active === "gallery" && (
-        <PaginationContainer>
-          {Array.from({ length: totalPages }, (_, index) => (
-            <PageButton
-              key={index + 1}
-              onClick={() => handleClick(index + 1)}
-              isActive={currentPage === index + 1}
-            >
-              {index + 1}
-            </PageButton>
-          ))}
-        </PaginationContainer>
-      )}
-    </main>
+      </main>
+      <AddEditMediaModal
+        isOpen={isAddEditModalOpen}
+        onClose={closeAddEditModal}
+        onSave={handleAddEditMedia}
+        mediaItem={currentMedia}
+        loader={isLoading}
+      />
+      <OverviewModal
+        isOpen={isOverviewModalOpen}
+        onClose={closeOverviewModal}
+        mediaItem={currentMedia}
+      />
+    </>
   );
-}
+};
 
-export default AdminGallery;
+export default MediaPage;
