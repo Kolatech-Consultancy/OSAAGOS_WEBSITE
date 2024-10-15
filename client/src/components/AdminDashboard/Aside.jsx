@@ -3,8 +3,7 @@ import { FaLongArrowAltLeft, FaLongArrowAltRight } from "react-icons/fa";
 import "../../index.scss"
 import { Link } from "react-router-dom";
 
-const Aside = ({ isOpen, setIsOpen, isSmallScreen, setIsSmallScreen }) => {
- 
+const Aside = ({ isOpen, setIsOpen, isSmallScreen, setIsSmallScreen }) => { 
   useEffect(() => {
     const handleResize = () => {
       setIsSmallScreen(window.innerWidth < 768);
@@ -21,11 +20,19 @@ const Aside = ({ isOpen, setIsOpen, isSmallScreen, setIsSmallScreen }) => {
       window.removeEventListener("resize", handleResize);
     };
   }, [setIsOpen]);
+  
+
+  const handleLogOut = ()=>{
+    localStorage.setItem('token', '')
+   window.location.replace('/login')
+  }
+
+
 
   return (
     <>
       <aside
-        className={`bg-gray-800 z-50 text-white w-64 h-screen  fixed top-0 left-0 transition-transform duration-200 ${isOpen ? "transform translate-x-0" : isSmallScreen ? "transform -translate-x-full" : "transform -translate-x-64"
+        className={`bg-gray-800 z-50 text-white w-64 h-screen flex flex-col gap-3  fixed top-0 left-0 transition-transform duration-200 ${isOpen ? "transform translate-x-0" : isSmallScreen ? "transform -translate-x-full" : "transform -translate-x-64"
           } `}
       >
         <div
@@ -37,11 +44,11 @@ const Aside = ({ isOpen, setIsOpen, isSmallScreen, setIsSmallScreen }) => {
         <div className=" w-full h-[6rem] bg-blue-200 hover:bg-gray-600">
           <img
             className="max-h-full max-w-full object-contain"
-            src="/logo.png"
+            src="/Logo.png"
             alt="OSAAGOS Logo"
           />
         </div>
-        <ul className="overflow-y-scroll h-[75vh] mb-6 dashLists">
+        <ul className="overflow-y- mb-2 dashLists">
           <Link to="">
             <li className="p-4 hover:bg-gray-600">Analytics Overview</li>
           </Link>
@@ -73,13 +80,8 @@ const Aside = ({ isOpen, setIsOpen, isSmallScreen, setIsSmallScreen }) => {
             <li className="p-4 hover:bg-gray-600">Settings</li>
           </Link>
         </ul>
-        <div>
-          <div
-            className="bg-blue-600 inline-block p-1 bottom-0 cursor-pointer "
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            <FaLongArrowAltLeft />
-          </div>
+        <div className="mt-auto">
+          <button className="p-4 block w-full bg-blue-200 text-xl" onClick={handleLogOut}>Log Out</button>
         </div>
       </aside>
     </>
