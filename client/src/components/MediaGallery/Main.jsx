@@ -1,35 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Heading from "./Heading";
 import MediaFilter from "./MediaFilter";
-const mediaItems = [
-  {
-    id: 1,
-    fileType: "image",
-    path: "https://via.placeholder.com/300",
-    description: "Hello everyone",
-  },
-  {
-    id: 2,
-    fileType: "video",
-    path: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-  },
-  { id: 3, fileType: "image", path: "https://via.placeholder.com/300" },
-  {
-    id: 4,
-    fileType: "video",
-    path: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-  },
-  { id: 5, fileType: "image", path: "https://via.placeholder.com/300" },
-];
-
-function filterItems(type) {
-  if (type === "all") {
-    return mediaItems;
-  }
-  return mediaItems.filter((item) => item.type === type);
-}
+import axios from "../../utils/axios";
 
 const Main = () => {
+  const [media, setMedia] = useState([]);
   const [filterVal, setFilterVal] = useState("all");
   const filteredMediaItems = filterItems(filterVal.toLowerCase());
 
@@ -45,6 +20,21 @@ const Main = () => {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+
+  function filterItems(type) {
+    if (type === "all") {
+      return media;
+    }
+    return media.filter((item) => item.fileType === type);
+  }
+
+  useEffect(() => {
+    async function fetchMedia() {
+      const med = await axios.get("/api/media");
+      setMedia(med.data);
+    }
+    fetchMedia();
+  }, []);
 
   return (
     <div className="py-6 ">
@@ -66,23 +56,61 @@ const Main = () => {
           {paginatedItems.map((item) => (
             <div
               key={item.id}
-              className="bg-white rounded-lg shadow-md overflow-hidden"
+              className="bg-white rounded-lg shadow-md overflow-hidden group relative h-72"
             >
-              {item.type === "image" ? (
-                <img
-                  src={item.url}
-                  alt="Media"
-                  className="w-full h-48 object-cover"
-                />
-              ) : item.type === "video" ? (
-                <iframe
-                  src={item.url}
-                  title="Video"
-                  className="w-full h-48"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
+              {item.fileType === "image" ? (
+                <>
+                  <img
+                    src={item.fileUrl}
+                    alt={item.title}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-center items-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <h3 className="text-lg font-semibold">{item.title}</h3>
+                    <p className="text-sm mt-2">{item.description}</p>
+                  </div>
+                  <div className="block sm:hidden p-4">
+                    <h3 className="text-lg font-semibold">{item.title}</h3>
+                    <p className="text-sm mt-2">{item.description}</p>
+                  </div>
+                </>
+              ) : item.fileType === "video" ? (
+                <>
+                  <div className="aspect-w-16 aspect-h-9">
+                    {item.fileType === "video" ? (
+                      item.source === "youtube" ? (
+                        <iframe
+                          src={`https://www.youtube.com/embed/${
+                            item.fileUrl.split("v=")[1]
+                          }`}
+                          title={item.title}
+                          className="w-full h-48"
+                          frameBorder="0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                        />
+                      ) : (
+                        <video
+                          controls
+                          src={item.fileUrl}
+                          className="w-full h-48"
+                        >
+                          Your browser does not support the video tag.
+                        </video>
+                      )
+                    ) : null}
+                  </div>
+                  <div className="p-4">
+                    <h3 className="text-lg font-semibold">{item.title}</h3>
+                    <p className="text-sm mt-2">
+                      {" "}
+                      {item.description.split(" ").length > 5
+                        ? item.description.split(" ").slice(0, 5).join(" ") +
+                          " ..."
+                        : item.description}
+                    </p>
+                  </div>
+                </>
               ) : null}
             </div>
           ))}
@@ -92,7 +120,7 @@ const Main = () => {
           <div className="flex justify-center mt-8 text-center">
             {Array.from({ length: totalPages }, (_, index) => (
               <button
-                key={index}
+                key={index + 1}
                 onClick={() => handleClick(index + 1)}
                 className={`px-2 py-1 mx-1 border-2 border-blue-700 rounded-lg ${
                   currentPage === index + 1
